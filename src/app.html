@@ -1561,8 +1561,8 @@ VIEWS.assistir = ()=>{
     </section>
 
     <section class="stack-sm">
-      <div class="eyebrow">Todas as formas</div>
-      ${BELTS.map(x=>{
+      <div class="eyebrow">As outras formas</div>
+      ${BELTS.filter(x=>x.forma!==b.forma).map(x=>{
         const vs = VIDEOS_FORMA[x.forma];
         if(!vs) return linkVideo(x.forma, 'Faixa '+x.nome.toLowerCase()+' · busca no YouTube', yt(BUSCA_FORMA[x.forma]||('ATA '+x.forma+' form')));
         return `<div class="card pad stack-sm">
