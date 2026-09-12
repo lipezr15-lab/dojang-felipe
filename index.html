@@ -247,6 +247,15 @@ textarea,input[type=text]{
 .palco{background:var(--surface-2);border-radius:var(--r-sm);padding:10px 4px}
 .mini{width:86px;flex:none;background:var(--surface-2);border-radius:9px;padding:4px 2px}
 
+/* player de video embutido */
+.vid{position:relative;width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#0b0d12;display:block;border:none;padding:0}
+.vid img{width:100%;height:100%;object-fit:cover;display:block}
+.vid iframe{width:100%;height:100%;border:0;display:block}
+.vid .play{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.35))}
+.vid .play i{width:58px;height:40px;border-radius:10px;background:rgba(190,31,45,.94);display:grid;place-items:center;color:#fff;font-style:normal;font-size:18px;padding-left:3px;box-shadow:0 4px 14px rgba(0,0,0,.45)}
+.vid-btn{position:absolute;inset:0;width:100%;height:100%;border:none;padding:0;background:none;display:block;cursor:pointer}
+.vid-fora{font-size:12px;color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)}
+
 /* nav inferior */
 .nav{
   position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);
@@ -584,6 +593,7 @@ function go(v, p){
   pararTimer();
   if(typeof cancelAnimationFrame==='function' && animRAF) cancelAnimationFrame(animRAF);
   if(typeof soltarUrls==='function') soltarUrls();
+  tocando = null;
   R = {v:v, p:p===undefined?null:p};
   window.scrollTo(0,0);
   render();
@@ -905,7 +915,11 @@ VIEWS.forma = ()=>{
         <div style="flex:1"><b style="font-size:14.5px">${esc(p.n)} · ${esc(p.d)}</b><div class="tiny">${esc(p.why)}</div></div></div>`).join('')}
     </section>
 
-    <a class="btn btn-block" href="${yt(BUSCA_FORMA[b.forma]||('ATA '+b.forma+' form'))}" target="_blank" rel="noopener noreferrer" style="background:var(--red-soft);color:var(--red);font-weight:700;text-decoration:none">▶ Assistir ${esc(b.forma)} no YouTube</a>
+    ${VIDEOS_FORMA[b.forma]?`<section class="card pad stack-sm">
+      <div class="eyebrow">Assistir</div>
+      ${player(VIDEOS_FORMA[b.forma][0])}
+      <button class="btn btn-ghost btn-block" data-go="assistir">Outras versões desta forma ›</button>
+    </section>`:`<a class="btn btn-block" href="${yt(BUSCA_FORMA[b.forma]||('ATA '+b.forma+' form'))}" target="_blank" rel="noopener noreferrer" style="background:var(--red-soft);color:var(--red);font-weight:700;text-decoration:none">▶ Procurar ${esc(b.forma)} no YouTube</a>`}
     <button class="btn btn-primary btn-block" data-go="videos">🎥 Gravar a minha e comparar</button>
 
     <section class="card pad stack-sm">
@@ -1478,12 +1492,43 @@ const yt = q => 'https://www.youtube.com/results?search_query=' + encodeURICompo
 /* Links conferidos por busca. São canais de escolas licenciadas da ATA — material
    aberto no YouTube, não o vídeo oficial da ATA (esse fica no MyATA). */
 const VIDEOS_FORMA = {
+  'Songahm 1':[{id:'71d4-MkyZs0', t:'A forma completa, do começo ao fim', c:"Schafer's ATA Martial Arts"}],
+  'Songahm 2':[{id:'6q2oafhIBbM', t:'A forma completa, do começo ao fim', c:"Schafer's ATA Martial Arts"}],
+  'Songahm 3':[{id:'IhHUvMwey2Y', t:'A forma completa, do começo ao fim', c:"Schafer's ATA Martial Arts"}],
+  'Songahm 4':[{id:'ZMi83SPAP1Q', t:'A forma completa, do começo ao fim', c:"Schafer's ATA Martial Arts"}],
+  'Songahm 5':[{id:'R-tqIae7CUY', t:'A forma completa, do começo ao fim', c:"Schafer's ATA Martial Arts"}],
+  'In Wha 1':[{id:'BYnbVnx4zlI', t:'A forma completa, do começo ao fim', c:"Schafer's ATA Martial Arts"}],
   'In Wha 2':[
-    {t:'Devagar com as direções, depois na velocidade normal', c:'West Salem ATA', u:'https://www.youtube.com/watch?v=CPkCOQfQ_1Q'},
-    {t:'A forma completa, 42 movimentos', c:'Manny Yu', u:'https://www.youtube.com/watch?v=2VfEEwc7esc'},
-    {t:'Com contagem e os 3 kihaps marcados', c:'Skill Mastery', u:'https://www.youtube.com/watch?v=7A3QcJv7vtM'}
-  ]
+    {id:'CPkCOQfQ_1Q', t:'Devagar com as direções, depois na velocidade normal', c:'West Salem ATA'},
+    {id:'2VfEEwc7esc', t:'A forma completa, 42 movimentos', c:'Manny Yu'},
+    {id:'7A3QcJv7vtM', t:'Com contagem e os 3 kihaps marcados', c:'Skill Mastery'}
+  ],
+  'Choong Jung 1':[{id:'_EHpSG0cBX8', t:'A forma completa, do começo ao fim', c:"Schafer's ATA Martial Arts"}],
+  'Choong Jung 2':[{id:'7Fp2N_1GvnQ', t:'A forma completa, do começo ao fim', c:"Schafer's ATA Martial Arts"}]
 };
+
+/* Um player por vez: guarda o id do video aberto. */
+let tocando = null;
+function player(v){
+  const aberto = tocando===v.id;
+  return `<div class="stack-sm" style="gap:6px">
+    <div class="vid">
+      ${aberto
+        ? `<iframe src="https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0&modestbranding=1&playsinline=1"
+             title="${esc(v.t)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+             allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`
+        : `<button class="vid-btn" data-play="${v.id}" aria-label="Tocar: ${esc(v.t)}">
+             <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy">
+             <span class="play"><i>▶</i></span></button>`}
+    </div>
+    <div class="row" style="align-items:baseline;gap:8px">
+      <div style="flex:1"><b style="font-size:14.5px">${esc(v.t)}</b>
+        <div class="tiny">${esc(v.c)}</div></div>
+      <a class="vid-fora" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener noreferrer">YouTube ↗</a>
+    </div>
+  </div>`;
+}
+
 const BUSCA_FORMA = {
   'Songahm 1':'ATA Songahm 1 form white belt',
   'Songahm 2':'ATA Songahm 2 form orange belt',
@@ -1529,19 +1574,27 @@ VIEWS.assistir = ()=>{
   return `<div class="stack">
     <button class="back" data-go="mais">‹ Mais</button>
     <div><div class="eyebrow">Assistir</div><h2 class="h-sec" style="margin-top:6px">Vídeos dos movimentos</h2></div>
-    <p class="tiny">Abrem no YouTube, fora do app. São canais de escolas licenciadas da ATA — material aberto, <b>não é o vídeo oficial</b>. O oficial fica no MyATA, com o login da escola.</p>
+    <p class="tiny">Toque no play para assistir aqui mesmo. São canais de escolas licenciadas da ATA — material aberto, <b>não é o vídeo oficial</b>. O oficial fica no MyATA, com o login da escola. Precisa de internet.</p>
 
-    <section class="card pad stack-sm">
+    <section class="card pad stack">
       <div class="eyebrow">A sua forma agora</div>
-      <h3 class="h-sec" style="font-size:24px">${esc(b.forma)}</h3>
-      ${meus.length ? meus.map(v=>linkVideo(v.t, v.c||null, v.u)).join('')
+      <h3 class="h-sec" style="font-size:24px;margin-top:-4px">${esc(b.forma)}</h3>
+      ${meus.length ? meus.map(player).join('')
         : linkVideo('Procurar '+b.forma+' no YouTube', 'Resultados atualizados', yt(BUSCA_FORMA[b.forma]||('ATA '+b.forma+' form')))}
       ${meus.length? linkVideo('Ver mais opções de '+b.forma, 'Busca no YouTube', yt(BUSCA_FORMA[b.forma])) : ''}
     </section>
 
     <section class="stack-sm">
       <div class="eyebrow">Todas as formas</div>
-      ${BELTS.map(x=>linkVideo(x.forma, 'Faixa '+x.nome.toLowerCase()+' · '+x.mov+' movimentos', yt(BUSCA_FORMA[x.forma]||('ATA '+x.forma+' form')))).join('')}
+      ${BELTS.map(x=>{
+        const vs = VIDEOS_FORMA[x.forma];
+        if(!vs) return linkVideo(x.forma, 'Faixa '+x.nome.toLowerCase()+' · busca no YouTube', yt(BUSCA_FORMA[x.forma]||('ATA '+x.forma+' form')));
+        return `<div class="card pad stack-sm">
+          <div class="row" style="justify-content:space-between;align-items:baseline">
+            <b style="font-size:15.5px">${esc(x.forma)}</b>
+            <span class="tiny">Faixa ${esc(x.nome.toLowerCase())} · ${x.mov} mov.</span></div>
+          ${player(vs[0])}</div>`;
+      }).join('')}
     </section>
 
     <section class="stack-sm">
@@ -1885,6 +1938,8 @@ function aplicarTema(){
 document.addEventListener('click', e=>{
   const nv = e.target.closest('[data-nav]');
   if(nv){ go(nv.dataset.nav); return; }
+  const pv = e.target.closest('[data-play]');
+  if(pv){ tocando = pv.dataset.play; render(); return; }
   const g = e.target.closest('[data-go]');
   if(g && el.contains(g)){
     if(g.tagName==='A') return;
