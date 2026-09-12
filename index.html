@@ -366,15 +366,15 @@ const CHUTES = [
    como:'Joelho dobrado junto ao peito, gira o pé de apoio, empurra o calcanhar na linha reta até o alvo.',
    erro:'Girar pouco o pé de apoio — o chute vira um circular torto.',
    drill:'10 chutes com apoio na parede, segurando a perna esticada 3s.'},
-  {pt:'Chute circular', ko:'Dollyo Chagi',
+  {pt:'Chute circular', tb:'meia-lua · round kick', ko:'Dollyo Chagi',
    como:'Joelho aponta o alvo primeiro, quadril gira, a perna abre como uma chicotada e volta pelo mesmo caminho.',
    erro:'Chutar com a perna inteira dura, sem dobrar o joelho antes — fica lento e telegrafado.',
    drill:'3x10 alternando altura: colete, colete, cabeça.'},
-  {pt:'Chute de costas', ko:'Dwit Chagi',
+  {pt:'Chute de costas', tb:'chute de giro · back kick', ko:'Dwit Chagi',
    como:'Olha por cima do ombro, encontra o alvo com o olho, empurra o calcanhar reto para trás.',
    erro:'Girar antes de olhar — perde o alvo e abre as costas.',
    drill:'15 giros só de cabeça e quadril, sem chutar, depois 10 chutes.'},
-  {pt:'Chute martelo', ko:'Naeryo Chagi',
+  {pt:'Chute martelo', tb:'machadinha · axe kick', ko:'Naeryo Chagi',
    como:'Levanta a perna esticada o mais alto que der por fora ou pelo meio e desce o calcanhar no alvo.',
    erro:'Desabar o corpo para trás para levantar mais a perna.',
    drill:'2 séries de 10 por perna, com a mão no alto marcando a altura.'},
@@ -382,15 +382,15 @@ const CHUTES = [
    como:'Perna esticada varrendo em arco, de dentro para fora ou de fora para dentro, batendo com a lateral do pé.',
    erro:'Dobrar o joelho no meio do arco.',
    drill:'10 de cada lado tocando a própria mão esticada à frente.'},
-  {pt:'Chute rodado', ko:'Dwi Dollyo Chagi',
+  {pt:'Chute rodado', tb:'gancho de giro · hook', ko:'Dwi Dollyo Chagi',
    como:'Gira como no chute de costas, mas a perna vem em gancho, batendo com o calcanhar de fora para dentro.',
    erro:'Começar o giro com os pés parados — precisa do quadril.',
    drill:'8 repetições lentas por lado, controlando a parada final.'},
-  {pt:'Chute frontal saltado', ko:'Twio Ahp Chagi',
+  {pt:'Chute frontal saltado', tb:'frontal em salto', ko:'Twio Ahp Chagi',
    como:'Sobe o joelho da perna de trás para ganhar altura e chuta com a outra no ar.',
    erro:'Saltar para cima em vez de para a frente.',
    drill:'10 saltos marcando o chão com fita: sempre à frente da marca.'},
-  {pt:'Chute 360', ko:'360 Dollyo Chagi',
+  {pt:'Chute 360', tb:'giro circular saltando · tornado', ko:'360 Dollyo Chagi',
    como:'Gira o corpo inteiro no ar uma volta completa e solta um circular na saída do giro.',
    erro:'Olhar para o chão no giro.',
    drill:'Primeiro 10 giros sem chute, só aterrissando na guarda.'},
@@ -1198,6 +1198,7 @@ VIEWS.chutes = ()=>`<div class="stack">
     <span class="mini">${MOV[k.pt]?svgBoneco(MOV[k.pt].f[2],{flip:MOV[k.pt].flip}):''}</span>
     <span class="t" style="display:flex;flex-direction:column;justify-content:center">
       <b>${esc(k.pt)}</b><small class="kor" style="font-style:italic">${esc(k.ko)}</small>
+      ${k.tb?`<small>${esc(k.tb)}</small>`:''}
       <small style="margin-top:3px">${esc(k.drill)}</small></span>
     <span class="go" style="align-self:center">›</span></button>`).join('')}
   <section class="card pad stack-sm">
@@ -1630,7 +1631,7 @@ VIEWS.assistir = ()=>{
         if(!v) return linkVideo(k.pt, k.ko+' · busca no YouTube', yt(BUSCA_CHUTE[k.pt]||(k.ko+' taekwondo')));
         return `<div class="card pad stack-sm">
           <div class="row" style="justify-content:space-between;align-items:baseline">
-            <b style="font-size:15.5px">${esc(k.pt)}</b><span class="kor">${esc(k.ko)}</span></div>
+            <b style="font-size:15.5px">${esc(k.pt)}${k.tb?' · '+esc(k.tb.split(' · ')[0]):''}</b><span class="kor">${esc(k.ko)}</span></div>
           ${player(v)}</div>`;
       }).join('')}
     </section>
@@ -1665,6 +1666,7 @@ VIEWS.chute = ()=>{
     <section class="card pad stack-sm">
       <div class="row" style="justify-content:space-between;align-items:baseline">
         <h2 class="h-sec" style="font-size:26px">${esc(k.pt)}</h2><span class="kor">${esc(k.ko)}</span></div>
+      ${k.tb?`<div class="tiny" style="margin-top:-2px">Também chamado de ${esc(k.tb)}</div>`:''}
       <div class="palco" id="palco">${m?svgBoneco(m.f[0],{flip:m.flip}):''}</div>
       <div class="tiny" style="text-align:center">Perna do chute em azul${m&&m.flip?' · corpo de costas para o alvo':''}</div>
     </section>
