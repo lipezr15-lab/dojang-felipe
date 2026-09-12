@@ -362,6 +362,10 @@ const CHUTES = [
    como:'Gira como no chute de costas, mas a perna vem em gancho, batendo com o calcanhar de fora para dentro.',
    erro:'Começar o giro com os pés parados — precisa do quadril.',
    drill:'8 repetições lentas por lado, controlando a parada final.'},
+  {pt:'Chute rodado saltado', tb:'giro semicircular saltando \u00b7 jump spin hook', ko:'Twio Dwi Dollyo Chagi',
+   como:'Salta e gira no ar como no rodado, mas a perna vem em gancho: o calcanhar entra de fora para dentro, e voc\u00ea pousa de frente para o alvo.',
+   erro:'Saltar antes de come\u00e7ar o giro. O giro puxa o salto, nunca o contr\u00e1rio.',
+   drill:'10 giros no ch\u00e3o sem salto, depois 8 com salto pequeno. Altura vem depois.'},
   {pt:'Chute frontal saltado', tb:'frontal em salto', ko:'Twio Ahp Chagi',
    como:'Sobe o joelho da perna de trás para ganhar altura e chuta com a outra no ar.',
    erro:'Saltar para cima em vez de para a frente.',
@@ -1222,6 +1226,10 @@ const MOV = {
     P({t:22, kh:50, kk:-50, kf:10, sh:6, sk:10, sf:74}),
     P({t:35, kh:-95, kk:-30, kf:40, sh:10, sk:10, sf:70, fa1:40, fa2:55, ba1:50, ba2:45})],
     nota:'A perna vem em gancho: o calcanhar entra de fora para dentro.'},
+  'Chute rodado saltado':{flip:true, f:[GUARDA,
+    P({t:18, lift:26, kh:40, kk:-70, kf:10, sh:48, sk:-75, sf:35, fa1:-20, fa2:120, ba1:-35, ba2:130}),
+    P({t:34, lift:20, kh:-95, kk:-35, kf:40, sh:35, sk:-60, sf:40, fa1:40, fa2:55, ba1:50, ba2:45})],
+    nota:'O giro vem primeiro e o salto vem junto \u2014 o corpo inteiro vira, n\u00e3o s\u00f3 a perna.'},
   'Chute frontal saltado':{f:[GUARDA,
     P({t:-6, lift:22, kh:95, kk:-95, kf:20, sh:70, sk:-70, sf:40, fa1:-20, fa2:90}),
     P({t:-14, lift:30, kh:85, kk:0, kf:-25, sh:50, sk:-60, sf:30, fa1:-35, fa2:100, ba1:-45, ba2:110})],
@@ -1526,6 +1534,7 @@ const VIDEOS_CHUTE = {
   'Chute martelo':{id:'D8-TAJeR0eY', t:'Como fazer o chute martelo', c:'Ginger Ninja Trickster'},
   'Crescente externo / interno':{id:'P6PifDOklsg', t:'Crescente externo, passo a passo', c:'Ginger Ninja Trickster'},
   'Chute rodado':{id:'Db098oKgzpk', t:'Como fazer o chute rodado', c:'Ginger Ninja Trickster'},
+  'Chute rodado saltado':{id:'3SaKycgcKfI', t:'Como fazer o gancho de giro saltado', c:'Ginger Ninja Trickster'},
   'Chute 360':{id:'NMICZNCv4hE', t:'Giro completo e chute na saida', c:'Ginger Ninja Trickster'}
 };
 
@@ -1551,6 +1560,7 @@ const BUSCA_CHUTE = {
   'Crescente externo / interno':'inside outside crescent kick taekwondo',
   'Chute rodado':'spin hook kick taekwondo tutorial',
   'Chute frontal saltado':'jumping front kick taekwondo tutorial',
+  'Chute rodado saltado':'jump spin hook kick taekwondo tutorial',
   'Chute 360':'360 round kick taekwondo tournament tutorial',
   'Joelhada':'knee strike taekwondo tutorial'
 };
