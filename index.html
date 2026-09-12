@@ -932,7 +932,7 @@ VIEWS.forma = ()=>{
       <div class="eyebrow">Assistir</div>
       ${player(VIDEOS_FORMA[b.forma][0])}
       <button class="btn btn-ghost btn-block" data-go="assistir">Outras versões desta forma ›</button>
-    </section>`:`<a class="btn btn-block" href="${yt(BUSCA_FORMA[b.forma]||('ATA '+b.forma+' form'))}" target="_blank" rel="noopener noreferrer" style="background:var(--red-soft);color:var(--red);font-weight:700;text-decoration:none">▶ Procurar ${esc(b.forma)} no YouTube</a>`}
+    </section>`:`<section class="card pad">${semVideo(b.forma)}</section>`}
     <button class="btn btn-primary btn-block" data-go="videos">🎥 Gravar a minha e comparar</button>
 
     <section class="card pad stack-sm">
@@ -1144,7 +1144,10 @@ VIEWS.armas = ()=>{
           <button class="cb" data-arep="-1">−</button><b>${reps}</b><button class="cb plus" data-arep="1">+</button>
         </div>
       </section>
-      <a class="btn btn-block" href="${yt(BUSCA_ARMA[a.id]||('ATA martial arts '+a.n))}" target="_blank" rel="noopener noreferrer" style="background:var(--red-soft);color:var(--red);font-weight:700;text-decoration:none">▶ Assistir ${esc(a.n)} no YouTube</a>
+      ${VIDEOS_ARMA[a.id]?`<section class="card pad stack-sm">
+        <div class="eyebrow">Assistir</div>
+        ${player(VIDEOS_ARMA[a.id])}
+      </section>`:''}
 
       <section class="card pad stack-sm">
         <div class="eyebrow">A sequência da minha escola</div>
@@ -1539,11 +1542,8 @@ function player(v){
              <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy">
              <span class="play"><i>▶</i></span></button>`}
     </div>
-    <div class="row" style="align-items:baseline;gap:8px">
-      <div style="flex:1"><b style="font-size:14.5px">${esc(v.t)}</b>
-        <div class="tiny">${esc(v.c)}</div></div>
-      <a class="vid-fora" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener noreferrer">YouTube ↗</a>
-    </div>
+    <div><b style="font-size:14.5px">${esc(v.t)}</b>
+      <div class="tiny">${esc(v.c)}</div></div>
   </div>`;
 }
 
@@ -1559,7 +1559,18 @@ const VIDEOS_CHUTE = {
   'Crescente externo / interno':{id:'P6PifDOklsg', t:'Crescente externo, passo a passo', c:'Ginger Ninja Trickster'},
   'Chute rodado':{id:'Db098oKgzpk', t:'Como fazer o chute rodado', c:'Ginger Ninja Trickster'},
   'Chute rodado saltado':{id:'3SaKycgcKfI', t:'Como fazer o gancho de giro saltado', c:'Ginger Ninja Trickster'},
+  'Chute frontal saltado':{id:'Um6dkPLStf8', t:'Como fazer o frontal em salto', c:'Ginger Ninja Trickster'},
+  'Joelhada':{id:'xhmwdCJ10Dg', t:'As cinco joelhadas b\u00e1sicas', c:'Grappling SMARTY'},
   'Chute 360':{id:'NMICZNCv4hE', t:'Giro completo e chute na saida', c:'Ginger Ninja Trickster'}
+};
+
+/* Manuseio da arma. A forma oficial da ATA quem ensina e o instrutor. */
+const VIDEOS_ARMA = {
+  bastao:{id:'wP6QOPyAiTk', t:'Giros b\u00e1sicos do bast\u00e3o', c:'Matt Pasquinilli'},
+  nunchaku:{id:'EOo7Q8pIjJk', t:'Nunchaku do zero, aula completa', c:'Matt Pasquinilli'},
+  bastoes:{id:'frG2CZtn320', t:'Fundamentos dos bast\u00f5es curtos', c:'Kali Center'},
+  kamas:{id:'uXq0NJFIbGE', t:'Como segurar e girar a Sana', c:'Nishime Martial Arts'},
+  'tres-secoes':{id:'oLaJ5GH8_R8', t:'Primeiros movimentos com as tr\u00eas se\u00e7\u00f5es', c:'Three Section Staff'}
 };
 
 const BUSCA_FORMA = {
@@ -1599,6 +1610,12 @@ const BUSCA_ARMA = {
   'tres-secoes':'ATA martial arts sahm dan bong three sectional staff form'
 };
 
+const semVideo = nome => `<div class="row" style="gap:10px;align-items:center">
+  <span class="badge-n" style="background:var(--surface-2);color:var(--ink-3)">—</span>
+  <div style="flex:1"><b style="font-size:14.5px">${esc(nome)}</b>
+    <div class="tiny">Sem vídeo ainda. Peça ao instrutor ou grave o seu na aba de gravação.</div></div>
+</div>`;
+
 const linkVideo = (titulo, sub, url) =>
   `<a class="item" href="${url}" target="_blank" rel="noopener noreferrer" style="text-decoration:none">
     <span class="badge-n" style="background:var(--red-soft);color:var(--red)">▶</span>
@@ -1611,21 +1628,19 @@ VIEWS.assistir = ()=>{
   return `<div class="stack">
     <button class="back" data-go="mais">‹ Mais</button>
     <div><div class="eyebrow">Assistir</div><h2 class="h-sec" style="margin-top:6px">Vídeos dos movimentos</h2></div>
-    <p class="tiny">Toque no play para assistir aqui mesmo. São canais de escolas licenciadas da ATA — material aberto, <b>não é o vídeo oficial</b>. O oficial fica no MyATA, com o login da escola. Precisa de internet.</p>
+    <p class="tiny">Toque no play e assista aqui dentro. Nada abre o YouTube. São canais abertos de escolas e instrutores — <b>não é o vídeo oficial da ATA</b>, que fica no MyATA com o login da escola. Precisa de internet.</p>
 
     <section class="card pad stack">
       <div class="eyebrow">A sua forma agora</div>
       <h3 class="h-sec" style="font-size:24px;margin-top:-4px">${esc(b.forma)}</h3>
-      ${meus.length ? meus.map(player).join('')
-        : linkVideo('Procurar '+b.forma+' no YouTube', 'Resultados atualizados', yt(BUSCA_FORMA[b.forma]||('ATA '+b.forma+' form')))}
-      ${meus.length? linkVideo('Ver mais opções de '+b.forma, 'Busca no YouTube', yt(BUSCA_FORMA[b.forma])) : ''}
+      ${meus.length ? meus.map(player).join('') : semVideo(b.forma)}
     </section>
 
     <section class="stack-sm">
       <div class="eyebrow">As outras formas</div>
       ${BELTS.filter(x=>x.forma!==b.forma).map(x=>{
         const vs = VIDEOS_FORMA[x.forma];
-        if(!vs) return linkVideo(x.forma, 'Faixa '+x.nome.toLowerCase()+' · busca no YouTube', yt(BUSCA_FORMA[x.forma]||('ATA '+x.forma+' form')));
+        if(!vs) return `<div class="card pad">${semVideo(x.forma+' — faixa '+x.nome.toLowerCase())}</div>`;
         return `<div class="card pad stack-sm">
           <div class="row" style="justify-content:space-between;align-items:baseline">
             <b style="font-size:15.5px">${esc(x.forma)}</b>
@@ -1638,7 +1653,7 @@ VIEWS.assistir = ()=>{
       <div class="eyebrow">Chutes</div>
       ${CHUTES.map(k=>{
         const v = VIDEOS_CHUTE[k.pt];
-        if(!v) return linkVideo(k.pt, k.ko+' · busca no YouTube', yt(BUSCA_CHUTE[k.pt]||(k.ko+' taekwondo')));
+        if(!v) return `<div class="card pad">${semVideo(k.pt)}</div>`;
         return `<div class="card pad stack-sm">
           <div class="row" style="justify-content:space-between;align-items:baseline">
             <b style="font-size:15.5px">${esc(k.pt)}${k.tb?' · '+esc(k.tb.split(' · ')[0]):''}</b><span class="kor">${esc(k.ko)}</span></div>
@@ -1648,18 +1663,20 @@ VIEWS.assistir = ()=>{
 
     <section class="stack-sm">
       <div class="eyebrow">Armas</div>
-      ${ARMAS.map(a=>linkVideo(a.n, a.ko, yt(BUSCA_ARMA[a.id]||('ATA martial arts '+a.n)))).join('')}
+      ${ARMAS.map(a=>{
+        const v = VIDEOS_ARMA[a.id];
+        if(!v) return `<div class="card pad">${semVideo(a.n)}</div>`;
+        return `<div class="card pad stack-sm">
+          <div class="row" style="justify-content:space-between;align-items:baseline">
+            <b style="font-size:15.5px">${esc(a.n)}</b><span class="kor">${esc(a.ko)}</span></div>
+          ${player(v)}</div>`;
+      }).join('')}
     </section>
 
-    <section class="stack-sm">
-      <div class="eyebrow">Sparring</div>
-      ${linkVideo('Sparring da ATA em campeonato', 'Como a luta funciona de verdade', yt('ATA martial arts sparring tournament color belt'))}
-      ${linkVideo('Combinações de sparring', 'Sequências para treinar', yt('taekwondo point sparring combinations tutorial'))}
-    </section>
-
-    <section class="stack-sm">
-      <div class="eyebrow">Canais oficiais</div>
-      ${LINKS.map(l=>linkVideo(l.n, l.d, l.u)).join('')}
+    <section class="card pad stack-sm">
+      <div class="eyebrow">Sites oficiais</div>
+      <div class="tiny">Estes são sites, não vídeos — abrem fora do app, no navegador.</div>
+      ${LINKS.filter(l=>l.u.indexOf('youtube')<0).map(l=>linkVideo(l.n, l.d, l.u)).join('')}
     </section>
 
     <p class="note">Vídeo de escola nenhuma substitui a correção do instrutor. Se o que você vê no vídeo for diferente do que ensinam na aula, vale o da aula.</p>
@@ -1694,7 +1711,7 @@ VIEWS.chute = ()=>{
     ${VIDEOS_CHUTE[k.pt]?`<section class="card pad stack-sm">
       <div class="eyebrow">Assistir</div>
       ${player(VIDEOS_CHUTE[k.pt])}
-    </section>`:`<a class="btn btn-block" href="${yt(BUSCA_CHUTE[k.pt]||(k.ko+' taekwondo'))}" target="_blank" rel="noopener noreferrer" style="background:var(--red-soft);color:var(--red);font-weight:700;text-decoration:none">▶ Procurar ${esc(k.pt)} no YouTube</a>`}
+    </section>`:`<section class="card pad">${semVideo(k.pt)}</section>`}
     <button class="btn btn-primary btn-block" data-go="videos">🎥 Gravar o meu e comparar</button>
     <p class="note">Desenho feito para mostrar a mecânica do movimento — a execução oficial da ATA quem ensina é o instrutor, no dojang.</p>
   </div>`;
