@@ -449,9 +449,18 @@ const ARMAS = [
   {id:'faca', n:'Faca de treino', ko:'Kkahl',
    seg:['Somente faca de treino de borracha ou plástico','Nunca apontar para ninguém, nem brincando'],
    drills:['Guarda e troca de mão — 20x','Corte diagonal alto e baixo — 15x cada','Passo lateral com corte — 20x']},
-  {id:'kamas', n:'Kamas', ko:'Ssahng Nat',
+  {id:'kamas', n:'Kamas', ko:'Ssahng Nat / Sahn Nat',
    seg:['Lâmina de treino sempre virada para fora','Movimento lento até o pulso aprender o arco'],
-   drills:['Rotação nas duas mãos — 30s','Bloqueio em gancho — 20x','Corte cruzado com passo — 15x']}
+   drills:['Rotação nas duas mãos — 30s','Bloqueio em gancho — 20x','Corte cruzado com passo — 15x']},
+  {id:'bengala', n:'Bengala', ko:'Jee Pahng Ee',
+   seg:['A curva engancha — nunca puxar o tornozelo de alguém em treino livre','Arco curto dentro de casa','Conferir se a madeira não está rachada antes de começar'],
+   drills:['Guarda com a curva virada para fora — segurar 30s','Oito deitado na frente do corpo — 20x','Gancho baixo no ar, bem devagar — 15x','Golpe descendente com a ponta — 20x','Troca de mão com passo — 15x']},
+  {id:'espada', n:'Espada', ko:'Jahng Kkahl / Gum Do',
+   seg:['Somente espada de treino sem fio','Nunca apontar para ninguém, nem de brincadeira','A ponta manda: o corpo vai junto com ela, nunca atrás'],
+   drills:['Corte vertical descendente — 20x','Corte diagonal dos dois lados — 15x cada','Corte horizontal com passo — 15x','Guarda alta e guarda média — segurar 20s cada','Embainhar devagar, olhando a lâmina — 10x']},
+  {id:'tres-secoes', n:'Bastão de três seções', ko:'Sahm Dan Bong',
+   seg:['É a arma mais imprevisível do programa: só modelo de espuma no começo','Capacete nas primeiras semanas','Espaço grande, sem nada em volta — as seções soltas viram para trás'],
+   drills:['Segurar duas seções como bastão curto — 30s','Passagem por cima do ombro, bem devagar — 15x','Giro simples à frente — 20x','Troca de mão — 15x','Bloqueio com duas seções esticadas — 20x']}
 ];
 
 const TERMOS = [
@@ -1529,6 +1538,20 @@ function player(v){
   </div>`;
 }
 
+
+/* Tutoriais de chute conferidos um a um. Tecnica geral de Taekwondo — os
+   detalhes de execucao da ATA quem da e o instrutor. */
+const VIDEOS_CHUTE = {
+  'Chute frontal':{id:'D01r29wCzwI', t:'Como fazer o chute frontal', c:'Ginger Ninja Trickster'},
+  'Chute lateral':{id:'H3NxtBRYPZM', t:'Como fazer o chute lateral', c:'Ginger Ninja Trickster'},
+  'Chute circular':{id:'r1O2aMq0akU', t:'Como fazer o chute circular', c:'Ginger Ninja Trickster'},
+  'Chute de costas':{id:'oxcACgbbAlw', t:'Como fazer o chute de costas', c:'Ginger Ninja Trickster'},
+  'Chute martelo':{id:'D8-TAJeR0eY', t:'Como fazer o chute martelo', c:'Ginger Ninja Trickster'},
+  'Crescente externo / interno':{id:'P6PifDOklsg', t:'Crescente externo, passo a passo', c:'Ginger Ninja Trickster'},
+  'Chute rodado':{id:'Db098oKgzpk', t:'Como fazer o chute rodado', c:'Ginger Ninja Trickster'},
+  'Chute 360':{id:'NMICZNCv4hE', t:'Giro completo e chute na saida', c:'Ginger Ninja Trickster'}
+};
+
 const BUSCA_FORMA = {
   'Songahm 1':'ATA Songahm 1 form white belt',
   'Songahm 2':'ATA Songahm 2 form orange belt',
@@ -1559,7 +1582,10 @@ const BUSCA_ARMA = {
   nunchaku:'ATA martial arts nunchaku ssahng jeol bong form',
   bastoes:'ATA martial arts bahng mahng ee short stick form',
   faca:'ATA martial arts kkahl knife form',
-  kamas:'ATA martial arts ssahng nat kama form'
+  kamas:'ATA martial arts ssahng nat kama form',
+  bengala:'ATA martial arts jee pahng ee cane form',
+  espada:'ATA martial arts jahng kkahl sword form',
+  'tres-secoes':'ATA martial arts sahm dan bong three sectional staff form'
 };
 
 const linkVideo = (titulo, sub, url) =>
@@ -1599,7 +1625,14 @@ VIEWS.assistir = ()=>{
 
     <section class="stack-sm">
       <div class="eyebrow">Chutes</div>
-      ${CHUTES.map(k=>linkVideo(k.pt, k.ko, yt(BUSCA_CHUTE[k.pt]||(k.ko+' taekwondo')))).join('')}
+      ${CHUTES.map(k=>{
+        const v = VIDEOS_CHUTE[k.pt];
+        if(!v) return linkVideo(k.pt, k.ko+' · busca no YouTube', yt(BUSCA_CHUTE[k.pt]||(k.ko+' taekwondo')));
+        return `<div class="card pad stack-sm">
+          <div class="row" style="justify-content:space-between;align-items:baseline">
+            <b style="font-size:15.5px">${esc(k.pt)}</b><span class="kor">${esc(k.ko)}</span></div>
+          ${player(v)}</div>`;
+      }).join('')}
     </section>
 
     <section class="stack-sm">
@@ -1646,7 +1679,10 @@ VIEWS.chute = ()=>{
       <div class="tiny"><b style="color:var(--red)">Erro comum:</b> ${esc(k.erro)}</div>
       <span class="chip chip-pine" style="align-self:flex-start">${esc(k.drill)}</span>
     </section>
-    <a class="btn btn-block" href="${yt(BUSCA_CHUTE[k.pt]||(k.ko+' taekwondo'))}" target="_blank" rel="noopener noreferrer" style="background:var(--red-soft);color:var(--red);font-weight:700;text-decoration:none">▶ Assistir ${esc(k.pt)} no YouTube</a>
+    ${VIDEOS_CHUTE[k.pt]?`<section class="card pad stack-sm">
+      <div class="eyebrow">Assistir</div>
+      ${player(VIDEOS_CHUTE[k.pt])}
+    </section>`:`<a class="btn btn-block" href="${yt(BUSCA_CHUTE[k.pt]||(k.ko+' taekwondo'))}" target="_blank" rel="noopener noreferrer" style="background:var(--red-soft);color:var(--red);font-weight:700;text-decoration:none">▶ Procurar ${esc(k.pt)} no YouTube</a>`}
     <button class="btn btn-primary btn-block" data-go="videos">🎥 Gravar o meu e comparar</button>
     <p class="note">Desenho feito para mostrar a mecânica do movimento — a execução oficial da ATA quem ensina é o instrutor, no dojang.</p>
   </div>`;
