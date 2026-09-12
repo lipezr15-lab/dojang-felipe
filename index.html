@@ -1,0 +1,1918 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Treino de Taekwondo ATA Songahm do Felipe: formas, sparring, armas, chutes e diario.">
+<meta name="theme-color" content="#EFF3F9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A101B" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Dojang">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="icon" href="./icon-192.png">
+<style>
+  :root{color-scheme:light dark}
+  html,body{margin:0}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+</style>
+<title>Dojang de Bolso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Saira+Condensed:wght@500;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#EFF3F9; --surface:#FFFFFF; --surface-2:#E6EDF6; --line:#D5DEEB; --line-soft:#E7EDF6;
+  --ink:#0F1B2D; --ink-2:#43536B; --ink-3:#71829B;
+  --accent:#1D5CB8; --accent-2:#3E82DF; --accent-soft:#E3ECFA; --on-accent:#FFFFFF;
+  --red:#BE1F2D; --red-soft:#FBE5E7;
+  --pine:#2C7256; --pine-soft:#DFF0E8;
+  --gold:#A8781F; --gold-soft:#F7EEDA;
+  --shadow:0 1px 2px rgba(15,27,45,.05), 0 10px 26px -16px rgba(15,27,45,.30);
+  --shadow-lift:0 2px 4px rgba(15,27,45,.06), 0 18px 34px -20px rgba(15,27,45,.40);
+  --r:14px; --r-sm:9px; --r-lg:20px;
+  --nav-h:64px;
+  --display:"Saira Condensed","Arial Narrow",Helvetica,sans-serif;
+  --body:"Asap","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A101B; --surface:#141F31; --surface-2:#1C2A3F; --line:#2A3A52; --line-soft:#213048;
+    --ink:#E9F0F9; --ink-2:#AFC0D6; --ink-3:#8497B1;
+    --accent:#5A9BF2; --accent-2:#7FB4F7; --accent-soft:#16294A; --on-accent:#08121F;
+    --red:#F0666E; --red-soft:#3A1A20;
+    --pine:#4FB98A; --pine-soft:#123124;
+    --gold:#DDB259; --gold-soft:#332916;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -16px rgba(0,0,0,.7);
+    --shadow-lift:0 2px 4px rgba(0,0,0,.45), 0 18px 34px -20px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A101B; --surface:#141F31; --surface-2:#1C2A3F; --line:#2A3A52; --line-soft:#213048;
+  --ink:#E9F0F9; --ink-2:#AFC0D6; --ink-3:#8497B1;
+  --accent:#5A9BF2; --accent-2:#7FB4F7; --accent-soft:#16294A; --on-accent:#08121F;
+  --red:#F0666E; --red-soft:#3A1A20;
+  --pine:#4FB98A; --pine-soft:#123124;
+  --gold:#DDB259; --gold-soft:#332916;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -16px rgba(0,0,0,.7);
+  --shadow-lift:0 2px 4px rgba(0,0,0,.45), 0 18px 34px -20px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--body);
+  font-size:15px; line-height:1.5; -webkit-text-size-adjust:100%;
+  padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom,0px));
+}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--accent-2);outline-offset:2px;border-radius:6px}
+h1,h2,h3,h4{margin:0;font-family:var(--display);text-wrap:balance;line-height:1.05;letter-spacing:-.01em}
+
+.wrap{max-width:640px;margin:0 auto;padding:0 14px}
+
+/* ---------- topo ---------- */
+.top{
+  position:sticky;top:0;z-index:30;background:var(--bg);
+  border-bottom:1px solid var(--line-soft);
+  padding-top:env(safe-area-inset-top,0px);
+}
+.top-in{display:flex;align-items:center;gap:12px;padding:10px 0 11px}
+.who{flex:1;min-width:0}
+.who .hi{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.who .nm{font-family:var(--display);font-size:27px;font-weight:800;text-transform:uppercase;letter-spacing:.005em}
+.streak{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-width:56px;padding:5px 9px;border-radius:var(--r-sm);
+  background:var(--red-soft);color:var(--red);
+}
+.streak b{font-family:var(--display);font-size:22px;font-weight:800;line-height:1}
+.streak span{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.streak.off{background:var(--surface-2);color:var(--ink-3)}
+
+/* faixa desenhada */
+.belt{display:flex;align-items:center;gap:9px;padding:8px 0 12px}
+.belt-band{
+  flex:1;height:17px;border-radius:3px;position:relative;overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(15,27,45,.22), inset 0 -5px 9px -6px rgba(0,0,0,.55);
+}
+.belt-band::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.24),rgba(0,0,0,.12))}
+.belt-stripe{position:absolute;right:9px;top:0;bottom:0;width:13px;background:#15171C;z-index:2;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+.belt-label{font-family:var(--display);font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;color:var(--ink-2)}
+
+/* ---------- blocos ---------- */
+.card{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r);box-shadow:var(--shadow)}
+.pad{padding:14px}
+.stack{display:flex;flex-direction:column;gap:12px}
+.stack-sm{display:flex;flex-direction:column;gap:8px}
+.row{display:flex;align-items:center;gap:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+
+.eyebrow{
+  font-family:var(--display);font-size:12px;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:8px;
+}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--line)}
+.h-sec{font-size:22px;font-weight:800;text-transform:uppercase;letter-spacing:.01em}
+.muted{color:var(--ink-2)}
+.tiny{font-size:12.5px;color:var(--ink-3);line-height:1.45}
+.kor{font-style:italic;color:var(--accent);font-weight:600}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 16px;border-radius:var(--r-sm);font-weight:600;font-size:15px;
+  background:var(--surface-2);color:var(--ink);border:1px solid transparent;transition:transform .07s;
+}
+.btn:active{transform:scale(.985)}
+.btn-primary{background:var(--accent);color:var(--on-accent);box-shadow:var(--shadow)}
+.btn-red{background:var(--red);color:#fff}
+.btn-ghost{background:transparent;border-color:var(--line);color:var(--ink-2)}
+.btn-block{width:100%}
+.btn-lg{padding:16px;font-family:var(--display);font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+
+.chip{
+  display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:100px;
+  font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  background:var(--surface-2);color:var(--ink-2);
+}
+.chip-blue{background:var(--accent-soft);color:var(--accent)}
+.chip-pine{background:var(--pine-soft);color:var(--pine)}
+.chip-red{background:var(--red-soft);color:var(--red)}
+.chip-gold{background:var(--gold-soft);color:var(--gold)}
+
+/* hoje */
+.hero{
+  background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-lg);
+  box-shadow:var(--shadow-lift);padding:16px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;
+  background:var(--accent-soft);opacity:.75;
+}
+.hero>*{position:relative}
+.hero .lead{font-family:var(--display);font-size:30px;font-weight:800;text-transform:uppercase;line-height:.98;margin:6px 0 4px}
+
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tile{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-sm);padding:10px 8px;text-align:center}
+.tile b{display:block;font-family:var(--display);font-size:25px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.tile span{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:700;margin-top:3px}
+
+/* listas */
+.item{
+  display:flex;align-items:center;gap:11px;width:100%;text-align:left;
+  padding:12px 13px;background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-sm);
+}
+.item+.item{margin-top:7px}
+.item .t{flex:1;min-width:0}
+.item .t b{display:block;font-weight:600;font-size:15px}
+.item .t small{display:block;color:var(--ink-3);font-size:12.5px}
+.item .go{color:var(--ink-3);font-size:19px;line-height:1}
+.item.on{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+
+.badge-n{
+  width:34px;height:34px;flex:none;border-radius:8px;display:grid;place-items:center;
+  font-family:var(--display);font-weight:800;font-size:17px;background:var(--surface-2);color:var(--ink-2);
+}
+
+/* checklist */
+.chk{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;padding:9px 4px;border-bottom:1px solid var(--line-soft)}
+.chk:last-child{border-bottom:none}
+.chk .box{
+  width:22px;height:22px;flex:none;border-radius:6px;border:2px solid var(--line);
+  display:grid;place-items:center;font-size:13px;color:transparent;margin-top:1px;
+}
+.chk.done .box{background:var(--pine);border-color:var(--pine);color:#fff}
+.chk.done .lb{color:var(--ink-3);text-decoration:line-through;text-decoration-thickness:1px}
+.chk .lb{font-size:14.5px;line-height:1.35}
+
+/* contador */
+.counter{display:flex;align-items:center;gap:10px;background:var(--surface-2);border-radius:var(--r-sm);padding:8px}
+.counter b{flex:1;text-align:center;font-family:var(--display);font-size:34px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.counter .cb{width:46px;height:46px;border-radius:10px;background:var(--surface);display:grid;place-items:center;font-size:24px;font-family:var(--display);font-weight:700;border:1px solid var(--line-soft)}
+.counter .cb.plus{background:var(--accent);color:var(--on-accent);border-color:transparent}
+
+/* cronômetro */
+.clock{
+  font-family:var(--display);font-weight:800;font-variant-numeric:tabular-nums;
+  font-size:76px;line-height:.92;letter-spacing:-.02em;text-align:center;
+}
+.clock.work{color:var(--ink)}
+.clock.rest{color:var(--pine)}
+.clock.warn{color:var(--red)}
+.bar{height:6px;border-radius:100px;background:var(--surface-2);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--accent);border-radius:100px;transition:width .25s linear}
+.bar.rest>i{background:var(--pine)}
+
+/* segmentos */
+.seg{display:flex;background:var(--surface-2);border-radius:10px;padding:3px;gap:3px}
+.seg button{flex:1;padding:8px 4px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--ink-3)}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+
+/* escada de faixas */
+.ladder{display:flex;flex-direction:column;gap:0}
+.rung{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--line-soft);width:100%;text-align:left}
+.rung:last-child{border-bottom:none}
+.rung .sw{width:40px;height:13px;border-radius:3px;flex:none;position:relative;box-shadow:inset 0 0 0 1px rgba(15,27,45,.25)}
+.rung .nm{flex:1;min-width:0}
+.rung .nm b{font-weight:600;font-size:14.5px;display:block}
+.rung .nm small{color:var(--ink-3);font-size:12px}
+.rung .no{font-family:var(--display);font-weight:700;color:var(--ink-3);font-size:13px;width:20px;font-variant-numeric:tabular-nums}
+.rung.past .nm b{color:var(--ink-3)}
+.rung.cur{background:var(--accent-soft);border-radius:8px;padding:9px 8px;border-bottom-color:transparent}
+.rung.cur .nm b{color:var(--accent)}
+
+/* barras do diário */
+.spark{display:flex;align-items:flex-end;gap:3px;height:58px}
+.spark .b{flex:1;background:var(--surface-2);border-radius:3px 3px 0 0;min-height:3px;position:relative}
+.spark .b.has{background:var(--accent)}
+.spark-x{display:flex;justify-content:space-between;font-size:10px;color:var(--ink-3);margin-top:5px}
+
+/* quiz */
+.opt{width:100%;text-align:left;padding:13px;border-radius:var(--r-sm);background:var(--surface);border:1.5px solid var(--line);font-size:15px;font-weight:500}
+.opt.ok{border-color:var(--pine);background:var(--pine-soft);color:var(--pine);font-weight:700}
+.opt.no{border-color:var(--red);background:var(--red-soft);color:var(--red)}
+
+textarea,input[type=text]{
+  width:100%;font:inherit;font-size:14.5px;color:var(--ink);background:var(--surface-2);
+  border:1px solid var(--line-soft);border-radius:var(--r-sm);padding:10px;resize:vertical;
+}
+
+/* tira de quadros do movimento */
+.tira{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.quadro{background:var(--surface-2);border-radius:10px;padding:6px 2px 4px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.qlb{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
+.palco{background:var(--surface-2);border-radius:var(--r-sm);padding:10px 4px}
+.mini{width:86px;flex:none;background:var(--surface-2);border-radius:9px;padding:4px 2px}
+
+/* nav inferior */
+.nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);
+  border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.nav-in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);height:var(--nav-h)}
+.nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--ink-3)}
+.nav button .ic{font-size:19px;line-height:1}
+.nav button .lb{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.nav button.on{color:var(--accent)}
+
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-3);font-weight:600;font-size:13.5px;padding:4px 0}
+
+.note{background:var(--gold-soft);color:var(--gold);border-radius:var(--r-sm);padding:10px 12px;font-size:12.5px;line-height:1.45;font-weight:500}
+
+.sheet{position:fixed;inset:0;z-index:60;background:rgba(8,14,24,.55);display:flex;align-items:flex-end;justify-content:center}
+.sheet-in{width:100%;max-width:640px;background:var(--bg);border-radius:var(--r-lg) var(--r-lg) 0 0;padding:16px 14px calc(20px + env(safe-area-inset-bottom,0px));max-height:88vh;overflow:auto}
+
+.hidden{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (min-width:700px){ .tiles{gap:10px} body{font-size:15.5px} }
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="wrap">
+    <div class="top-in">
+      <div class="who">
+        <div class="hi" id="greet">Bom treino</div>
+        <div class="nm" id="uname">Felipe</div>
+      </div>
+      <button class="streak" id="streakBox" aria-label="Sequência de treinos">
+        <b id="streakN">0</b><span>dias</span>
+      </button>
+    </div>
+    <button class="belt" id="beltBtn" style="width:100%">
+      <span class="belt-band" id="beltBand"><i class="belt-stripe" id="beltStripe"></i></span>
+      <span class="belt-label" id="beltLabel">Azul decidida</span>
+    </button>
+  </div>
+</header>
+
+<main class="wrap" id="view" style="padding-top:14px"></main>
+
+<nav class="nav">
+  <div class="nav-in" id="nav"></div>
+</nav>
+
+<script>
+/* ============================ CONTEÚDO ============================ */
+
+const BELTS = [
+  {id:'branca', nome:'Branca', cor:'#FBFBFB', forma:'Songahm 1', mov:18,
+   sig:'Pura, sem conhecimento do Songahm. A semente do pinheiro acabou de ser plantada.'},
+  {id:'laranja', nome:'Laranja', cor:'#E8762C', forma:'Songahm 2', mov:23,
+   sig:'O sol começa a nascer. Vê-se a beleza do amanhecer, ainda não a força dele.'},
+  {id:'amarela', nome:'Amarela', cor:'#F0C02F', forma:'Songahm 3', mov:28,
+   sig:'A semente enxerga a luz do sol pela primeira vez.'},
+  {id:'camuflada', nome:'Camuflada', cor:'#69793F', forma:'Songahm 4', mov:31,
+   sig:'A muda está escondida entre os pinheiros altos e precisa abrir caminho para cima.'},
+  {id:'verde', nome:'Verde', cor:'#2E7D47', forma:'Songahm 5', mov:34,
+   sig:'O pinheiro cresce e ganha força.'},
+  {id:'roxa', nome:'Roxa', cor:'#68389B', forma:'In Wha 1', mov:44,
+   sig:'Chegando à montanha. O caminho fica íngreme e exige mais do aluno.'},
+  {id:'azul', nome:'Azul', cor:'#1D5CB8', forma:'In Wha 2', mov:42,
+   kihap:'nos movimentos 13, 23 e 33 — confirme com o instrutor',
+   sig:'A árvore se estica na direção do céu, buscando alturas novas.'},
+  {id:'marrom', nome:'Marrom', cor:'#6B4226', forma:'Choong Jung 1', mov:44,
+   sig:'A árvore está firmemente enraizada na terra.'},
+  {id:'vermelha', nome:'Vermelha', cor:'#C0212F', forma:'Choong Jung 2', mov:46,
+   sig:'O sol se põe. A primeira fase do crescimento foi concluída.'},
+  {id:'verm-preta', nome:'Vermelha e preta', cor:'#C0212F', cor2:'#15171C', forma:'Shim Jun', mov:49,
+   sig:'O amanhecer de um novo dia. O sol rompe a escuridão.'},
+  {id:'preta', nome:'Preta — 1º grau', cor:'#15171C', forma:'Jung Yul', mov:52,
+   sig:'A árvore amadureceu e venceu a escuridão. Agora precisa plantar sementes para o futuro.'}
+];
+
+const PONTOS_FORMA = [
+  'Começar e terminar exatamente no mesmo ponto do chão',
+  'Bases firmes, na largura e na altura certas',
+  'Cada técnica na altura do alvo (ahre, momtong, olgul)',
+  'Olhar para onde vai ANTES de virar o corpo',
+  'Kihap só no movimento certo, e forte',
+  'Força no fim do movimento — não no meio do caminho',
+  'Ritmo: explode no golpe, para claramente, respira',
+  'Nada de balançar ou saltar ao trocar de base',
+  'Respiração junto com a técnica, sem prender o ar',
+  'Postura e atitude do cumprimento inicial ao final'
+];
+
+const PROTOCOLO = [
+  {n:'Devagar, sem força', d:'2 voltas', why:'Arruma a memória do caminho e das bases.'},
+  {n:'Contando alto', d:'1 volta', why:'Separa cada movimento — mostra onde você junta duas técnicas.'},
+  {n:'Velocidade normal', d:'2 voltas', why:'Ritmo de verdade, com kihap no lugar certo.'},
+  {n:'Parando 3s em cada técnica', d:'1 volta', why:'Denuncia base fraca e falta de equilíbrio.'},
+  {n:'Ritmo de campeonato', d:'2 voltas', why:'Potência e atitude, como no dia do exame.'},
+  {n:'De olhos fechados', d:'1 volta', why:'Se você terminar longe do ponto inicial, falta mapa mental.'}
+];
+
+const CHUTES = [
+  {pt:'Chute frontal', ko:'Ahp Chagi',
+   como:'Sobe o joelho na direção do alvo, estica o pé, bate com a planta/base dos dedos e recolhe o joelho antes de pousar.',
+   erro:'Pousar o pé esticado sem recolher — perde a próxima técnica e o equilíbrio.',
+   drill:'20 chutes lentos segurando 2s com o joelho no alto, cada perna.'},
+  {pt:'Chute lateral', ko:'Yop Chagi',
+   como:'Joelho dobrado junto ao peito, gira o pé de apoio, empurra o calcanhar na linha reta até o alvo.',
+   erro:'Girar pouco o pé de apoio — o chute vira um circular torto.',
+   drill:'10 chutes com apoio na parede, segurando a perna esticada 3s.'},
+  {pt:'Chute circular', ko:'Dollyo Chagi',
+   como:'Joelho aponta o alvo primeiro, quadril gira, a perna abre como uma chicotada e volta pelo mesmo caminho.',
+   erro:'Chutar com a perna inteira dura, sem dobrar o joelho antes — fica lento e telegrafado.',
+   drill:'3x10 alternando altura: colete, colete, cabeça.'},
+  {pt:'Chute de costas', ko:'Dwit Chagi',
+   como:'Olha por cima do ombro, encontra o alvo com o olho, empurra o calcanhar reto para trás.',
+   erro:'Girar antes de olhar — perde o alvo e abre as costas.',
+   drill:'15 giros só de cabeça e quadril, sem chutar, depois 10 chutes.'},
+  {pt:'Chute martelo', ko:'Naeryo Chagi',
+   como:'Levanta a perna esticada o mais alto que der por fora ou pelo meio e desce o calcanhar no alvo.',
+   erro:'Desabar o corpo para trás para levantar mais a perna.',
+   drill:'2 séries de 10 por perna, com a mão no alto marcando a altura.'},
+  {pt:'Crescente externo / interno', ko:'Bakkat / An Chagi',
+   como:'Perna esticada varrendo em arco, de dentro para fora ou de fora para dentro, batendo com a lateral do pé.',
+   erro:'Dobrar o joelho no meio do arco.',
+   drill:'10 de cada lado tocando a própria mão esticada à frente.'},
+  {pt:'Chute rodado', ko:'Dwi Dollyo Chagi',
+   como:'Gira como no chute de costas, mas a perna vem em gancho, batendo com o calcanhar de fora para dentro.',
+   erro:'Começar o giro com os pés parados — precisa do quadril.',
+   drill:'8 repetições lentas por lado, controlando a parada final.'},
+  {pt:'Chute frontal saltado', ko:'Twio Ahp Chagi',
+   como:'Sobe o joelho da perna de trás para ganhar altura e chuta com a outra no ar.',
+   erro:'Saltar para cima em vez de para a frente.',
+   drill:'10 saltos marcando o chão com fita: sempre à frente da marca.'},
+  {pt:'Chute 360', ko:'360 Dollyo Chagi',
+   como:'Gira o corpo inteiro no ar uma volta completa e solta um circular na saída do giro.',
+   erro:'Olhar para o chão no giro.',
+   drill:'Primeiro 10 giros sem chute, só aterrissando na guarda.'},
+  {pt:'Joelhada', ko:'Mureup Chigi',
+   como:'Puxa o alvo (ou o ar) e sobe o joelho com o quadril à frente.',
+   erro:'Subir só o joelho, sem quadril — não tem força nenhuma.',
+   drill:'30s contínuos alternando joelhos, guarda alta.'}
+];
+
+const MAOS = [
+  {pt:'Soco', ko:'Jireugi', obs:'Punho fechado, os dois primeiros nós batem, o outro braço volta forte para o quadril.'},
+  {pt:'Bloqueio baixo', ko:'Ahre Makgi', obs:'Protege da cintura para baixo; o antebraço termina a um punho de distância da coxa.'},
+  {pt:'Bloqueio médio', ko:'Momtong Makgi', obs:'Cotovelo a 90°, o punho na altura do ombro, girando o antebraço no fim.'},
+  {pt:'Bloqueio alto', ko:'Olgul Makgi', obs:'Antebraço inclinado acima da testa, com espaço de um punho.'},
+  {pt:'Cutelo', ko:'Sonnal', obs:'Mão aberta e firme, dedos colados, bate com a lateral da mão.'}
+];
+
+const COMBOS = [
+  {n:'Soco e circular de trás', s:'Soco da mão da frente no colete já entrando; assim que a guarda dele reage, circular com a perna de trás.',
+   why:'O soco ocupa a mão dele, o chute chega pelo buraco.', erro:'Parar depois do soco para ver o que aconteceu.'},
+  {n:'Finta baixa, chute alto', s:'Amaga o joelho como se fosse chutar o colete e sobe com a MESMA perna na cabeça.',
+   why:'A guarda desce, a cabeça abre.', erro:'Fintar devagar — a finta tem que parecer o chute de verdade.'},
+  {n:'Queima da perna da frente', s:'Troca de base no lugar e chuta com a perna da frente, sem recuar antes.',
+   why:'É o chute que chega primeiro, porque percorre menos caminho.', erro:'Avisar com o ombro antes de chutar.'},
+  {n:'Sai e entra', s:'Um passo atrás convidando o avanço; no primeiro passo dele, chute lateral no contra-ataque.',
+   why:'Ele entrega a distância de graça.', erro:'Recuar duas vezes em linha reta — aí você vira alvo parado.'},
+  {n:'Duplo circular', s:'Dois circulares seguidos com a mesma perna sem pousar o pé: primeiro no colete, depois na cabeça.',
+   why:'O segundo chega enquanto a guarda ainda está baixa.', erro:'Apoiar o pé no meio, o que dá tempo dele reagir.'},
+  {n:'Giro no colete', s:'Passo trocado para alinhar o quadril e chute de costas direto no colete.',
+   why:'Pontua alto e empurra o adversário para fora da área.', erro:'Girar sem achar o alvo com o olho antes.'},
+  {n:'Ângulo de 45°', s:'Em vez de recuar, passo na diagonal para fora da linha do chute dele e circular por fora da guarda.',
+   why:'Você some do caminho e aparece de lado.', erro:'Sair para o mesmo lado da perna que ele está chutando.'},
+  {n:'Pressiona e responde', s:'Avança pressionando, para o chute dele com a mão da frente e devolve circular na sequência.',
+   why:'Quem recua o tempo todo perde a área e o ponto.', erro:'Bloquear e ficar parado admirando o bloqueio.'}
+];
+
+const PES = [
+  {n:'Salto leve no lugar', d:'60s', obs:'Guarda alta, calcanhares fora do chão, respirando.'},
+  {n:'Entra e sai', d:'20x', obs:'Passo curto à frente e volta imediata, sem cruzar os pés.'},
+  {n:'Diagonal', d:'20x', obs:'10 para cada lado, saindo da linha reta.'},
+  {n:'Troca de base', d:'30s', obs:'Troca a perna da frente no lugar, mantendo a mesma altura.'}
+];
+
+const EQUIP = ['Capacete','Luvas','Protetores de pé','Protetor bucal','Caneleiras','Coquilha','Protetor de tórax','Dobok limpo e faixa'];
+
+const ARMAS = [
+  {id:'bastao', n:'Bastão longo', ko:'Jahng Bong',
+   seg:['Espaço de dois braços abertos em volta','Nunca girar perto de gente ou de móvel','Começar devagar até o caminho virar automático'],
+   drills:['Oito deitado na frente do corpo — 20x','Troca de mão à frente — 20x','Giro por trás das costas, bem devagar — 10x','Bloqueio alto e bloqueio baixo — 15x cada','Golpe de ponta com passo à frente — 20x']},
+  {id:'nunchaku', n:'Nunchaku', ko:'Ssahng Jeol Bong',
+   seg:['Só com nunchaku de espuma no começo','Cotovelos longe do corpo','Capacete quando for treinar sequência nova'],
+   drills:['Apoio no ombro e volta — 20x cada lado','Passagem por baixo do braço — 20x','Troca de mão nas costas — 15x','Giro lateral controlado — 30s']},
+  {id:'bastoes', n:'Bastões curtos', ko:'Bahng Mahng Ee',
+   seg:['Punho relaxado, o giro vem do pulso','Um bastão de cada vez até sincronizar'],
+   drills:['Giro sincronizado nas duas mãos — 30s','Giro alternado — 30s','Bloqueio cruzado à frente — 20x','Golpe curto com passo — 20x cada lado']},
+  {id:'faca', n:'Faca de treino', ko:'Kkahl',
+   seg:['Somente faca de treino de borracha ou plástico','Nunca apontar para ninguém, nem brincando'],
+   drills:['Guarda e troca de mão — 20x','Corte diagonal alto e baixo — 15x cada','Passo lateral com corte — 20x']},
+  {id:'kamas', n:'Kamas', ko:'Ssahng Nat',
+   seg:['Lâmina de treino sempre virada para fora','Movimento lento até o pulso aprender o arco'],
+   drills:['Rotação nas duas mãos — 30s','Bloqueio em gancho — 20x','Corte cruzado com passo — 15x']}
+];
+
+const TERMOS = [
+  {k:'Charyeot', p:'Sentido / atenção', c:'comando'},
+  {k:'Kyeong-ye', p:'Cumprimentar (saudação)', c:'comando'},
+  {k:'Joonbi', p:'Preparar / posição de pronto', c:'comando'},
+  {k:'Shi-jak', p:'Começar', c:'comando'},
+  {k:'Geuman', p:'Parar', c:'comando'},
+  {k:'Baro', p:'Voltar à posição', c:'comando'},
+  {k:'Swieo', p:'Descansar', c:'comando'},
+  {k:'Dwiro dora', p:'Meia-volta', c:'comando'},
+  {k:'Kihap', p:'Grito de força', c:'comando'},
+  {k:'Dojang', p:'Local de treino', c:'lugar'},
+  {k:'Dobok', p:'Uniforme', c:'lugar'},
+  {k:'Ti', p:'Faixa', c:'lugar'},
+  {k:'Sabumnim', p:'Instrutor / mestre', c:'lugar'},
+  {k:'Olgul', p:'Alto (cabeça)', c:'alvo'},
+  {k:'Momtong', p:'Médio (tronco)', c:'alvo'},
+  {k:'Ahre', p:'Baixo (abaixo da cintura)', c:'alvo'},
+  {k:'Ahp', p:'Frente', c:'direção'},
+  {k:'Dwit', p:'Trás', c:'direção'},
+  {k:'Yop', p:'Lado', c:'direção'},
+  {k:'Chagi', p:'Chute', c:'técnica'},
+  {k:'Jireugi', p:'Soco', c:'técnica'},
+  {k:'Makgi', p:'Bloqueio', c:'técnica'},
+  {k:'Sonnal', p:'Mão em cutelo', c:'técnica'},
+  {k:'Hana', p:'Um (1)', c:'número'},
+  {k:'Dul', p:'Dois (2)', c:'número'},
+  {k:'Set', p:'Três (3)', c:'número'},
+  {k:'Net', p:'Quatro (4)', c:'número'},
+  {k:'Daseot', p:'Cinco (5)', c:'número'},
+  {k:'Yeoseot', p:'Seis (6)', c:'número'},
+  {k:'Ilgop', p:'Sete (7)', c:'número'},
+  {k:'Yeodeol', p:'Oito (8)', c:'número'},
+  {k:'Ahop', p:'Nove (9)', c:'número'},
+  {k:'Yeol', p:'Dez (10)', c:'número'}
+];
+
+const MALA = ['Dobok limpo','Faixa','Capacete','Luvas','Protetores de pé','Caneleiras','Protetor bucal','Coquilha','Protetor de tórax','Arma (se for competir)','Garrafa de água','Lanche leve (banana, barrinha)','Toalha pequena','Meia ou chinelo para andar fora do tatame','Documento e cartão da escola'];
+
+const TORNEIO_DIA = [
+  {t:'Em casa, antes de sair', d:'Comer leve umas 2h antes. Nada de novidade no café da manhã em dia de competição.'},
+  {t:'Chegar 45 minutos antes', d:'Dá tempo de achar a área, ver o chão e se acalmar.'},
+  {t:'Aquecer 15 minutos antes da chamada', d:'Corrida leve, mobilidade, 10 chutes de cada tipo. Não gastar tudo.'},
+  {t:'Antes de entrar na área', d:'4 respirações lentas. Passa a forma inteira na cabeça, do cumprimento ao final.'},
+  {t:'Na área', d:'Cumprimentar os juízes, falar o nome e a forma em voz alta e clara.'},
+  {t:'Depois de cada divisão', d:'Beber água, sentar, não ficar assistindo tudo em pé.'},
+  {t:'No fim', d:'Anotar no diário o que foi bem e a UMA coisa para ajustar. Só uma.'}
+];
+
+const OATH = 'Vou aplicar o espírito Songahm dentro e fora do dojang. Nunca vou usar mal o Taekwondo. Vou defender a liberdade e a justiça. Vou construir um mundo mais pacífico.';
+
+/* ============================ ESTADO ============================ */
+
+const KEY = 'dojang-felipe-v1';
+const DEF = {
+  nome:'Felipe', beltIdx:6, nivel:'decidida',
+  reps:{}, armaReps:{}, notas:{}, checks:{},
+  sessoes:[], quizBest:0, quizJogos:0,
+  equip:[], mala:[],
+  spar:{rounds:3, work:90, rest:60},
+  tema:null
+};
+let S = load();
+
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(raw) return Object.assign({}, DEF, JSON.parse(raw));
+  }catch(e){}
+  return JSON.parse(JSON.stringify(DEF));
+}
+let saveT;
+function save(){
+  clearTimeout(saveT);
+  saveT = setTimeout(()=>{ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }, 120);
+}
+
+const hoje = ()=> new Date().toISOString().slice(0,10);
+const diaBR = d => { const [y,m,dd]=d.split('-'); return dd+'/'+m; };
+const mmss = s => String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+
+function streak(){
+  if(!S.sessoes.length) return 0;
+  const dias = new Set(S.sessoes.map(s=>s.d));
+  let n=0; const d=new Date();
+  if(!dias.has(hoje())) d.setDate(d.getDate()-1);
+  for(;;){
+    const k=d.toISOString().slice(0,10);
+    if(dias.has(k)){ n++; d.setDate(d.getDate()-1); } else break;
+  }
+  return n;
+}
+function totalReps(){ return Object.values(S.reps).reduce((a,b)=>a+b,0) + Object.values(S.armaReps).reduce((a,b)=>a+b,0); }
+function minSemana(){
+  const lim=new Date(); lim.setDate(lim.getDate()-6);
+  const k=lim.toISOString().slice(0,10);
+  return S.sessoes.filter(s=>s.d>=k).reduce((a,s)=>a+s.min,0);
+}
+function registrar(min, tags){
+  S.sessoes.push({d:hoje(), min:Math.max(1,Math.round(min)), t:tags||[]});
+  if(S.sessoes.length>400) S.sessoes = S.sessoes.slice(-400);
+  save();
+}
+const beltAtual = ()=> BELTS[S.beltIdx];
+function proxima(){
+  if(S.nivel==='recomendada') return {b:BELTS[S.beltIdx], n:'decidida'};
+  return S.beltIdx<BELTS.length-1 ? {b:BELTS[S.beltIdx+1], n:'recomendada'} : null;
+}
+
+/* ============================ SOM E TELA ============================ */
+let AC=null, wake=null;
+function beep(freq, dur, vol){
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state==='suspended') AC.resume();
+    const o=AC.createOscillator(), g=AC.createGain();
+    o.type='sine'; o.frequency.value=freq||880;
+    g.gain.setValueAtTime(vol||0.22, AC.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, AC.currentTime+(dur||0.18));
+    o.connect(g); g.connect(AC.destination); o.start(); o.stop(AC.currentTime+(dur||0.18));
+  }catch(e){}
+  try{ if(navigator.vibrate) navigator.vibrate(60); }catch(e){}
+}
+async function segurarTela(on){
+  try{
+    if(on && 'wakeLock' in navigator && !wake) wake = await navigator.wakeLock.request('screen');
+    if(!on && wake){ wake.release(); wake=null; }
+  }catch(e){ wake=null; }
+}
+
+/* ============================ RENDER ============================ */
+const el = document.getElementById('view');
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let R = {v:'hoje', p:null};
+let timer = null;
+
+function go(v, p){
+  pararTimer();
+  if(typeof cancelAnimationFrame==='function' && animRAF) cancelAnimationFrame(animRAF);
+  if(typeof soltarUrls==='function') soltarUrls();
+  R = {v:v, p:p===undefined?null:p};
+  window.scrollTo(0,0);
+  render();
+}
+function pararTimer(){ if(timer){ clearInterval(timer); timer=null; } segurarTela(false); }
+
+const NAV = [
+  {v:'hoje', ic:'●', lb:'Hoje'},
+  {v:'formas', ic:'◆', lb:'Formas'},
+  {v:'sparring', ic:'▲', lb:'Sparring'},
+  {v:'armas', ic:'▮', lb:'Armas'},
+  {v:'mais', ic:'▦', lb:'Mais'}
+];
+const MAIS_VIEWS = ['mais','termos','chutes','faixas','torneio','diario','duvidas','ajustes','quiz','chute','videos','links','assistir'];
+const ABA = {forma:'formas', treino:'hoje'};
+const VIEWS = {};
+const AFTER = {};
+
+function render(){
+  // topo
+  const b = beltAtual();
+  document.getElementById('uname').textContent = S.nome;
+  const h = new Date().getHours();
+  document.getElementById('greet').textContent = h<12?'Bom dia':h<18?'Boa tarde':'Boa noite';
+  const st = streak();
+  const sb = document.getElementById('streakBox');
+  sb.className = 'streak' + (st?'':' off');
+  document.getElementById('streakN').textContent = st;
+  const band = document.getElementById('beltBand');
+  band.style.background = b.cor2 ? `linear-gradient(90deg, ${b.cor} 0 50%, ${b.cor2} 50% 100%)` : b.cor;
+  document.getElementById('beltStripe').style.display = S.nivel==='decidida' ? 'block':'none';
+  document.getElementById('beltLabel').textContent = b.nome + ' ' + S.nivel;
+
+  // nav
+  const aba = ABA[R.v] || (MAIS_VIEWS.includes(R.v) ? 'mais' : R.v);
+  document.getElementById('nav').innerHTML = NAV.map(n=>
+    `<button data-nav="${n.v}" class="${aba===n.v?'on':''}">
+      <span class="ic">${n.ic}</span><span class="lb">${n.lb}</span></button>`).join('');
+
+  el.innerHTML = (VIEWS[R.v]||VIEWS.hoje)();
+  if(AFTER[R.v]) AFTER[R.v]();
+}
+
+/* ---------- HOJE ---------- */
+VIEWS.hoje = ()=>{
+  const b = beltAtual(), p = proxima();
+  const repsForma = S.reps[b.forma]||0;
+  const focoIdx = new Date().getDate() % CHUTES.length;
+  const foco = CHUTES[focoIdx];
+  const sem = minSemana();
+  return `
+  <div class="stack">
+    <section class="hero">
+      <span class="chip chip-blue">Sua forma agora</span>
+      <div class="lead">${esc(b.forma)}</div>
+      <div class="tiny" style="max-width:52ch">${b.mov} movimentos · faixa ${esc(b.nome.toLowerCase())}. ${esc(b.sig)}</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px">
+        <button class="btn btn-primary btn-lg btn-block" data-go="treino">Treinar agora</button>
+        <button class="btn btn-block" data-go="assistir" style="background:var(--red-soft);color:var(--red);font-weight:700">▶ Assistir ${esc(b.forma)} em vídeo</button>
+      </div>
+    </section>
+
+    <div class="tiles">
+      <div class="tile"><b>${sem}</b><span>min / 7 dias</span></div>
+      <div class="tile"><b>${repsForma}</b><span>voltas ${esc(b.forma.split(' ')[0])}</span></div>
+      <div class="tile"><b>${totalReps()}</b><span>reps totais</span></div>
+    </div>
+
+    <section class="card pad stack-sm">
+      <div class="eyebrow">Foco de hoje</div>
+      <div><b style="font-size:17px">${esc(foco.pt)}</b> <span class="kor">${esc(foco.ko)}</span></div>
+      <div class="tiny" style="color:var(--ink-2)">${esc(foco.como)}</div>
+      <div class="tiny"><b style="color:var(--red)">Erro comum:</b> ${esc(foco.erro)}</div>
+      <div class="chip chip-pine" style="align-self:flex-start;margin-top:2px">${esc(foco.drill)}</div>
+      <button class="btn btn-ghost btn-block" data-go="chute:${focoIdx}" style="margin-top:4px">Ver o movimento desenhado</button>
+    </section>
+
+    <section class="stack-sm">
+      <div class="eyebrow">Atalhos</div>
+      <button class="item" data-go="forma:${esc(b.forma)}">
+        <span class="badge-n">◆</span>
+        <span class="t"><b>Treinar ${esc(b.forma)}</b><small>Protocolo de 6 passos e contador de voltas</small></span>
+        <span class="go">›</span></button>
+      <button class="item" data-go="sparring">
+        <span class="badge-n" style="background:var(--red-soft);color:var(--red)">▲</span>
+        <span class="t"><b>Cronômetro de sparring</b><small>${S.spar.rounds} rounds · ${S.spar.work}s de luta · ${S.spar.rest}s de descanso</small></span>
+        <span class="go">›</span></button>
+      <button class="item" data-go="quiz">
+        <span class="badge-n" style="background:var(--gold-soft);color:var(--gold)">語</span>
+        <span class="t"><b>Quiz de coreano</b><small>Recorde: ${S.quizBest}/10</small></span>
+        <span class="go">›</span></button>
+      <button class="item" data-go="armas">
+        <span class="badge-n">▮</span>
+        <span class="t"><b>Treino com arma</b><small>Segurança, drills e a sua forma</small></span>
+        <span class="go">›</span></button>
+    </section>
+
+    ${p?`<section class="card pad stack-sm">
+      <div class="eyebrow">Próximo degrau</div>
+      <div class="row"><span style="width:44px;height:14px;border-radius:3px;background:${p.b.cor2?`linear-gradient(90deg,${p.b.cor} 0 50%,${p.b.cor2} 50%)`:p.b.cor};box-shadow:inset 0 0 0 1px rgba(15,27,45,.25)"></span>
+        <div style="flex:1"><b>${esc(p.b.nome)} ${esc(p.n)}</b><div class="tiny">Forma ${esc(p.b.forma)} · ${p.b.mov} movimentos</div></div></div>
+      <button class="btn btn-ghost btn-block" data-go="faixas">Ver a escada inteira</button>
+    </section>`:''}
+
+    <section class="card pad">
+      <div class="eyebrow" style="margin-bottom:8px">Juramento do aluno</div>
+      <div style="font-family:var(--display);font-size:19px;font-weight:600;line-height:1.25">${esc(OATH)}</div>
+    </section>
+
+    <p class="note">Conteúdo de estudo e treino em casa. Sequência de movimentos, pontuação de torneio e exigências de exame são as que o instrutor da ATA Londrina passar — ele manda.</p>
+  </div>`;
+};
+
+/* ---------- TREINO GUIADO ---------- */
+const BLOCOS = {
+  aquece: (m)=>[
+    {t:'Corrida no lugar', s:60, d:'Leve, respirando pelo nariz.'},
+    {t:'Polichinelo', s:40, d:'Braços esticados até em cima.'},
+    {t:'Rotação de quadril e ombro', s:50, d:'10 círculos para cada lado.'},
+    {t:'Chute frontal solto', s:40, d:'Sem força, só soltando a perna.'},
+    {t:'Agachamento e alongamento dinâmico', s:m>=45?70:50, d:'Nada de alongar parado antes do treino.'}
+  ],
+  chutes: (m)=>{
+    const n = m>=45?5:m>=30?4:3;
+    const lista = CHUTES.slice(0, n);
+    return lista.map(k=>({t:k.pt+' — 10 de cada perna', s:m>=45?100:m>=30?75:60, d:k.como, tag:'chutes'}));
+  },
+  forma: (m, forma)=>{
+    const passos = m>=45?PROTOCOLO: m>=30?PROTOCOLO.slice(0,5):PROTOCOLO.slice(0,3);
+    return passos.map(p=>({t:forma+' — '+p.n, s:p.d.indexOf('2')>=0?130:85, d:p.why, tag:'forma'}));
+  },
+  sombra: (m)=>{
+    const c = COMBOS[Math.floor(Math.random()*COMBOS.length)];
+    return [
+      {t:'Trabalho de pés', s:75, d:'Salto leve com a guarda alta, entrando e saindo da distância.', tag:'sparring'},
+      {t:'Combinação: '+c.n, s:m>=45?120:100, d:c.s+' — '+c.why, tag:'sparring'},
+      {t:'Luta de sombra', s:m>=45?120:100, d:'Imagina um adversário da sua altura. Toca, sai, volta.', tag:'sparring'}
+    ];
+  },
+  arma: (m)=>[{t:'Arma — drills de manuseio', s:300, d:'Escolha uma arma na aba Armas e faça os drills devagar, olhando para onde a ponta vai.', tag:'armas'}],
+  condi: (m)=>{
+    const base = [
+      {t:'Abdominal', s:40, d:'Sem puxar o pescoço.'},
+      {t:'Prancha', s:m>=45?45:30, d:'Bumbum na linha das costas.'},
+      {t:'Agachamento', s:40, d:'Calcanhar no chão o tempo todo.'}
+    ];
+    if(m>=30) base.push({t:'Flexão', s:40, d:'Pode apoiar o joelho, mas desce até o peito quase tocar.'});
+    return base;
+  },
+  calma: ()=>[
+    {t:'Alongar pernas e quadril', s:90, d:'Segura cada posição 20s, respirando fundo.'},
+    {t:'Respiração e cumprimento', s:30, d:'Quatro respirações lentas. Kyeong-ye.'}
+  ]
+};
+
+function montarSessao(min){
+  const forma = beltAtual().forma;
+  let steps = [];
+  steps = steps.concat(BLOCOS.aquece(min).slice(0, min<=15?3:5));
+  steps = steps.concat(BLOCOS.chutes(min));
+  steps = steps.concat(BLOCOS.forma(min, forma));
+  if(min>=30) steps = steps.concat(BLOCOS.sombra(min));
+  if(min>=45) steps = steps.concat(BLOCOS.arma(min));
+  steps = steps.concat(BLOCOS.condi(min));
+  steps = steps.concat(BLOCOS.calma().slice(0, min<=15?1:2));
+  return steps;
+}
+
+let sess = null;
+
+VIEWS.treino = ()=>{
+  if(!sess) return `
+  <div class="stack">
+    <button class="back" data-go="hoje">‹ Início</button>
+    <div><div class="eyebrow">Treino guiado</div><h2 class="h-sec" style="margin-top:6px">Quanto tempo você tem?</h2></div>
+    <p class="tiny">Monto a sessão inteira com aquecimento, chutes, ${esc(beltAtual().forma)}, sparring e condicionamento — e conduzo você passo a passo, cronometrando.</p>
+    <div class="grid3">
+      ${[15,30,45].map(m=>`<button class="btn btn-primary" style="flex-direction:column;padding:18px 8px" data-sess="${m}">
+        <b style="font-family:var(--display);font-size:32px;font-weight:800;line-height:1">${m}</b>
+        <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase">minutos</span></button>`).join('')}
+    </div>
+    <div class="card pad stack-sm">
+      <div class="eyebrow">O protocolo da forma</div>
+      ${PROTOCOLO.map((p,i)=>`<div class="row" style="align-items:flex-start">
+        <span class="badge-n" style="width:26px;height:26px;font-size:14px">${i+1}</span>
+        <div style="flex:1"><b style="font-size:14.5px">${esc(p.n)} · ${esc(p.d)}</b><div class="tiny">${esc(p.why)}</div></div></div>`).join('')}
+    </div>
+  </div>`;
+
+  const st = sess.steps[sess.i];
+  const prox = sess.steps[sess.i+1];
+  const pct = 100 - (sess.left/st.s*100);
+
+  return `
+  <div class="stack">
+    <button class="back" id="sairSess">‹ Encerrar treino</button>
+    <div class="row" style="justify-content:space-between">
+      <span class="chip chip-blue">Passo ${sess.i+1} de ${sess.steps.length}</span>
+      <span class="chip">${sess.min} min</span>
+    </div>
+    <section class="card pad stack-sm" style="text-align:center">
+      <h2 class="h-sec" style="font-size:26px">${esc(st.t)}</h2>
+      <div class="clock ${sess.left<=5?'warn':'work'}" id="clk">${mmss(sess.left)}</div>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+      <p class="tiny" style="margin:6px 0 0">${esc(st.d)}</p>
+    </section>
+    <div class="grid2">
+      <button class="btn ${sess.run?'':'btn-primary'}" id="tgl">${sess.run?'Pausar':'Continuar'}</button>
+      <button class="btn btn-ghost" id="skip">Pular passo ›</button>
+    </div>
+    ${prox?`<div class="item" style="opacity:.75"><span class="badge-n">→</span>
+      <span class="t"><b>A seguir: ${esc(prox.t)}</b><small>${prox.s}s</small></span></div>`:
+      `<div class="note">Último passo. Depois dele o treino entra no seu diário.</div>`}
+  </div>`;
+};
+
+AFTER.treino = ()=>{
+  el.querySelectorAll('[data-sess]').forEach(b=>b.onclick=()=>{
+    const m = +b.dataset.sess;
+    const steps = montarSessao(m);
+    sess = {min:m, steps, i:0, left:steps[0].s, run:true, gasto:0};
+    beep(660,.12); segurarTela(true);
+    render(); tick();
+  });
+  const sair = document.getElementById('sairSess');
+  if(sair) sair.onclick = ()=>{
+    if(sess && sess.gasto>60) registrar(sess.gasto/60, ['treino']);
+    sess=null; pararTimer(); go('hoje');
+  };
+  const tgl = document.getElementById('tgl');
+  if(tgl) tgl.onclick = ()=>{ sess.run=!sess.run; if(sess.run){segurarTela(true); tick();} else pararTimer(); render(); };
+  const sk = document.getElementById('skip');
+  if(sk) sk.onclick = ()=> avancar();
+  if(sess && sess.run && !timer) tick();
+};
+
+function tick(){
+  if(timer) clearInterval(timer);
+  timer = setInterval(()=>{
+    if(!sess || !sess.run) return;
+    sess.left--; sess.gasto++;
+    if(sess.left<=0){ beep(880,.25); avancar(); return; }
+    if(sess.left===3) beep(660,.1,.15);
+    const c = document.getElementById('clk');
+    if(c){
+      c.textContent = mmss(sess.left);
+      c.className = 'clock '+(sess.left<=5?'warn':'work');
+      const bar = el.querySelector('.bar>i');
+      if(bar) bar.style.width = (100 - sess.left/sess.steps[sess.i].s*100)+'%';
+    } else { render(); }
+  },1000);
+}
+function avancar(){
+  if(!sess) return;
+  if(sess.i>=sess.steps.length-1){
+    pararTimer();
+    registrar(sess.min, ['treino']);
+    const m = sess.min; sess=null;
+    el.innerHTML = `<div class="stack" style="text-align:center;padding-top:24px">
+      <div style="font-size:52px">🥋</div>
+      <h2 class="h-sec">Treino completo</h2>
+      <p class="tiny">${m} minutos registrados no seu diário. Sequência: ${streak()} dia(s).</p>
+      <button class="btn btn-primary btn-block" data-go="hoje">Voltar ao início</button>
+      <button class="btn btn-ghost btn-block" data-go="diario">Ver o diário</button></div>`;
+    return;
+  }
+  sess.i++; sess.left = sess.steps[sess.i].s;
+  render();
+}
+
+/* ---------- FORMAS ---------- */
+VIEWS.formas = ()=>{
+  const atual = beltAtual().forma;
+  return `<div class="stack">
+    <div><div class="eyebrow">Songahm</div><h2 class="h-sec" style="margin-top:6px">Formas</h2></div>
+    <p class="tiny">Onze formas do caminho Songahm, da branca à faixa preta. A sua está marcada.</p>
+    ${BELTS.map((b,i)=>`<button class="item ${b.forma===atual?'on':''}" data-go="forma:${esc(b.forma)}">
+      <span class="badge-n" style="background:${b.cor2?`linear-gradient(90deg,${b.cor} 0 50%,${b.cor2} 50%)`:b.cor};color:${['branca','amarela','laranja'].includes(b.id)?'#15171C':'#fff'};box-shadow:inset 0 0 0 1px rgba(15,27,45,.2)">${i+1}</span>
+      <span class="t"><b>${esc(b.forma)}</b><small>Faixa ${esc(b.nome.toLowerCase())} · ${b.mov} movimentos${S.reps[b.forma]?' · '+S.reps[b.forma]+' voltas':''}</small></span>
+      <span class="go">›</span></button>`).join('')}
+    <p class="note">O número de movimentos é referência de estudo. A execução — ângulos, bases, kihap — se aprende no dojang com o instrutor, nunca só por texto.</p>
+  </div>`;
+};
+
+VIEWS.forma = ()=>{
+  const nome = R.p;
+  const b = BELTS.find(x=>x.forma===nome) || beltAtual();
+  const reps = S.reps[b.forma]||0;
+  const ck = S.checks[b.forma]||[];
+  return `<div class="stack">
+    <button class="back" data-go="formas">‹ Formas</button>
+    <section class="card pad stack-sm">
+      <span class="chip chip-blue">Faixa ${esc(b.nome.toLowerCase())} · ${b.mov} movimentos</span>
+      <h2 class="h-sec" style="font-size:30px">${esc(b.forma)}</h2>
+      <p class="tiny" style="color:var(--ink-2);font-size:13.5px">${esc(b.sig)}</p>
+      ${b.kihap?`<div class="tiny"><b style="color:var(--accent)">Kihap:</b> ${esc(b.kihap)}</div>`:''}
+    </section>
+
+    <section class="card pad stack-sm">
+      <div class="eyebrow">Voltas registradas</div>
+      <div class="counter">
+        <button class="cb" data-rep="-1" aria-label="Menos uma volta">−</button>
+        <b>${reps}</b>
+        <button class="cb plus" data-rep="1" aria-label="Mais uma volta">+</button>
+      </div>
+      <div class="tiny">Toque no + cada vez que terminar a forma inteira.</div>
+    </section>
+
+    <section class="card pad">
+      <div class="eyebrow" style="margin-bottom:6px">O que o instrutor olha</div>
+      ${PONTOS_FORMA.map((p,i)=>`<button class="chk ${ck[i]?'done':''}" data-ck="${i}">
+        <span class="box">✓</span><span class="lb">${esc(p)}</span></button>`).join('')}
+    </section>
+
+    <section class="card pad stack-sm">
+      <div class="eyebrow">Como treinar sozinho</div>
+      ${PROTOCOLO.map((p,i)=>`<div class="row" style="align-items:flex-start">
+        <span class="badge-n" style="width:26px;height:26px;font-size:14px">${i+1}</span>
+        <div style="flex:1"><b style="font-size:14.5px">${esc(p.n)} · ${esc(p.d)}</b><div class="tiny">${esc(p.why)}</div></div></div>`).join('')}
+    </section>
+
+    <a class="btn btn-block" href="${yt(BUSCA_FORMA[b.forma]||('ATA '+b.forma+' form'))}" target="_blank" rel="noopener noreferrer" style="background:var(--red-soft);color:var(--red);font-weight:700;text-decoration:none">▶ Assistir ${esc(b.forma)} no YouTube</a>
+    <button class="btn btn-primary btn-block" data-go="videos">🎥 Gravar a minha e comparar</button>
+
+    <section class="card pad stack-sm">
+      <div class="eyebrow">Minhas anotações</div>
+      <textarea id="nota" rows="4" placeholder="O que o instrutor corrigiu na última aula? Escreve aqui antes de esquecer.">${esc(S.notas[b.forma]||'')}</textarea>
+    </section>
+  </div>`;
+};
+
+AFTER.forma = ()=>{
+  const b = BELTS.find(x=>x.forma===R.p) || beltAtual();
+  el.querySelectorAll('[data-rep]').forEach(x=>x.onclick=()=>{
+    const v = +x.dataset.rep;
+    S.reps[b.forma] = Math.max(0,(S.reps[b.forma]||0)+v);
+    if(v>0){ beep(760,.09,.14); registrar(3,['forma']); }
+    save(); render();
+  });
+  el.querySelectorAll('[data-ck]').forEach(x=>x.onclick=()=>{
+    const i=+x.dataset.ck; const a = S.checks[b.forma]||[];
+    a[i]=!a[i]; S.checks[b.forma]=a; save(); render();
+  });
+  const n = document.getElementById('nota');
+  if(n) n.oninput = ()=>{ S.notas[b.forma]=n.value; save(); };
+};
+
+/* ---------- SPARRING ---------- */
+let spar = null;
+
+VIEWS.sparring = ()=>{
+  const eq = S.equip||[];
+  if(spar){
+    
+    const total = spar.fase==='luta'?S.spar.work:S.spar.rest;
+    return `<div class="stack">
+      <button class="back" id="sairSpar">‹ Sair do cronômetro</button>
+      <div class="row" style="justify-content:space-between">
+        <span class="chip ${spar.fase==='luta'?'chip-red':'chip-pine'}">${spar.fase==='luta'?'Luta':'Descanso'}</span>
+        <span class="chip">Round ${spar.round} de ${S.spar.rounds}</span>
+      </div>
+      <section class="card pad stack-sm" style="text-align:center">
+        <div class="clock ${spar.fase==='descanso'?'rest':(spar.left<=10?'warn':'work')}" id="sclk">${mmss(spar.left)}</div>
+        <div class="bar ${spar.fase==='descanso'?'rest':''}"><i style="width:${100-spar.left/total*100}%"></i></div>
+      </section>
+      <div class="grid2">
+        <button class="btn ${spar.run?'':'btn-primary'}" id="stgl">${spar.run?'Pausar':'Continuar'}</button>
+        <button class="btn btn-ghost" id="snext">Próxima fase ›</button>
+      </div>
+      <section class="card pad stack-sm">
+        <div class="eyebrow">Placar</div>
+        <div class="row" style="gap:14px;justify-content:center">
+          <div style="text-align:center;flex:1"><div class="clock" style="font-size:50px">${spar.a}</div><div class="tiny">Eu</div></div>
+          <div style="width:1px;background:var(--line);align-self:stretch"></div>
+          <div style="text-align:center;flex:1"><div class="clock" style="font-size:50px;color:var(--ink-3)">${spar.b}</div><div class="tiny">Adversário</div></div>
+        </div>
+        <div class="grid2">
+          <div class="stack-sm">
+            <button class="btn btn-primary" data-pt="a1">Eu +1</button>
+            <button class="btn btn-primary" data-pt="a2">Eu +2</button>
+            <button class="btn btn-primary" data-pt="a3">Eu +3</button>
+          </div>
+          <div class="stack-sm">
+            <button class="btn" data-pt="b1">Ele +1</button>
+            <button class="btn" data-pt="b2">Ele +2</button>
+            <button class="btn" data-pt="b3">Ele +3</button>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-block" data-pt="zero">Zerar placar</button>
+        <div class="tiny">Os valores variam por divisão e por regra do campeonato — use o que o seu árbitro usar.</div>
+      </section>
+    </div>`;
+  }
+  return `<div class="stack">
+    <div><div class="eyebrow">Sparring</div><h2 class="h-sec" style="margin-top:6px">Combate</h2></div>
+
+    <section class="card pad stack-sm">
+      <div class="eyebrow">Cronômetro de rounds</div>
+      <div class="stack-sm">
+        <div><div class="tiny" style="margin-bottom:5px">Rounds</div>
+          <div class="seg">${[1,2,3,5].map(n=>`<button data-cfg="rounds:${n}" class="${S.spar.rounds===n?'on':''}">${n}</button>`).join('')}</div></div>
+        <div><div class="tiny" style="margin-bottom:5px">Tempo de luta</div>
+          <div class="seg">${[60,90,120,180].map(n=>`<button data-cfg="work:${n}" class="${S.spar.work===n?'on':''}">${n<60?n+'s':(n/60)+' min'}</button>`).join('')}</div></div>
+        <div><div class="tiny" style="margin-bottom:5px">Descanso</div>
+          <div class="seg">${[20,30,45,60].map(n=>`<button data-cfg="rest:${n}" class="${S.spar.rest===n?'on':''}">${n}s</button>`).join('')}</div></div>
+      </div>
+      <button class="btn btn-red btn-lg btn-block" id="startSpar">Começar</button>
+    </section>
+
+    <section class="card pad">
+      <div class="eyebrow" style="margin-bottom:6px">Equipamento antes de entrar</div>
+      ${EQUIP.map((g,i)=>`<button class="chk ${eq[i]?'done':''}" data-eq="${i}"><span class="box">✓</span><span class="lb">${esc(g)}</span></button>`).join('')}
+      <button class="btn btn-ghost btn-block" style="margin-top:10px" data-eq="zero">Desmarcar tudo</button>
+    </section>
+
+    <section class="stack-sm">
+      <div class="eyebrow">Combinações para treinar</div>
+      ${COMBOS.map((c,i)=>`<div class="card pad stack-sm">
+        <div class="row"><span class="badge-n" style="background:var(--red-soft);color:var(--red)">${i+1}</span>
+          <b style="flex:1;font-size:15.5px">${esc(c.n)}</b></div>
+        <div class="tiny" style="color:var(--ink-2);font-size:13.5px">${esc(c.s)}</div>
+        <div class="tiny"><b style="color:var(--pine)">Funciona porque:</b> ${esc(c.why)}</div>
+        <div class="tiny"><b style="color:var(--red)">Erro comum:</b> ${esc(c.erro)}</div>
+      </div>`).join('')}
+    </section>
+
+    <section class="card pad stack-sm">
+      <div class="eyebrow">Trabalho de pés</div>
+      ${PES.map(p=>`<div class="row" style="align-items:flex-start">
+        <span class="chip chip-blue" style="min-width:52px;justify-content:center">${esc(p.d)}</span>
+        <div style="flex:1"><b style="font-size:14.5px">${esc(p.n)}</b><div class="tiny">${esc(p.obs)}</div></div></div>`).join('')}
+    </section>
+
+    <p class="note">Sparring só com equipamento completo e com alguém supervisionando. Contato controlado — ponto é técnica que chega, não pancada.</p>
+  </div>`;
+};
+
+AFTER.sparring = ()=>{
+  el.querySelectorAll('[data-cfg]').forEach(x=>x.onclick=()=>{
+    const [k,v]=x.dataset.cfg.split(':'); S.spar[k]=+v; save(); render();
+  });
+  el.querySelectorAll('[data-eq]').forEach(x=>x.onclick=()=>{
+    if(x.dataset.eq==='zero'){ S.equip=[]; } else { const i=+x.dataset.eq; S.equip=S.equip||[]; S.equip[i]=!S.equip[i]; }
+    save(); render();
+  });
+  const st = document.getElementById('startSpar');
+  if(st) st.onclick = ()=>{
+    spar = {round:1, fase:'luta', left:S.spar.work, run:true, a:0, b:0, gasto:0};
+    beep(880,.3); segurarTela(true); render(); sparTick();
+  };
+  const sair = document.getElementById('sairSpar');
+  if(sair) sair.onclick = ()=>{
+    if(spar && spar.gasto>60) registrar(spar.gasto/60,['sparring']);
+    spar=null; pararTimer(); render();
+  };
+  const tg = document.getElementById('stgl');
+  if(tg) tg.onclick = ()=>{ spar.run=!spar.run; if(spar.run){segurarTela(true);sparTick();} else pararTimer(); render(); };
+  const nx = document.getElementById('snext');
+  if(nx) nx.onclick = ()=> sparFase();
+  el.querySelectorAll('[data-pt]').forEach(x=>x.onclick=()=>{
+    const v=x.dataset.pt;
+    if(v==='zero'){ spar.a=0; spar.b=0; }
+    else { const who=v[0], n=+v[1]; spar[who]+=n; beep(1040,.07,.12); }
+    render();
+  });
+  if(spar && spar.run && !timer) sparTick();
+};
+
+function sparTick(){
+  if(timer) clearInterval(timer);
+  timer = setInterval(()=>{
+    if(!spar || !spar.run) return;
+    spar.left--; spar.gasto++;
+    if(spar.left<=0){ sparFase(); return; }
+    if(spar.left===10 && spar.fase==='luta') beep(660,.15,.18);
+    const c=document.getElementById('sclk');
+    if(c){
+      c.textContent = mmss(spar.left);
+      c.className='clock '+(spar.fase==='descanso'?'rest':(spar.left<=10?'warn':'work'));
+      const total = spar.fase==='luta'?S.spar.work:S.spar.rest;
+      const bar=el.querySelector('.bar>i'); if(bar) bar.style.width=(100-spar.left/total*100)+'%';
+    } else render();
+  },1000);
+}
+function sparFase(){
+  if(!spar) return;
+  if(spar.fase==='luta'){
+    if(spar.round>=S.spar.rounds){
+      beep(520,.5); pararTimer();
+      const min = spar.gasto/60; const a=spar.a, b=spar.b;
+      registrar(Math.max(1,min),['sparring']); spar=null;
+      el.innerHTML=`<div class="stack" style="text-align:center;padding-top:24px">
+        <div style="font-size:52px">🥊</div><h2 class="h-sec">Fim dos rounds</h2>
+        <div class="clock" style="font-size:46px">${a} — ${b}</div>
+        <p class="tiny">Treino registrado no diário.</p>
+        <button class="btn btn-primary btn-block" data-go="sparring">De novo</button>
+        <button class="btn btn-ghost btn-block" data-go="hoje">Início</button></div>`;
+      return;
+    }
+    spar.fase='descanso'; spar.left=S.spar.rest; beep(440,.35);
+  } else {
+    spar.fase='luta'; spar.round++; spar.left=S.spar.work; beep(880,.3);
+  }
+  render();
+}
+
+/* ---------- ARMAS ---------- */
+VIEWS.armas = ()=>{
+  if(R.p){
+    const a = ARMAS.find(x=>x.id===R.p) || ARMAS[0];
+    const reps = S.armaReps[a.id]||0;
+    return `<div class="stack">
+      <button class="back" data-go="armas">‹ Armas</button>
+      <section class="card pad stack-sm">
+        <span class="chip chip-blue">${esc(a.ko)}</span>
+        <h2 class="h-sec" style="font-size:30px">${esc(a.n)}</h2>
+      </section>
+      <section class="card pad stack-sm" style="border-color:var(--red)">
+        <div class="eyebrow" style="color:var(--red)">Antes de girar qualquer coisa</div>
+        ${a.seg.map(s=>`<div class="row" style="align-items:flex-start"><span style="color:var(--red);font-weight:700">!</span><div class="tiny" style="flex:1;color:var(--ink-2);font-size:13.5px">${esc(s)}</div></div>`).join('')}
+      </section>
+      <section class="card pad stack-sm">
+        <div class="eyebrow">Drills de manuseio</div>
+        ${a.drills.map((d,i)=>`<div class="row" style="align-items:flex-start">
+          <span class="badge-n" style="width:26px;height:26px;font-size:14px">${i+1}</span>
+          <div style="flex:1;font-size:14.5px">${esc(d)}</div></div>`).join('')}
+      </section>
+      <section class="card pad stack-sm">
+        <div class="eyebrow">Voltas da minha forma com arma</div>
+        <div class="counter">
+          <button class="cb" data-arep="-1">−</button><b>${reps}</b><button class="cb plus" data-arep="1">+</button>
+        </div>
+      </section>
+      <a class="btn btn-block" href="${yt(BUSCA_ARMA[a.id]||('ATA martial arts '+a.n))}" target="_blank" rel="noopener noreferrer" style="background:var(--red-soft);color:var(--red);font-weight:700;text-decoration:none">▶ Assistir ${esc(a.n)} no YouTube</a>
+
+      <section class="card pad stack-sm">
+        <div class="eyebrow">A sequência da minha escola</div>
+        <textarea id="anota" rows="6" placeholder="Anote aqui a forma com arma que o instrutor está ensinando: movimento por movimento, do jeito que ele fala na aula.">${esc(S.notas['arma-'+a.id]||'')}</textarea>
+        <div class="tiny">A sequência oficial vem do instrutor. Este espaço é para você não esquecer entre uma aula e outra.</div>
+      </section>
+    </div>`;
+  }
+  return `<div class="stack">
+    <div><div class="eyebrow">Armas</div><h2 class="h-sec" style="margin-top:6px">Treino com arma</h2></div>
+    <p class="tiny">Cada arma tem regra de segurança própria e idade mínima que a escola define. Escolha a sua:</p>
+    ${ARMAS.map(a=>`<button class="item" data-go="armas:${a.id}">
+      <span class="badge-n">▮</span>
+      <span class="t"><b>${esc(a.n)}</b><small><span class="kor">${esc(a.ko)}</span> · ${a.drills.length} drills${S.armaReps[a.id]?' · '+S.armaReps[a.id]+' voltas':''}</small></span>
+      <span class="go">›</span></button>`).join('')}
+    <p class="note">Treine arma só com o modelo de treino (espuma, madeira leve, lâmina cega) e com espaço livre em volta. Nada de arma dentro de casa perto de gente ou de televisão.</p>
+  </div>`;
+};
+
+AFTER.armas = ()=>{
+  if(!R.p) return;
+  const a = ARMAS.find(x=>x.id===R.p) || ARMAS[0];
+  el.querySelectorAll('[data-arep]').forEach(x=>x.onclick=()=>{
+    const v=+x.dataset.arep;
+    S.armaReps[a.id]=Math.max(0,(S.armaReps[a.id]||0)+v);
+    if(v>0){ beep(760,.09,.14); registrar(3,['armas']); }
+    save(); render();
+  });
+  const n=document.getElementById('anota');
+  if(n) n.oninput=()=>{ S.notas['arma-'+a.id]=n.value; save(); };
+};
+
+/* ---------- MAIS ---------- */
+VIEWS.mais = ()=>`<div class="stack">
+  <div><div class="eyebrow">Dojang de bolso</div><h2 class="h-sec" style="margin-top:6px">Mais</h2></div>
+  <button class="item" data-go="chutes"><span class="badge-n">脚</span><span class="t"><b>Chutes e técnicas</b><small>${CHUTES.length} chutes e ${MAOS.length} técnicas de mão</small></span><span class="go">›</span></button>
+  <button class="item" data-go="termos"><span class="badge-n">語</span><span class="t"><b>Coreano do dojang</b><small>${TERMOS.length} termos, com quiz</small></span><span class="go">›</span></button>
+  <button class="item" data-go="faixas"><span class="badge-n">帯</span><span class="t"><b>Escada de faixas</b><small>Da branca à preta, com o significado de cada uma</small></span><span class="go">›</span></button>
+  <button class="item" data-go="torneio"><span class="badge-n">杯</span><span class="t"><b>Dia de campeonato</b><small>Mala, cronograma e preparo</small></span><span class="go">›</span></button>
+  <button class="item" data-go="assistir"><span class="badge-n" style="background:var(--red-soft);color:var(--red)">▶</span><span class="t"><b>Assistir vídeos dos movimentos</b><small>Formas, chutes, armas e sparring no YouTube</small></span><span class="go">›</span></button>
+  <button class="item" data-go="videos"><span class="badge-n" style="background:var(--red-soft);color:var(--red)">🎥</span><span class="t"><b>Meus vídeos e fotos</b><small>Grave o seu movimento e assista em câmera lenta</small></span><span class="go">›</span></button>
+  <button class="item" data-go="diario"><span class="badge-n">日</span><span class="t"><b>Diário de treino</b><small>${S.sessoes.length} treinos registrados</small></span><span class="go">›</span></button>
+  <button class="item hidden" id="duvidasItem" data-go="duvidas"><span class="badge-n">?</span><span class="t"><b>Tirar uma dúvida</b><small>Pergunta sobre técnica, treino ou preparo</small></span><span class="go">›</span></button>
+  <button class="item" data-go="ajustes"><span class="badge-n">⚙</span><span class="t"><b>Ajustes</b><small>Nome, faixa, tema e dados</small></span><span class="go">›</span></button>
+</div>`;
+
+AFTER.mais = ()=>{ if(sampleFn) document.getElementById('duvidasItem').classList.remove('hidden'); };
+
+/* ---------- CHUTES ---------- */
+VIEWS.chutes = ()=>`<div class="stack">
+  <button class="back" data-go="mais">‹ Mais</button>
+  <div><div class="eyebrow">Biblioteca</div><h2 class="h-sec" style="margin-top:6px">Chutes e técnicas</h2></div>
+  <p class="tiny">Toque num chute para ver o boneco executando o movimento, quadro a quadro.</p>
+  ${CHUTES.map((k,i)=>`<button class="item" data-go="chute:${i}" style="align-items:stretch">
+    <span class="mini">${MOV[k.pt]?svgBoneco(MOV[k.pt].f[2],{flip:MOV[k.pt].flip}):''}</span>
+    <span class="t" style="display:flex;flex-direction:column;justify-content:center">
+      <b>${esc(k.pt)}</b><small class="kor" style="font-style:italic">${esc(k.ko)}</small>
+      <small style="margin-top:3px">${esc(k.drill)}</small></span>
+    <span class="go" style="align-self:center">›</span></button>`).join('')}
+  <section class="card pad stack-sm">
+    <div class="eyebrow">Mãos e bloqueios</div>
+    ${MAOS.map(m=>`<div style="padding:7px 0;border-bottom:1px solid var(--line-soft)">
+      <div class="row" style="justify-content:space-between;align-items:baseline"><b style="font-size:14.5px">${esc(m.pt)}</b><span class="kor" style="font-size:13px">${esc(m.ko)}</span></div>
+      <div class="tiny">${esc(m.obs)}</div></div>`).join('')}
+  </section>
+</div>`;
+
+/* ---------- BONECO ARTICULADO: desenho dos movimentos ---------- */
+const FIG = {T:36, Lu:20, Lf:18, Lt:33, Ls:31, Lp:13, GY:62.7};
+const rad = d => d*Math.PI/180;
+
+const GUARDA = {t:-6, sh:-16, sk:16, sf:90, kh:14, kk:-6, kf:82, fa1:25, fa2:75, ba1:8, ba2:95, lift:0};
+function P(o){ return Object.assign({}, GUARDA, o); }
+
+/* frames: guarda -> câmara -> extensão. flip = corpo de costas para o alvo. */
+const MOV = {
+  'Chute frontal':{f:[GUARDA,
+    P({t:-10, kh:95, kk:-95, kf:20, sh:-10, sk:10, sf:90, fa1:10, fa2:90}),
+    P({t:-16, kh:88, kk:0, kf:-25, sh:-14, sk:14, sf:90, fa1:-25, fa2:110, ba1:-35, ba2:120})],
+    nota:'O joelho sobe primeiro. O pé só estica no fim.'},
+  'Chute lateral':{f:[GUARDA,
+    P({t:-15, kh:85, kk:-105, kf:0, sh:-18, sk:16, sf:92, fa1:0, fa2:95}),
+    P({t:-28, kh:90, kk:0, kf:-40, sh:-22, sk:20, sf:92, fa1:-40, fa2:70, ba1:-60, ba2:60})],
+    nota:'O pé de apoio gira quase 180° — o calcanhar aponta para o alvo.'},
+  'Chute circular':{f:[GUARDA,
+    P({t:-8, kh:80, kk:-80, kf:15, sh:-14, sk:12, sf:92}),
+    P({t:-20, kh:95, kk:-5, kf:25, sh:-20, sk:16, sf:94, fa1:-20, fa2:60, ba1:-70, ba2:40})],
+    nota:'O quadril gira junto. Sem quadril o chute é só perna.'},
+  'Chute de costas':{flip:true, f:[GUARDA,
+    P({t:25, kh:60, kk:-60, kf:10, sh:6, sk:10, sf:74}),
+    P({t:42, kh:-85, kk:5, kf:45, sh:12, sk:8, sf:70, fa1:35, fa2:60, ba1:45, ba2:50})],
+    nota:'Olha por cima do ombro ANTES de soltar a perna.'},
+  'Chute martelo':{f:[GUARDA,
+    P({t:-12, kh:150, kk:0, kf:0, sh:-12, sk:12, sf:90, fa1:-30, fa2:80}),
+    P({t:2, kh:100, kk:0, kf:35, sh:-6, sk:8, sf:88, fa1:20, fa2:70, ba1:15, ba2:75})],
+    nota:'A perna sobe esticada e o calcanhar desce como um machado.'},
+  'Crescente externo / interno':{f:[GUARDA,
+    P({t:-8, kh:60, kk:0, kf:10, sh:-14, sk:12, sf:90}),
+    P({t:-14, kh:140, kk:0, kf:5, sh:-16, sk:14, sf:90, fa1:-20, fa2:85})],
+    nota:'Joelho esticado do começo ao fim — é um arco, não um chute dobrado.'},
+  'Chute rodado':{flip:true, f:[GUARDA,
+    P({t:22, kh:50, kk:-50, kf:10, sh:6, sk:10, sf:74}),
+    P({t:35, kh:-95, kk:-30, kf:40, sh:10, sk:10, sf:70, fa1:40, fa2:55, ba1:50, ba2:45})],
+    nota:'A perna vem em gancho: o calcanhar entra de fora para dentro.'},
+  'Chute frontal saltado':{f:[GUARDA,
+    P({t:-6, lift:22, kh:95, kk:-95, kf:20, sh:70, sk:-70, sf:40, fa1:-20, fa2:90}),
+    P({t:-14, lift:30, kh:85, kk:0, kf:-25, sh:50, sk:-60, sf:30, fa1:-35, fa2:100, ba1:-45, ba2:110})],
+    nota:'Salta para a FRENTE, não para cima.'},
+  'Chute 360':{f:[GUARDA,
+    P({t:14, lift:26, kh:60, kk:-70, kf:20, sh:35, sk:-80, sf:30, fa1:-30, fa2:120, ba1:-50, ba2:130}),
+    P({t:-18, lift:14, kh:95, kk:-5, kf:25, sh:-10, sk:20, sf:85, fa1:-25, fa2:65, ba1:-70, ba2:45})],
+    nota:'O olhar acha o alvo no meio do giro — nunca olhar o chão.'},
+  'Joelhada':{f:[GUARDA,
+    P({t:4, kh:80, kk:-100, kf:-10, sh:-10, sk:10, sf:88, fa1:50, fa2:40}),
+    P({t:12, kh:105, kk:-120, kf:-10, sh:-8, sk:10, sf:86, fa1:65, fa2:25, ba1:60, ba2:30})],
+    nota:'O quadril vai junto com o joelho. Só joelho não tem força.'}
+};
+
+function pontos(p){
+  const t = rad(p.t||0);
+  const neck = {x:FIG.T*Math.sin(t), y:-FIG.T*Math.cos(t)};
+  const sho  = {x:0.84*FIG.T*Math.sin(t), y:-0.84*FIG.T*Math.cos(t)};
+  const head = {x:neck.x+10*Math.sin(t), y:neck.y-10*Math.cos(t)};
+  const perna=(h,k,f)=>{
+    const a1=rad(h), a2=rad(h+k), a3=rad(h+k+f);
+    const jo={x:FIG.Lt*Math.sin(a1), y:FIG.Lt*Math.cos(a1)};
+    const to={x:jo.x+FIG.Ls*Math.sin(a2), y:jo.y+FIG.Ls*Math.cos(a2)};
+    const pe={x:to.x+FIG.Lp*Math.sin(a3), y:to.y+FIG.Lp*Math.cos(a3)};
+    return [{x:0,y:0},jo,to,pe];
+  };
+  const braco=(a,b)=>{
+    const a1=rad(a), a2=rad(a+b);
+    const co={x:sho.x+FIG.Lu*Math.sin(a1), y:sho.y+FIG.Lu*Math.cos(a1)};
+    const ma={x:co.x+FIG.Lf*Math.sin(a2), y:co.y+FIG.Lf*Math.cos(a2)};
+    return [sho,co,ma];
+  };
+  return {neck, sho, head,
+    sup:perna(p.sh,p.sk,p.sf), chute:perna(p.kh,p.kk,p.kf),
+    bF:braco(p.fa1,p.fa2), bB:braco(p.ba1,p.ba2), lift:p.lift||0};
+}
+const poly = a => a.map(p=>p.x.toFixed(1)+','+p.y.toFixed(1)).join(' ');
+
+function svgBoneco(p, opt){
+  opt = opt||{};
+  const q = pontos(p);
+  const alvo = opt.alvo ? `<circle cx="${q.chute[3].x.toFixed(1)}" cy="${q.chute[3].y.toFixed(1)}" r="14"
+      fill="var(--red-soft)" stroke="var(--red)" stroke-width="1.6" stroke-dasharray="4 3" opacity=".9"/>` : '';
+  const fl = opt.flip ? ' scale(-1,1)' : '';
+  return `<svg viewBox="-74 -95 178 175" width="100%" ${opt.h?`height="${opt.h}"`:''} role="img"
+    aria-label="Desenho do movimento" style="display:block;overflow:visible">
+    <line x1="-72" y1="${FIG.GY}" x2="102" y2="${FIG.GY}" stroke="var(--line)" stroke-width="2"/>
+    <g transform="translate(0,${-q.lift})${fl}" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      ${alvo}
+      <polyline points="${poly(q.bB)}" stroke="var(--ink-3)" stroke-width="4.5"/>
+      <polyline points="${poly(q.sup)}" stroke="var(--ink-3)" stroke-width="6"/>
+      <line x1="0" y1="0" x2="${q.neck.x.toFixed(1)}" y2="${q.neck.y.toFixed(1)}" stroke="var(--ink-2)" stroke-width="8"/>
+      <circle cx="${q.head.x.toFixed(1)}" cy="${q.head.y.toFixed(1)}" r="9.5" fill="var(--surface)" stroke="var(--ink-2)" stroke-width="3.5"/>
+      <polyline points="${poly(q.bF)}" stroke="var(--ink-2)" stroke-width="5"/>
+      <polyline points="${poly(q.chute)}" stroke="var(--accent)" stroke-width="8"/>
+      <circle cx="${q.chute[3].x.toFixed(1)}" cy="${q.chute[3].y.toFixed(1)}" r="3.6" fill="var(--accent)"/>
+    </g>
+  </svg>`;
+}
+
+const FASES = ['Guarda','Câmara','Extensão'];
+function tira(nome){
+  const m = MOV[nome]; if(!m) return '';
+  return `<div class="tira">${m.f.map((p,i)=>`<div class="quadro">
+    ${svgBoneco(p,{flip:m.flip, alvo:i===2})}
+    <span class="qlb">${i+1}. ${FASES[i]}</span></div>`).join('')}</div>`;
+}
+
+function lerp(a,b,u){ const o={}; for(const k in a) o[k] = a[k] + (b[k]-a[k])*u; return o; }
+let animRAF = null;
+function animar(nome, box){
+  const m = MOV[nome]; if(!m || !box) return;
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){
+    box.innerHTML = svgBoneco(m.f[2],{flip:m.flip, alvo:true}); return;
+  }
+  const roteiro = [[0,1,420],[1,2,260],[2,2,520],[2,1,300],[1,0,380],[0,0,420]];
+  let etapa = 0, t0 = performance.now();
+  cancelAnimationFrame(animRAF);
+  const passo = now=>{
+    const [a,b,dur] = roteiro[etapa];
+    let u = (now-t0)/dur;
+    if(u>=1){ u=1; etapa=(etapa+1)%roteiro.length; t0=now; }
+    const e = u<.5 ? 2*u*u : 1-Math.pow(-2*u+2,2)/2;
+    box.innerHTML = svgBoneco(lerp(m.f[a], m.f[b], e), {flip:m.flip, alvo:(b===2&&u>.6)});
+    animRAF = requestAnimationFrame(passo);
+  };
+  animRAF = requestAnimationFrame(passo);
+}
+
+/* ---------- MÍDIA DO ALUNO (guardada no aparelho) ---------- */
+let MDB = null, urlsAbertas = [];
+function mdb(){
+  return new Promise((res,rej)=>{
+    if(MDB) return res(MDB);
+    if(!window.indexedDB) return rej(new Error('sem indexedDB'));
+    const r = indexedDB.open('dojang-midia',1);
+    r.onupgradeneeded = ()=>{ if(!r.result.objectStoreNames.contains('m')) r.result.createObjectStore('m',{keyPath:'id'}); };
+    r.onsuccess = ()=>{ MDB=r.result; res(MDB); };
+    r.onerror = ()=> rej(r.error);
+  });
+}
+async function mListar(){
+  try{
+    const db = await mdb();
+    return await new Promise(res=>{
+      const q = db.transaction('m').objectStore('m').getAll();
+      q.onsuccess = ()=> res((q.result||[]).sort((a,b)=>b.ts-a.ts));
+      q.onerror = ()=> res([]);
+    });
+  }catch(e){ return []; }
+}
+async function mSalvar(o){
+  const db = await mdb();
+  return new Promise((res,rej)=>{
+    const q = db.transaction('m','readwrite').objectStore('m').put(o);
+    q.onsuccess = ()=>res(); q.onerror = ()=>rej(q.error);
+  });
+}
+async function mApagar(id){
+  const db = await mdb();
+  return new Promise(res=>{
+    const q = db.transaction('m','readwrite').objectStore('m').delete(id);
+    q.onsuccess = ()=>res(); q.onerror = ()=>res();
+  });
+}
+function soltarUrls(){ urlsAbertas.forEach(u=>{ try{URL.revokeObjectURL(u);}catch(e){} }); urlsAbertas=[]; }
+function urlDe(blob){ const u = URL.createObjectURL(blob); urlsAbertas.push(u); return u; }
+const TAGS = ['Forma','Chute','Arma','Sparring','Livre'];
+let midias = [], tagNova = 'Forma', midiasCarregadas = false;
+
+VIEWS.videos = ()=>{
+  const total = midias.reduce((a,m)=>a+(m.tam||0),0);
+  return `<div class="stack">
+    <button class="back" data-go="mais">‹ Mais</button>
+    <div><div class="eyebrow">Câmera</div><h2 class="h-sec" style="margin-top:6px">Gravar a mim mesmo</h2></div>
+    <button class="btn btn-ghost btn-block" data-go="assistir">Procurando vídeo para assistir? Toque aqui ›</button>
+    <p class="tiny">Aqui é para gravar você mesmo executando o movimento e assista depois em câmera lenta, com o checklist do lado. É assim que dá para ver o que o instrutor está vendo.</p>
+
+    <section class="card pad stack-sm">
+      <div class="eyebrow">Gravar agora</div>
+      <div class="seg">${TAGS.map(t=>`<button data-tag="${t}" class="${tagNova===t?'on':''}">${t}</button>`).join('')}</div>
+      <div class="grid2">
+        <button class="btn btn-primary" id="btVideo">🎥 Vídeo</button>
+        <button class="btn" id="btFoto">📷 Foto</button>
+      </div>
+      <input type="file" accept="video/*" capture="environment" id="inVideo" class="hidden">
+      <input type="file" accept="image/*" capture="environment" id="inFoto" class="hidden">
+      <div class="tiny">Fica gravado só neste aparelho, dentro do app. Nada é enviado para lugar nenhum.</div>
+    </section>
+
+    ${midias.length?`<div class="row" style="justify-content:space-between">
+      <span class="chip chip-blue">${midias.length} ${midias.length===1?'item':'itens'}</span>
+      <span class="chip">${(total/1048576).toFixed(1)} MB no aparelho</span></div>`:''}
+
+    <div class="stack" id="listaMidia">
+      ${midias.length? midias.map(m=>`<section class="card pad stack-sm">
+        <div class="row" style="justify-content:space-between">
+          <span class="chip chip-pine">${esc(m.tag||'Livre')}</span>
+          <span class="tiny">${diaBR(m.dia)}</span>
+        </div>
+        ${m.tipo.indexOf('video')===0
+          ? `<video src="${urlDe(m.blob)}" data-vid="${m.id}" controls playsinline preload="metadata"
+               style="width:100%;border-radius:10px;background:#000;display:block"></video>
+             <div class="seg" data-speed="${m.id}">
+               <button data-v="1" class="on">1x</button><button data-v="0.5">Lento 0,5x</button>
+               <button data-v="0.25">Muito lento</button><button data-v="loop">Repetir ⟳</button></div>`
+          : `<img src="${urlDe(m.blob)}" alt="Foto do treino" style="width:100%;border-radius:10px;display:block">`}
+        <div class="row">
+          <span class="tiny" style="flex:1">${esc(m.nome||'')}</span>
+          <button class="btn btn-ghost" style="padding:7px 12px;font-size:13px;color:var(--red);border-color:var(--red)" data-del="${m.id}">Apagar</button>
+        </div>
+      </section>`).join('')
+      : `<div class="card pad" style="text-align:center;padding:26px 14px">
+          <div style="font-size:40px">🎥</div>
+          <p class="tiny" style="margin:8px 0 0">Nenhuma gravação ainda. Grave a sua forma inteira de frente e de lado — depois compare com a de um mês atrás.</p>
+        </div>`}
+    </div>
+
+    <section class="card pad stack-sm">
+      <div class="eyebrow">Como gravar direito</div>
+      <div class="tiny" style="color:var(--ink-2);font-size:13.5px">Celular deitado, apoiado em algo firme na altura da cintura. Corpo inteiro no quadro, com folga para o chute alto. Grave a MESMA coisa de frente e de lado — o erro que some de um ângulo aparece no outro.</div>
+    </section>
+  </div>`;
+};
+
+AFTER.videos = ()=>{
+  if(!midiasCarregadas){
+    midiasCarregadas = true;
+    mListar().then(l=>{ midias = l; if(R.v==='videos'){ soltarUrls(); render(); } });
+  }
+  el.querySelectorAll('[data-tag]').forEach(x=>x.onclick=()=>{ tagNova=x.dataset.tag; render(); });
+  const inV = document.getElementById('inVideo'), inF = document.getElementById('inFoto');
+  document.getElementById('btVideo').onclick = ()=> inV.click();
+  document.getElementById('btFoto').onclick = ()=> inF.click();
+  const receber = async e=>{
+    const f = e.target.files && e.target.files[0]; if(!f) return;
+    try{
+      await mSalvar({id:'m'+Date.now()+Math.random().toString(36).slice(2,6), ts:Date.now(), dia:hoje(),
+        tag:tagNova, tipo:f.type||'video/mp4', tam:f.size, nome:tagNova+' · '+beltAtual().forma, blob:f});
+      beep(880,.12);
+      midias = await mListar(); soltarUrls(); render();
+    }catch(err){ alert('Não consegui guardar esse arquivo. Talvez a memória do aparelho esteja cheia.'); }
+    e.target.value='';
+  };
+  inV.onchange = receber; inF.onchange = receber;
+
+  el.querySelectorAll('[data-speed]').forEach(g=>{
+    const vid = el.querySelector('video[data-vid="'+g.dataset.speed+'"]');
+    g.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+      if(!vid) return;
+      if(b.dataset.v==='loop'){ vid.loop=!vid.loop; b.classList.toggle('on',vid.loop); return; }
+      vid.playbackRate = parseFloat(b.dataset.v);
+      g.querySelectorAll('button[data-v]:not([data-v="loop"])').forEach(o=>o.classList.remove('on'));
+      b.classList.add('on');
+    });
+  });
+  el.querySelectorAll('video[data-vid]').forEach(v=>{
+    v.onerror = async ()=>{
+      const m = midias.find(x=>x.id===v.dataset.vid); if(!m || v.dataset.tentou) return;
+      v.dataset.tentou='1';
+      const fr = new FileReader();
+      fr.onload = ()=>{ v.src = fr.result; };
+      fr.readAsDataURL(m.blob);
+    };
+  });
+  el.querySelectorAll('[data-del]').forEach(x=>x.onclick=async ()=>{
+    if(!confirm('Apagar esta gravação do aparelho?')) return;
+    await mApagar(x.dataset.del); midias = await mListar(); soltarUrls(); render();
+  });
+};
+
+/* ---------- LINKS OFICIAIS ---------- */
+const LINKS = [
+  {n:'MyATA — área do aluno', u:'https://atamartialarts.com/myata/', d:'Onde ficam os vídeos oficiais das formas Songahm. Precisa do login que a escola fornece.'},
+  {n:'Site oficial da ATA', u:'https://atamartialarts.com/', d:'Notícias, campeonatos e a explicação do sistema Songahm.'},
+  {n:'ATA no YouTube', u:'https://www.youtube.com/c/ATAMartialArts', d:'Canal oficial, com vídeos abertos de eventos e técnica.'},
+  {n:'ATA no Instagram', u:'https://www.instagram.com/atamartialarts/', d:'Perfil oficial da organização.'},
+  {n:'ATA Leader Team Londrina', u:'https://www.instagram.com/atalondrina/', d:'Perfil da equipe de Londrina. Confirme com o instrutor se é o da escola do Felipe.'}
+];
+VIEWS.links = ()=>`<div class="stack">
+  <button class="back" data-go="mais">‹ Mais</button>
+  <div><div class="eyebrow">Fontes</div><h2 class="h-sec" style="margin-top:6px">Vídeos oficiais da ATA</h2></div>
+  <p class="tiny">As formas Songahm são material registrado da ATA. Os vídeos oficiais ficam na área do aluno e não podem ser copiados para dentro deste app — mas abrem direto daqui:</p>
+  ${LINKS.map(l=>`<a class="item" href="${l.u}" target="_blank" rel="noopener noreferrer" style="text-decoration:none">
+    <span class="badge-n">↗</span>
+    <span class="t"><b>${esc(l.n)}</b><small>${esc(l.d)}</small></span>
+    <span class="go">›</span></a>`).join('')}
+  <p class="note">Se o instrutor mandar um vídeo pelo grupo da escola, salve pela galeria do celular em “Meus vídeos e fotos” — aí ele fica junto do resto do treino.</p>
+</div>`;
+
+/* ---------- ASSISTIR: vídeos dos movimentos ---------- */
+const yt = q => 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
+
+/* Links conferidos por busca. São canais de escolas licenciadas da ATA — material
+   aberto no YouTube, não o vídeo oficial da ATA (esse fica no MyATA). */
+const VIDEOS_FORMA = {
+  'In Wha 2':[
+    {t:'Devagar com as direções, depois na velocidade normal', u:'https://www.youtube.com/watch?v=CPkCOQfQ_1Q'},
+    {t:'A forma completa, 42 movimentos', u:'https://www.youtube.com/watch?v=2VfEEwc7esc'},
+    {t:'Com contagem e os 3 kihaps marcados', u:'https://www.youtube.com/watch?v=7A3QcJv7vtM'}
+  ]
+};
+const BUSCA_FORMA = {
+  'Songahm 1':'ATA Songahm 1 form white belt',
+  'Songahm 2':'ATA Songahm 2 form orange belt',
+  'Songahm 3':'ATA Songahm 3 form yellow belt',
+  'Songahm 4':'ATA Songahm 4 form camo belt',
+  'Songahm 5':'ATA Songahm 5 form green belt',
+  'In Wha 1':'ATA In Wha 1 form purple belt',
+  'In Wha 2':'ATA In Wha 2 form blue belt',
+  'Choong Jung 1':'ATA Choong Jung 1 form brown belt',
+  'Choong Jung 2':'ATA Choong Jung 2 form red belt',
+  'Shim Jun':'ATA Shim Jun form',
+  'Jung Yul':'ATA Jung Yul form black belt'
+};
+const BUSCA_CHUTE = {
+  'Chute frontal':'ahp chagi front kick taekwondo tutorial',
+  'Chute lateral':'yop chagi side kick taekwondo tutorial',
+  'Chute circular':'dollyo chagi round kick taekwondo tutorial',
+  'Chute de costas':'dwit chagi back kick taekwondo tutorial',
+  'Chute martelo':'naeryo chagi axe kick taekwondo tutorial',
+  'Crescente externo / interno':'inside outside crescent kick taekwondo',
+  'Chute rodado':'spin hook kick taekwondo tutorial',
+  'Chute frontal saltado':'jumping front kick taekwondo tutorial',
+  'Chute 360':'360 round kick taekwondo tournament tutorial',
+  'Joelhada':'knee strike taekwondo tutorial'
+};
+const BUSCA_ARMA = {
+  bastao:'ATA martial arts bo staff form',
+  nunchaku:'ATA martial arts nunchaku ssahng jeol bong form',
+  bastoes:'ATA martial arts bahng mahng ee short stick form',
+  faca:'ATA martial arts kkahl knife form',
+  kamas:'ATA martial arts ssahng nat kama form'
+};
+
+const linkVideo = (titulo, sub, url) =>
+  `<a class="item" href="${url}" target="_blank" rel="noopener noreferrer" style="text-decoration:none">
+    <span class="badge-n" style="background:var(--red-soft);color:var(--red)">▶</span>
+    <span class="t"><b>${esc(titulo)}</b>${sub?`<small>${esc(sub)}</small>`:''}</span>
+    <span class="go">↗</span></a>`;
+
+VIEWS.assistir = ()=>{
+  const b = beltAtual();
+  const meus = VIDEOS_FORMA[b.forma] || [];
+  return `<div class="stack">
+    <button class="back" data-go="mais">‹ Mais</button>
+    <div><div class="eyebrow">Assistir</div><h2 class="h-sec" style="margin-top:6px">Vídeos dos movimentos</h2></div>
+    <p class="tiny">Abrem no YouTube, fora do app. São canais de escolas licenciadas da ATA — material aberto, <b>não é o vídeo oficial</b>. O oficial fica no MyATA, com o login da escola.</p>
+
+    <section class="card pad stack-sm">
+      <div class="eyebrow">A sua forma agora</div>
+      <h3 class="h-sec" style="font-size:24px">${esc(b.forma)}</h3>
+      ${meus.length ? meus.map(v=>linkVideo(v.t, null, v.u)).join('')
+        : linkVideo('Procurar '+b.forma+' no YouTube', 'Resultados atualizados', yt(BUSCA_FORMA[b.forma]||('ATA '+b.forma+' form')))}
+      ${meus.length? linkVideo('Ver mais opções de '+b.forma, 'Busca no YouTube', yt(BUSCA_FORMA[b.forma])) : ''}
+    </section>
+
+    <section class="stack-sm">
+      <div class="eyebrow">Todas as formas</div>
+      ${BELTS.map(x=>linkVideo(x.forma, 'Faixa '+x.nome.toLowerCase()+' · '+x.mov+' movimentos', yt(BUSCA_FORMA[x.forma]||('ATA '+x.forma+' form')))).join('')}
+    </section>
+
+    <section class="stack-sm">
+      <div class="eyebrow">Chutes</div>
+      ${CHUTES.map(k=>linkVideo(k.pt, k.ko, yt(BUSCA_CHUTE[k.pt]||(k.ko+' taekwondo')))).join('')}
+    </section>
+
+    <section class="stack-sm">
+      <div class="eyebrow">Armas</div>
+      ${ARMAS.map(a=>linkVideo(a.n, a.ko, yt(BUSCA_ARMA[a.id]||('ATA martial arts '+a.n)))).join('')}
+    </section>
+
+    <section class="stack-sm">
+      <div class="eyebrow">Sparring</div>
+      ${linkVideo('Sparring da ATA em campeonato', 'Como a luta funciona de verdade', yt('ATA martial arts sparring tournament color belt'))}
+      ${linkVideo('Combinações de sparring', 'Sequências para treinar', yt('taekwondo point sparring combinations tutorial'))}
+    </section>
+
+    <section class="stack-sm">
+      <div class="eyebrow">Canais oficiais</div>
+      ${LINKS.map(l=>linkVideo(l.n, l.d, l.u)).join('')}
+    </section>
+
+    <p class="note">Vídeo de escola nenhuma substitui a correção do instrutor. Se o que você vê no vídeo for diferente do que ensinam na aula, vale o da aula.</p>
+  </div>`;
+};
+
+/* ---------- CHUTE: detalhe com animação ---------- */
+VIEWS.chute = ()=>{
+  const i = Math.max(0, Math.min(CHUTES.length-1, parseInt(R.p,10)||0));
+  const k = CHUTES[i];
+  const m = MOV[k.pt];
+  return `<div class="stack">
+    <button class="back" data-go="chutes">‹ Chutes</button>
+    <section class="card pad stack-sm">
+      <div class="row" style="justify-content:space-between;align-items:baseline">
+        <h2 class="h-sec" style="font-size:26px">${esc(k.pt)}</h2><span class="kor">${esc(k.ko)}</span></div>
+      <div class="palco" id="palco">${m?svgBoneco(m.f[0],{flip:m.flip}):''}</div>
+      <div class="tiny" style="text-align:center">Perna do chute em azul${m&&m.flip?' · corpo de costas para o alvo':''}</div>
+    </section>
+    ${m?`<section class="card pad stack-sm">
+      <div class="eyebrow">Quadro a quadro</div>
+      ${tira(k.pt)}
+      <div class="tiny"><b style="color:var(--accent)">Detalhe:</b> ${esc(m.nota)}</div>
+    </section>`:''}
+    <section class="card pad stack-sm">
+      <div class="eyebrow">Como fazer</div>
+      <div style="font-size:14.5px;color:var(--ink-2)">${esc(k.como)}</div>
+      <div class="tiny"><b style="color:var(--red)">Erro comum:</b> ${esc(k.erro)}</div>
+      <span class="chip chip-pine" style="align-self:flex-start">${esc(k.drill)}</span>
+    </section>
+    <a class="btn btn-block" href="${yt(BUSCA_CHUTE[k.pt]||(k.ko+' taekwondo'))}" target="_blank" rel="noopener noreferrer" style="background:var(--red-soft);color:var(--red);font-weight:700;text-decoration:none">▶ Assistir ${esc(k.pt)} no YouTube</a>
+    <button class="btn btn-primary btn-block" data-go="videos">🎥 Gravar o meu e comparar</button>
+    <p class="note">Desenho feito para mostrar a mecânica do movimento — a execução oficial da ATA quem ensina é o instrutor, no dojang.</p>
+  </div>`;
+};
+AFTER.chute = ()=>{
+  const i = Math.max(0, Math.min(CHUTES.length-1, parseInt(R.p,10)||0));
+  animar(CHUTES[i].pt, document.getElementById('palco'));
+};
+
+/* ---------- TERMOS + QUIZ ---------- */
+VIEWS.termos = ()=>{
+  const cats = [...new Set(TERMOS.map(t=>t.c))];
+  return `<div class="stack">
+    <button class="back" data-go="mais">‹ Mais</button>
+    <div><div class="eyebrow">Coreano</div><h2 class="h-sec" style="margin-top:6px">Palavras do dojang</h2></div>
+    <button class="btn btn-primary btn-lg btn-block" data-go="quiz">Fazer o quiz · recorde ${S.quizBest}/10</button>
+    ${cats.map(c=>`<section class="card pad">
+      <div class="eyebrow" style="margin-bottom:6px">${esc(c)}</div>
+      ${TERMOS.filter(t=>t.c===c).map(t=>`<div class="row" style="justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line-soft)">
+        <b class="kor" style="font-style:normal;font-size:15px">${esc(t.k)}</b><span class="tiny" style="text-align:right">${esc(t.p)}</span></div>`).join('')}
+    </section>`).join('')}
+    <p class="note">A escrita em letras latinas muda de escola para escola (Shi-jak / Si-jak, Ahre / Arae). O que vale é o som que o seu instrutor usa.</p>
+  </div>`;
+};
+
+let quiz = null;
+function novoQuiz(){
+  const pool = [...TERMOS].sort(()=>Math.random()-0.5).slice(0,10);
+  quiz = {q: pool.map(t=>{
+    const erradas = TERMOS.filter(x=>x.p!==t.p).sort(()=>Math.random()-0.5).slice(0,3).map(x=>x.p);
+    return {k:t.k, cert:t.p, ops:[t.p,...erradas].sort(()=>Math.random()-0.5)};
+  }), i:0, acertos:0, escolha:null};
+}
+VIEWS.quiz = ()=>{
+  if(!quiz) novoQuiz();
+  if(quiz.i>=quiz.q.length){
+    const n = quiz.acertos;
+    return `<div class="stack" style="text-align:center;padding-top:20px">
+      <div style="font-size:50px">${n>=9?'🏆':n>=7?'👊':'📖'}</div>
+      <h2 class="h-sec">${n} de 10</h2>
+      <p class="tiny">${n>=9?'Isso é nível de exame.':n>=7?'Muito bom. Repassa as que errou.':'Volta na lista de palavras e tenta de novo.'}${n>S.quizBest?' Novo recorde!':''}</p>
+      <button class="btn btn-primary btn-block" id="reQuiz">Jogar de novo</button>
+      <button class="btn btn-ghost btn-block" data-go="termos">Ver a lista</button>
+    </div>`;
+  }
+  const q = quiz.q[quiz.i];
+  return `<div class="stack">
+    <button class="back" data-go="termos">‹ Palavras</button>
+    <div class="row" style="justify-content:space-between">
+      <span class="chip chip-blue">${quiz.i+1} de 10</span>
+      <span class="chip chip-pine">${quiz.acertos} certas</span>
+    </div>
+    <section class="card pad" style="text-align:center;padding:26px 14px">
+      <div class="tiny">O que significa</div>
+      <h2 class="h-sec" style="font-size:38px;color:var(--accent);margin-top:4px">${esc(q.k)}</h2>
+    </section>
+    <div class="stack-sm">
+      ${q.ops.map((o,i)=>{
+        let cls='opt';
+        if(quiz.escolha!==null){
+          if(o===q.cert) cls+=' ok';
+          else if(o===quiz.escolha) cls+=' no';
+        }
+        return `<button class="${cls}" data-op="${i}">${esc(o)}</button>`;
+      }).join('')}
+    </div>
+    ${quiz.escolha!==null?`<button class="btn btn-primary btn-block" id="nextQ">Próxima ›</button>`:''}
+  </div>`;
+};
+AFTER.quiz = ()=>{
+  el.querySelectorAll('[data-op]').forEach(x=>x.onclick=()=>{
+    if(quiz.escolha!==null) return;
+    const q = quiz.q[quiz.i];
+    quiz.escolha = q.ops[+x.dataset.op];
+    if(quiz.escolha===q.cert){ quiz.acertos++; beep(940,.12,.15); } else beep(320,.2,.15);
+    render();
+  });
+  const nq = document.getElementById('nextQ');
+  if(nq) nq.onclick = ()=>{
+    quiz.i++; quiz.escolha=null;
+    if(quiz.i>=quiz.q.length){
+      S.quizJogos++; if(quiz.acertos>S.quizBest) S.quizBest=quiz.acertos; save();
+    }
+    render();
+  };
+  const rq = document.getElementById('reQuiz');
+  if(rq) rq.onclick = ()=>{ novoQuiz(); render(); };
+};
+
+/* ---------- FAIXAS ---------- */
+VIEWS.faixas = ()=>`<div class="stack">
+  <button class="back" data-go="mais">‹ Mais</button>
+  <div><div class="eyebrow">Songahm</div><h2 class="h-sec" style="margin-top:6px">A escada das faixas</h2></div>
+  <p class="tiny">Cada cor conta um pedaço da história do pinheiro que cresce. Toque numa faixa para marcar como sua.</p>
+  <section class="card pad ladder">
+    ${BELTS.map((b,i)=>`<button class="rung ${i<S.beltIdx?'past':''} ${i===S.beltIdx?'cur':''}" data-belt="${i}">
+      <span class="no">${i+1}</span>
+      <span class="sw" style="background:${b.cor2?`linear-gradient(90deg,${b.cor} 0 50%,${b.cor2} 50%)`:b.cor}"></span>
+      <span class="nm"><b>${esc(b.nome)}</b><small>${esc(b.forma)} · ${b.mov} movimentos</small></span>
+    </button>`).join('')}
+  </section>
+  <section class="card pad stack-sm">
+    <div class="eyebrow">${esc(beltAtual().nome)}</div>
+    <p style="font-family:var(--display);font-size:19px;font-weight:600;line-height:1.25">${esc(beltAtual().sig)}</p>
+  </section>
+  <section class="card pad stack-sm">
+    <div class="eyebrow">Nível dentro da faixa</div>
+    <div class="seg">
+      <button data-niv="recomendada" class="${S.nivel==='recomendada'?'on':''}">Recomendada</button>
+      <button data-niv="decidida" class="${S.nivel==='decidida'?'on':''}">Decidida</button>
+    </div>
+  </section>
+</div>`;
+AFTER.faixas = ()=>{
+  el.querySelectorAll('[data-belt]').forEach(x=>x.onclick=()=>{ S.beltIdx=+x.dataset.belt; save(); render(); });
+  el.querySelectorAll('[data-niv]').forEach(x=>x.onclick=()=>{ S.nivel=x.dataset.niv; save(); render(); });
+};
+
+/* ---------- TORNEIO ---------- */
+VIEWS.torneio = ()=>{
+  const m = S.mala||[];
+  return `<div class="stack">
+    <button class="back" data-go="mais">‹ Mais</button>
+    <div><div class="eyebrow">Competição</div><h2 class="h-sec" style="margin-top:6px">Dia de campeonato</h2></div>
+    <section class="card pad">
+      <div class="eyebrow" style="margin-bottom:6px">Mala · ${m.filter(Boolean).length} de ${MALA.length}</div>
+      ${MALA.map((g,i)=>`<button class="chk ${m[i]?'done':''}" data-mala="${i}"><span class="box">✓</span><span class="lb">${esc(g)}</span></button>`).join('')}
+      <button class="btn btn-ghost btn-block" style="margin-top:10px" data-mala="zero">Desmarcar tudo</button>
+    </section>
+    <section class="card pad stack-sm">
+      <div class="eyebrow">Como o dia funciona</div>
+      ${TORNEIO_DIA.map((t,i)=>`<div class="row" style="align-items:flex-start">
+        <span class="badge-n" style="width:26px;height:26px;font-size:13px">${i+1}</span>
+        <div style="flex:1"><b style="font-size:14.5px">${esc(t.t)}</b><div class="tiny">${esc(t.d)}</div></div></div>`).join('')}
+    </section>
+    <section class="card pad stack-sm">
+      <div class="eyebrow">Antes de entrar na área</div>
+      <p style="font-family:var(--display);font-size:20px;font-weight:600;line-height:1.25">Quatro respirações lentas. Passa a forma inteira na cabeça. Entra sabendo o primeiro movimento.</p>
+      <div class="tiny">Nervoso é normal e até ajuda — é o corpo se ligando. O que atrapalha é tentar consertar tudo na hora. Escolhe UMA coisa para lembrar e esquece o resto.</div>
+    </section>
+  </div>`;
+};
+AFTER.torneio = ()=>{
+  el.querySelectorAll('[data-mala]').forEach(x=>x.onclick=()=>{
+    if(x.dataset.mala==='zero') S.mala=[]; else { const i=+x.dataset.mala; S.mala=S.mala||[]; S.mala[i]=!S.mala[i]; }
+    save(); render();
+  });
+};
+
+/* ---------- DIÁRIO ---------- */
+VIEWS.diario = ()=>{
+  const dias=[]; const d=new Date();
+  for(let i=13;i>=0;i--){ const x=new Date(d); x.setDate(d.getDate()-i); dias.push(x.toISOString().slice(0,10)); }
+  const porDia = dias.map(k=>S.sessoes.filter(s=>s.d===k).reduce((a,s)=>a+s.min,0));
+  const max = Math.max(30,...porDia);
+  const ultimos = [...S.sessoes].reverse().slice(0,12);
+  const totalMin = S.sessoes.reduce((a,s)=>a+s.min,0);
+  return `<div class="stack">
+    <button class="back" data-go="mais">‹ Mais</button>
+    <div><div class="eyebrow">Progresso</div><h2 class="h-sec" style="margin-top:6px">Diário de treino</h2></div>
+    <div class="tiles">
+      <div class="tile"><b>${streak()}</b><span>dias seguidos</span></div>
+      <div class="tile"><b>${S.sessoes.length}</b><span>treinos</span></div>
+      <div class="tile"><b>${Math.round(totalMin/60)}h</b><span>no total</span></div>
+    </div>
+    <section class="card pad">
+      <div class="eyebrow" style="margin-bottom:10px">Últimos 14 dias · minutos</div>
+      <div class="spark">${porDia.map(v=>`<div class="b ${v?'has':''}" style="height:${Math.max(3,v/max*100)}%" title="${v} min"></div>`).join('')}</div>
+      <div class="spark-x"><span>${diaBR(dias[0])}</span><span>${diaBR(dias[13])}</span></div>
+    </section>
+    <section class="card pad stack-sm">
+      <div class="eyebrow">Registrar um treino na aula</div>
+      <div class="seg">${[30,45,60,90].map(n=>`<button data-add="${n}">${n} min</button>`).join('')}</div>
+      <div class="tiny">Use depois da aula no dojang. Treinos feitos aqui dentro entram sozinhos.</div>
+    </section>
+    <section class="card pad">
+      <div class="eyebrow" style="margin-bottom:6px">Histórico</div>
+      ${ultimos.length? ultimos.map(s=>`<div class="row" style="justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line-soft)">
+        <span style="font-weight:600;font-size:14.5px">${diaBR(s.d)}</span>
+        <span class="tiny">${(s.t&&s.t.length?s.t.join(', '):'treino')}</span>
+        <span class="chip chip-blue">${s.min} min</span></div>`).join('')
+        : '<p class="tiny">Nenhum treino ainda. Toque em “Treinar agora” na aba Hoje.</p>'}
+    </section>
+  </div>`;
+};
+AFTER.diario = ()=>{
+  el.querySelectorAll('[data-add]').forEach(x=>x.onclick=()=>{ registrar(+x.dataset.add,['aula']); beep(880,.15); render(); });
+};
+
+/* ---------- DÚVIDAS (Claude) ---------- */
+let sampleFn = null;
+let chat = [];
+const REGRAS = 'Você é um assistente de treino de Taekwondo respondendo a um aluno de 12 a 14 anos, faixa colorida da ATA (Songahm), em português do Brasil. Responda curto (no máximo 5 frases), direto, com linguagem simples e encorajadora. Dê instruções práticas que dá para fazer em casa com segurança. Nunca invente a sequência oficial de uma forma da ATA nem regras de pontuação de campeonato: nesses casos diga para confirmar com o instrutor. Se a pergunta for sobre dor, lesão ou perda de peso, mande falar com um adulto responsável e com o instrutor. Não fale sobre nada fora de treino, esporte e escola.';
+
+VIEWS.duvidas = ()=>`<div class="stack">
+  <button class="back" data-go="mais">‹ Mais</button>
+  <div><div class="eyebrow">Tira-dúvidas</div><h2 class="h-sec" style="margin-top:6px">Pergunte sobre o treino</h2></div>
+  <div class="stack-sm" id="chatBox">
+    ${chat.length?chat.map(t=>`<div class="card pad" style="${t.role==='user'?'background:var(--accent-soft);border-color:transparent':''}">
+      <div class="eyebrow" style="margin-bottom:5px">${t.role==='user'?'Você':'Resposta'}</div>
+      <div style="font-size:14.5px;white-space:pre-wrap">${esc(t.content)}</div></div>`).join('')
+      :`<div class="card pad stack-sm"><div class="tiny">Exemplos: “meu chute lateral fica torto, o que faço?”, “como parar de perder o equilíbrio no giro?”, “o que treinar nos 20 minutos antes de dormir?”</div></div>`}
+  </div>
+  <div class="card pad stack-sm">
+    <textarea id="pergunta" rows="3" placeholder="Escreva sua dúvida…"></textarea>
+    <button class="btn btn-primary btn-block" id="enviar">Perguntar</button>
+    <div class="tiny" id="chatMsg"></div>
+  </div>
+  <p class="note">Resposta de um assistente automático. Para qualquer coisa sobre a sequência das formas, exame de faixa ou regra de campeonato, quem responde é o instrutor da ATA Londrina.</p>
+</div>`;
+
+AFTER.duvidas = ()=>{
+  const box = document.getElementById('pergunta');
+  const btn = document.getElementById('enviar');
+  const msg = document.getElementById('chatMsg');
+  if(!sampleFn){ btn.disabled=true; msg.textContent='Indisponível neste aparelho.'; return; }
+  btn.onclick = async ()=>{
+    const q = box.value.trim(); if(!q) return;
+    chat.push({role:'user', content:q});
+    box.value=''; btn.disabled=true;
+    render();
+    const holder = document.getElementById('chatBox');
+    const bubble = document.createElement('div');
+    bubble.className='card pad';
+    bubble.innerHTML='<div class="eyebrow" style="margin-bottom:5px">Resposta</div><div style="font-size:14.5px;white-space:pre-wrap" id="live">Pensando…</div>';
+    holder.appendChild(bubble);
+    const live = document.getElementById('live');
+    try{
+      const turnos = [{role:'user', content:REGRAS}, ...chat.slice(-6)];
+      const {text} = await sampleFn(turnos, {cache:false, modelTier:'quick', onText:({text})=>{ live.textContent = text; }});
+      chat.push({role:'assistant', content:text});
+    }catch(e){
+      const c = e && e.code;
+      chat.push({role:'assistant', content: c==='not_granted' ? 'Não deu para perguntar agora — o acesso não foi liberado neste aparelho.' : c==='rate_limited' ? 'Muitas perguntas de uma vez. Espere um minuto e tente de novo.' : 'Não consegui responder agora. Tente de novo daqui a pouco.'});
+    }
+    render();
+    const b2 = document.getElementById('enviar'); if(b2) b2.disabled=false;
+  };
+};
+
+/* ---------- AJUSTES ---------- */
+VIEWS.ajustes = ()=>`<div class="stack">
+  <button class="back" data-go="mais">‹ Mais</button>
+  <div><div class="eyebrow">Configuração</div><h2 class="h-sec" style="margin-top:6px">Ajustes</h2></div>
+  <section class="card pad stack-sm">
+    <div class="eyebrow">Nome</div>
+    <input type="text" id="nomeIn" value="${esc(S.nome)}" maxlength="18">
+  </section>
+  <section class="card pad stack-sm">
+    <div class="eyebrow">Faixa</div>
+    <div class="tiny">Mude na aba “Escada de faixas”, tocando na cor.</div>
+    <button class="btn btn-ghost btn-block" data-go="faixas">Abrir a escada</button>
+  </section>
+  <section class="card pad stack-sm">
+    <div class="eyebrow">Tema</div>
+    <div class="seg">
+      <button data-tema="" class="${!S.tema?'on':''}">Automático</button>
+      <button data-tema="light" class="${S.tema==='light'?'on':''}">Claro</button>
+      <button data-tema="dark" class="${S.tema==='dark'?'on':''}">Escuro</button>
+    </div>
+  </section>
+  <section class="card pad stack-sm">
+    <div class="eyebrow">Dados</div>
+    <div class="tiny">Tudo fica salvo só neste aparelho — voltas, diário, anotações e recordes. Nada sai daqui.</div>
+    <button class="btn btn-ghost btn-block" id="apagar" style="color:var(--red);border-color:var(--red)">Apagar tudo e começar de novo</button>
+  </section>
+  <p class="tiny" style="text-align:center;padding:10px 0">Dojang de Bolso · feito para o ${esc(S.nome)} · ATA Londrina</p>
+</div>`;
+AFTER.ajustes = ()=>{
+  const n=document.getElementById('nomeIn');
+  n.oninput=()=>{ S.nome=n.value||'Felipe'; save(); document.getElementById('uname').textContent=S.nome; };
+  el.querySelectorAll('[data-tema]').forEach(x=>x.onclick=()=>{
+    S.tema = x.dataset.tema||null; aplicarTema(); save(); render();
+  });
+  document.getElementById('apagar').onclick=()=>{
+    if(confirm('Apagar todo o progresso deste aparelho?')){
+      try{ localStorage.removeItem(KEY); }catch(e){}
+      S = JSON.parse(JSON.stringify(DEF)); aplicarTema(); go('hoje');
+    }
+  };
+};
+
+function aplicarTema(){
+  if(S.tema) document.documentElement.setAttribute('data-theme', S.tema);
+  else document.documentElement.removeAttribute('data-theme');
+}
+
+/* ============================ EVENTOS ============================ */
+document.addEventListener('click', e=>{
+  const nv = e.target.closest('[data-nav]');
+  if(nv){ go(nv.dataset.nav); return; }
+  const g = e.target.closest('[data-go]');
+  if(g && el.contains(g)){
+    if(g.tagName==='A') return;
+    const d = g.dataset.go, i = d.indexOf(':');
+    if(i<0) go(d); else go(d.slice(0,i), d.slice(i+1));
+  }
+});
+document.getElementById('beltBtn').onclick = ()=> go('faixas');
+document.getElementById('streakBox').onclick = ()=> go('diario');
+
+aplicarTema();
+render();
+
+(async ()=>{
+  try{
+    if(window.claude && window.claude.use){
+      const s = await window.claude.use('sample');
+      if(s){ sampleFn = s; if(R.v==='mais') render(); }
+    }
+  }catch(e){}
+})();
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  addEventListener('load', ()=>{ navigator.serviceWorker.register('./sw.js').catch(()=>{}); });
+}
+</script>
+
+</body>
+</html>
