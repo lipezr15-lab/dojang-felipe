@@ -568,7 +568,54 @@ function registrar(min, tags){
   S.sessoes.push({d:hoje(), min:Math.max(1,Math.round(min)), t:tags||[]});
   if(S.sessoes.length>400) S.sessoes = S.sessoes.slice(-400);
   save();
+  avisarEmCasa(min, tags);
 }
+
+/* ===================== AVISO PARA O PAINEL DE CASA =====================
+   Quando um treino termina, avisa o painel da familia: dia, minutos e as
+   tags do que foi treinado. Nada alem disso sai deste aparelho.
+   O treino continua salvo aqui mesmo se a internet estiver fora — este
+   aviso e um extra, nunca um requisito para o app funcionar. */
+const CASA_API = 'https://nino-api-production.up.railway.app/api/painel/treino';
+const CASA_TOKEN = 'bd8e33d6c630bfcfd6b41345f00d3b1538d1';
+const CASA_FILA = 'dojang-felipe-avisos';
+
+function avisarEmCasa(min, tags){
+  const aviso = { quem:(S.nome||'Felipe'), fonte:'dojang', dia:hoje(),
+                  minutos:Math.max(1,Math.round(min)), tags:(tags||[]).slice(0,10) };
+  enviarAviso(aviso).catch(()=>{ guardarNaFila(aviso); });
+}
+function enviarAviso(aviso){
+  return fetch(CASA_API, {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json', 'x-treino-token': CASA_TOKEN },
+    body: JSON.stringify(aviso)
+  }).then(r=>{ if(!r.ok) throw new Error('http '+r.status); return r; });
+}
+function guardarNaFila(aviso){
+  try{
+    const fila = JSON.parse(localStorage.getItem(CASA_FILA)||'[]');
+    fila.push(aviso);
+    localStorage.setItem(CASA_FILA, JSON.stringify(fila.slice(-30)));
+  }catch(e){}
+}
+/* Treino feito sem sinal nao se perde: fica na fila e vai quando a rede voltar. */
+function esvaziarFila(){
+  let fila;
+  try{ fila = JSON.parse(localStorage.getItem(CASA_FILA)||'[]'); }catch(e){ return; }
+  if(!fila.length) return;
+  const restante = [];
+  let pendentes = fila.length;
+  fila.forEach(aviso=>{
+    enviarAviso(aviso).catch(()=>{ restante.push(aviso); }).then(()=>{
+      if(--pendentes === 0){
+        try{ localStorage.setItem(CASA_FILA, JSON.stringify(restante)); }catch(e){}
+      }
+    });
+  });
+}
+window.addEventListener('online', esvaziarFila);
+setTimeout(esvaziarFila, 3000);
 const beltAtual = ()=> BELTS[S.beltIdx];
 function proxima(){
   if(S.nivel==='recomendada') return {b:BELTS[S.beltIdx], n:'decidida'};
