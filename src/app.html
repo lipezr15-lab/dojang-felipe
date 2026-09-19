@@ -235,6 +235,43 @@ textarea,input[type=text]{
 .vid-btn{position:absolute;inset:0;width:100%;height:100%;border:none;padding:0;background:none;display:block;cursor:pointer}
 .vid-fora{font-size:12px;color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)}
 
+/* botao flutuante da IA (arrastavel) */
+.fab{
+  position:fixed;z-index:50;width:58px;height:58px;border-radius:50%;
+  display:grid;place-items:center;background:var(--accent);color:var(--on-accent);
+  box-shadow:0 6px 18px -4px rgba(15,27,45,.45),0 2px 4px rgba(15,27,45,.2);
+  touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
+  transition:left .22s cubic-bezier(.2,.8,.2,1),top .22s cubic-bezier(.2,.8,.2,1),transform .12s;
+}
+.fab.arrastando{transition:none;transform:scale(1.08);box-shadow:0 14px 30px -6px rgba(15,27,45,.55)}
+.fab svg{width:28px;height:28px;display:block;pointer-events:none}
+.fab .fab-dica{
+  position:absolute;right:66px;top:50%;transform:translateY(-50%);white-space:nowrap;
+  background:var(--ink);color:var(--bg);font-size:12px;font-weight:600;padding:6px 10px;border-radius:8px;
+  pointer-events:none;box-shadow:var(--shadow)
+}
+.fab.esq .fab-dica{right:auto;left:66px}
+
+/* conversa com a IA */
+.chat-sheet .sheet-in{display:flex;flex-direction:column;height:84vh;max-height:84vh;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+.chat-topo{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--line-soft)}
+.chat-topo h3{flex:1;font-size:22px;font-weight:800;text-transform:uppercase}
+.chat-x{width:36px;height:36px;border-radius:50%;background:var(--surface-2);font-size:18px;display:grid;place-items:center}
+.chat-msgs{flex:1;overflow:auto;display:flex;flex-direction:column;gap:9px;padding:12px 2px;overscroll-behavior:contain}
+.bolha{max-width:86%;padding:10px 12px;border-radius:14px;font-size:14.5px;line-height:1.45;white-space:pre-wrap;word-wrap:break-word}
+.bolha.eu{align-self:flex-end;background:var(--accent);color:var(--on-accent);border-bottom-right-radius:4px}
+.bolha.ia{align-self:flex-start;background:var(--surface);border:1px solid var(--line-soft);border-bottom-left-radius:4px}
+.bolha.erro{align-self:flex-start;background:var(--red-soft);color:var(--red);border-bottom-left-radius:4px}
+.pensando{display:inline-flex;gap:4px;align-items:center;height:18px}
+.pensando i{width:6px;height:6px;border-radius:50%;background:var(--ink-3);animation:pulo 1s infinite ease-in-out}
+.pensando i:nth-child(2){animation-delay:.15s}.pensando i:nth-child(3){animation-delay:.3s}
+@keyframes pulo{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.sugestoes{display:flex;flex-direction:column;gap:7px}
+.sugestao{text-align:left;padding:10px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-size:14px;color:var(--ink-2)}
+.chat-envio{display:flex;gap:8px;align-items:flex-end;padding-top:10px;border-top:1px solid var(--line-soft)}
+.chat-envio textarea{flex:1;resize:none;max-height:120px;min-height:44px}
+.chat-envio .btn{height:44px;padding:0 16px}
+
 /* nav inferior */
 .nav{
   position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);
@@ -281,6 +318,29 @@ textarea,input[type=text]{
 <nav class="nav">
   <div class="nav-in" id="nav"></div>
 </nav>
+
+<button class="fab" id="fabIA" aria-label="Tirar dúvida com a IA. Arraste para mudar de lugar.">
+  <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
+    <path d="M5 7.5A3.5 3.5 0 0 1 8.5 4h11A3.5 3.5 0 0 1 23 7.5v8a3.5 3.5 0 0 1-3.5 3.5H13l-5 4.5V19H8.5A3.5 3.5 0 0 1 5 15.5z" fill="currentColor"/>
+    <path d="M11.6 9.6a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.4v.5" stroke="var(--accent)" stroke-width="1.9" stroke-linecap="round"/>
+    <circle cx="14" cy="16.4" r="1.15" fill="var(--accent)"/>
+  </svg>
+</button>
+
+<div class="sheet chat-sheet" id="chatIA" hidden role="dialog" aria-modal="true" aria-labelledby="chatTitulo">
+  <div class="sheet-in">
+    <div class="chat-topo">
+      <h3 id="chatTitulo">Tirar dúvida</h3>
+      <button class="chat-x" id="chatNova" aria-label="Começar conversa nova" title="Conversa nova">↺</button>
+      <button class="chat-x" id="chatFechar" aria-label="Fechar">✕</button>
+    </div>
+    <div class="chat-msgs" id="chatMsgs"></div>
+    <div class="chat-envio">
+      <textarea id="chatTexto" rows="1" maxlength="600" placeholder="Pergunte sobre o seu treino…"></textarea>
+      <button class="btn btn-primary" id="chatEnviar">Enviar</button>
+    </div>
+  </div>
+</div>
 
 <script>
 /* ============================ CONTEÚDO ============================ */
@@ -1213,11 +1273,10 @@ VIEWS.mais = ()=>`<div class="stack">
   <button class="item" data-go="assistir"><span class="badge-n" style="background:var(--red-soft);color:var(--red)">▶</span><span class="t"><b>Assistir vídeos dos movimentos</b><small>Formas, chutes, armas e sparring no YouTube</small></span><span class="go">›</span></button>
   <button class="item" data-go="videos"><span class="badge-n" style="background:var(--red-soft);color:var(--red)">🎥</span><span class="t"><b>Meus vídeos e fotos</b><small>Grave o seu movimento e assista em câmera lenta</small></span><span class="go">›</span></button>
   <button class="item" data-go="diario"><span class="badge-n">日</span><span class="t"><b>Diário de treino</b><small>${S.sessoes.length} treinos registrados</small></span><span class="go">›</span></button>
-  <button class="item hidden" id="duvidasItem" data-go="duvidas"><span class="badge-n">?</span><span class="t"><b>Tirar uma dúvida</b><small>Pergunta sobre técnica, treino ou preparo</small></span><span class="go">›</span></button>
+  <button class="item" data-acao="ia"><span class="badge-n" style="background:var(--accent);color:var(--on-accent)">?</span><span class="t"><b>Tirar dúvida com a IA</b><small>Também pelo botão azul que flutua na tela</small></span><span class="go">›</span></button>
   <button class="item" data-go="ajustes"><span class="badge-n">⚙</span><span class="t"><b>Ajustes</b><small>Nome, faixa, tema e dados</small></span><span class="go">›</span></button>
 </div>`;
 
-AFTER.mais = ()=>{ if(sampleFn) document.getElementById('duvidasItem').classList.remove('hidden'); };
 
 /* ---------- CHUTES ---------- */
 VIEWS.chutes = ()=>`<div class="stack">
@@ -1924,56 +1983,257 @@ AFTER.diario = ()=>{
   el.querySelectorAll('[data-add]').forEach(x=>x.onclick=()=>{ registrar(+x.dataset.add,['aula']); beep(880,.15); render(); });
 };
 
-/* ---------- DÚVIDAS (Claude) ---------- */
-let sampleFn = null;
-let chat = [];
-const REGRAS = 'Você é um assistente de treino de Taekwondo respondendo a um aluno de 12 a 14 anos, faixa colorida da ATA (Songahm), em português do Brasil. Responda curto (no máximo 5 frases), direto, com linguagem simples e encorajadora. Dê instruções práticas que dá para fazer em casa com segurança. Nunca invente a sequência oficial de uma forma da ATA nem regras de pontuação de campeonato: nesses casos diga para confirmar com o instrutor. Se a pergunta for sobre dor, lesão ou perda de peso, mande falar com um adulto responsável e com o instrutor. Não fale sobre nada fora de treino, esporte e escola.';
+/* ---------- DÚVIDAS COM A IA (botão flutuante) ----------
+   Fala direto com a Claude pelo SDK oficial da Anthropic. A chave é colada
+   por um adulto em Ajustes e fica guardada SÓ neste aparelho (localStorage):
+   nunca vai para o código, que é público. */
+const IA_CHAVE = 'dojang-ia-chave';
+const IA_MODELO = 'claude-opus-5';
+const IA_SDK = 'https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@0.127.0/+esm';
+const FAB_POS = 'dojang-fab-pos';
+let conversa = [];          // {role:'user'|'assistant', content, erro?}
+let esperando = false;      // antes do primeiro trecho da resposta
+let ocupado = false;        // do envio até a resposta terminar
+let iaCliente = null, iaClienteChave = null, iaSdk = null;
 
-VIEWS.duvidas = ()=>`<div class="stack">
-  <button class="back" data-go="mais">‹ Mais</button>
-  <div><div class="eyebrow">Tira-dúvidas</div><h2 class="h-sec" style="margin-top:6px">Pergunte sobre o treino</h2></div>
-  <div class="stack-sm" id="chatBox">
-    ${chat.length?chat.map(t=>`<div class="card pad" style="${t.role==='user'?'background:var(--accent-soft);border-color:transparent':''}">
-      <div class="eyebrow" style="margin-bottom:5px">${t.role==='user'?'Você':'Resposta'}</div>
-      <div style="font-size:14.5px;white-space:pre-wrap">${esc(t.content)}</div></div>`).join('')
-      :`<div class="card pad stack-sm"><div class="tiny">Exemplos: “meu chute lateral fica torto, o que faço?”, “como parar de perder o equilíbrio no giro?”, “o que treinar nos 20 minutos antes de dormir?”</div></div>`}
-  </div>
-  <div class="card pad stack-sm">
-    <textarea id="pergunta" rows="3" placeholder="Escreva sua dúvida…"></textarea>
-    <button class="btn btn-primary btn-block" id="enviar">Perguntar</button>
-    <div class="tiny" id="chatMsg"></div>
-  </div>
-  <p class="note">Resposta de um assistente automático. Para qualquer coisa sobre a sequência das formas, exame de faixa ou regra de campeonato, quem responde é o instrutor da ATA Londrina.</p>
-</div>`;
+const lerChave = ()=>{ try{ return localStorage.getItem(IA_CHAVE)||''; }catch(e){ return ''; } };
 
-AFTER.duvidas = ()=>{
-  const box = document.getElementById('pergunta');
-  const btn = document.getElementById('enviar');
-  const msg = document.getElementById('chatMsg');
-  if(!sampleFn){ btn.disabled=true; msg.textContent='Indisponível neste aparelho.'; return; }
-  btn.onclick = async ()=>{
-    const q = box.value.trim(); if(!q) return;
-    chat.push({role:'user', content:q});
-    box.value=''; btn.disabled=true;
-    render();
-    const holder = document.getElementById('chatBox');
-    const bubble = document.createElement('div');
-    bubble.className='card pad';
-    bubble.innerHTML='<div class="eyebrow" style="margin-bottom:5px">Resposta</div><div style="font-size:14.5px;white-space:pre-wrap" id="live">Pensando…</div>';
-    holder.appendChild(bubble);
-    const live = document.getElementById('live');
-    try{
-      const turnos = [{role:'user', content:REGRAS}, ...chat.slice(-6)];
-      const {text} = await sampleFn(turnos, {cache:false, modelTier:'quick', onText:({text})=>{ live.textContent = text; }});
-      chat.push({role:'assistant', content:text});
-    }catch(e){
-      const c = e && e.code;
-      chat.push({role:'assistant', content: c==='not_granted' ? 'Não deu para perguntar agora — o acesso não foi liberado neste aparelho.' : c==='rate_limited' ? 'Muitas perguntas de uma vez. Espere um minuto e tente de novo.' : 'Não consegui responder agora. Tente de novo daqui a pouco.'});
+const SUGESTOES = [
+  'Meu chute lateral fica torto. O que eu treino?',
+  'Como parar de perder o equilíbrio no giro?',
+  'Monta um treino de 20 minutos pra hoje',
+  'Como ficar menos nervoso no dia do exame?'
+];
+
+/* O que a IA precisa saber para responder do jeito do aluno. */
+function contextoAluno(){
+  const b = beltAtual(), p = proxima();
+  const ultimos = S.sessoes.slice(-5).map(x=>x.d+' ('+x.min+' min, '+((x.t||[]).join('/')||'treino')+')').join('; ');
+  return [
+    'Nome: ' + (S.nome||'Felipe'),
+    'Faixa: ' + b.nome + ' ' + S.nivel,
+    'Forma atual: ' + b.forma + ' (' + b.mov + ' movimentos)',
+    'Próximo degrau: ' + (p ? p.b.nome + ' ' + p.n + ', forma ' + p.b.forma : 'faixa preta'),
+    'Minutos treinados nos últimos 7 dias: ' + minSemana(),
+    'Voltas registradas da forma atual: ' + (S.reps[b.forma]||0),
+    'Últimos treinos: ' + (ultimos || 'nenhum registrado')
+  ].join('\n');
+}
+
+function instrucoes(){
+  return `Você é o assistente de treino do app Dojang de Bolso. Quem conversa com você é um aluno de Taekwondo de cerca de 13 anos, da ATA (sistema Songahm), treinando em casa pelo celular. Responda em português do Brasil, como um bom instrutor falaria com ele: frases curtas, tom encorajador e dicas práticas que dá para fazer em casa com segurança. Prefira respostas curtas — poucas frases ou uma lista pequena — a não ser que ele peça um treino montado.
+
+A sequência oficial das formas da ATA, as regras de pontuação de campeonato e as exigências de exame vêm do instrutor dele: não invente essas coisas; explique o princípio do movimento e diga para confirmar com o instrutor. Se ele falar de dor, lesão, tontura, dieta ou perda de peso, oriente com cuidado a parar e conversar com um adulto de casa e com o instrutor. Fique no assunto treino, esporte e preparação; se ele puxar outro assunto, traga a conversa de volta com gentileza.
+
+Dados do aluno registrados no app:
+${contextoAluno()}`;
+}
+
+async function clienteIA(){
+  const chave = lerChave();
+  if(!chave) throw {tipo:'semChave'};
+  if(!iaSdk){
+    try{ iaSdk = await import(IA_SDK); }catch(e){ throw {tipo:'rede'}; }
+  }
+  if(!iaCliente || iaClienteChave !== chave){
+    const Anthropic = iaSdk.default;
+    // A chave é do próprio aparelho, colada por um adulto — por isso o SDK roda no navegador.
+    iaCliente = new Anthropic({ apiKey: chave, dangerouslyAllowBrowser: true, maxRetries: 1, timeout: 60000 });
+    iaClienteChave = chave;
+  }
+  return iaCliente;
+}
+
+function tipoDoErro(e){
+  if(e && e.tipo) return e.tipo;
+  const A = iaSdk && iaSdk.default;
+  if(A){
+    if(e instanceof A.AuthenticationError) return 'chaveInvalida';
+    if(e instanceof A.PermissionDeniedError) return 'chaveInvalida';
+    if(e instanceof A.RateLimitError) return 'limite';
+    if(e instanceof A.BadRequestError) return 'conta';
+    if(e instanceof A.APIConnectionTimeoutError) return 'demora';
+    if(e instanceof A.APIConnectionError) return 'rede';
+    if(e instanceof A.InternalServerError) return 'servidor';
+  }
+  return 'servidor';
+}
+
+/* Pergunta e vai entregando a resposta enquanto ela é escrita. */
+async function perguntarIA(aoEscrever){
+  if(!navigator.onLine) throw {tipo:'offline'};
+  const client = await clienteIA();
+  const mensagens = conversa.filter(m=>!m.erro).slice(-12).map(m=>({role:m.role, content:m.content}));
+  while(mensagens.length && mensagens[0].role!=='user') mensagens.shift();
+  const stream = client.beta.messages.stream({
+    model: IA_MODELO,
+    max_tokens: 4000,
+    output_config: { effort: 'low' },
+    betas: ['server-side-fallback-2026-07-01'],
+    fallbacks: 'default',
+    system: instrucoes(),
+    messages: mensagens
+  });
+  let texto = '';
+  for await (const ev of stream){
+    if(ev.type==='content_block_delta' && ev.delta && ev.delta.type==='text_delta'){
+      texto += ev.delta.text; aoEscrever(texto);
     }
-    render();
-    const b2 = document.getElementById('enviar'); if(b2) b2.disabled=false;
-  };
+  }
+  const final = await stream.finalMessage();
+  if(final.stop_reason==='refusal') throw {tipo:'recusa'};
+  return texto.trim() || 'Não consegui montar uma resposta. Tenta perguntar de outro jeito.';
+}
+
+const ERRO_IA = {
+  offline:'Sem internet agora. A IA precisa de conexão — o resto do app funciona normal.',
+  rede:'Não consegui falar com a IA. Confere a internet e tenta de novo.',
+  demora:'A IA demorou demais para responder. Tenta de novo daqui a pouco.',
+  limite:'Muitas perguntas seguidas. Espera um minutinho e pergunta de novo.',
+  semChave:'O assistente ainda não foi ligado. Peça para um adulto de casa colar a chave em Mais → Ajustes → Assistente de IA.',
+  chaveInvalida:'A chave da IA não foi aceita. Peça para um adulto conferir em Ajustes.',
+  conta:'A conta da IA recusou o pedido — pode ser falta de crédito. Peça para um adulto conferir no console da Anthropic.',
+  recusa:'Essa eu não posso responder. Pergunta outra coisa sobre o seu treino?',
+  servidor:'Deu um problema do lado da IA. Tenta de novo daqui a pouco.'
 };
+
+function desenharConversa(){
+  const box = document.getElementById('chatMsgs');
+  if(!conversa.length && !esperando){
+    box.innerHTML = `<div class="bolha ia">Oi, ${esc(S.nome||'Felipe')}! Pergunte o que quiser sobre o seu treino: técnica, formas, sparring, alongamento, nervoso de campeonato…</div>
+      <div class="sugestoes">${SUGESTOES.map((q,i)=>`<button class="sugestao" data-sug="${i}">${esc(q)}</button>`).join('')}</div>`;
+  } else {
+    box.innerHTML = conversa.map(m=>`<div class="bolha ${m.role==='user'?'eu':(m.erro?'erro':'ia')}">${esc(m.content)}</div>`).join('')
+      + (esperando ? `<div class="bolha ia" aria-label="Pensando"><span class="pensando"><i></i><i></i><i></i></span></div>` : '');
+  }
+  box.scrollTop = box.scrollHeight;
+  document.getElementById('chatEnviar').disabled = ocupado;
+}
+
+async function enviarPergunta(texto){
+  const q = (texto||'').trim();
+  if(!q || ocupado) return;
+  ocupado = true;
+  conversa.push({role:'user', content:q});
+  esperando = true; desenharConversa();
+  let bolha = null;
+  const aoEscrever = t=>{
+    if(!bolha){
+      esperando = false; conversa.push({role:'assistant', content:''}); desenharConversa();
+      const bs = document.querySelectorAll('#chatMsgs .bolha.ia'); bolha = bs[bs.length-1];
+      document.getElementById('chatEnviar').disabled = true;
+    }
+    conversa[conversa.length-1].content = t;
+    if(bolha){ bolha.textContent = t; const box=document.getElementById('chatMsgs'); box.scrollTop = box.scrollHeight; }
+  };
+  try{
+    const resp = await perguntarIA(aoEscrever);
+    if(bolha) conversa[conversa.length-1].content = resp;
+    else conversa.push({role:'assistant', content:resp});
+  }catch(e){
+    if(bolha) conversa.pop();
+    conversa.push({role:'assistant', content: ERRO_IA[tipoDoErro(e)] || ERRO_IA.servidor, erro:true});
+  }
+  esperando = false; ocupado = false; desenharConversa();
+}
+
+function abrirChat(){
+  const sh = document.getElementById('chatIA');
+  sh.hidden = false;
+  document.getElementById('fabIA').hidden = true;
+  desenharConversa();
+  setTimeout(()=>{ const t=document.getElementById('chatTexto'); if(t && matchMedia('(pointer:fine)').matches) t.focus(); }, 60);
+}
+function fecharChat(){
+  document.getElementById('chatIA').hidden = true;
+  document.getElementById('fabIA').hidden = false;
+  posicionarFab();
+}
+
+(function montarChat(){
+  const sh = document.getElementById('chatIA');
+  const tx = document.getElementById('chatTexto');
+  document.getElementById('chatFechar').onclick = fecharChat;
+  document.getElementById('chatNova').onclick = ()=>{ if(ocupado) return; conversa = []; desenharConversa(); };
+  sh.addEventListener('click', e=>{ if(e.target===sh) fecharChat(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !sh.hidden) fecharChat(); });
+  document.getElementById('chatMsgs').addEventListener('click', e=>{
+    const b = e.target.closest('[data-sug]'); if(b) enviarPergunta(SUGESTOES[+b.dataset.sug]);
+  });
+  const mandar = ()=>{ const v = tx.value; tx.value=''; tx.style.height=''; enviarPergunta(v); };
+  document.getElementById('chatEnviar').onclick = mandar;
+  tx.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey && matchMedia('(pointer:fine)').matches){ e.preventDefault(); mandar(); } });
+  tx.addEventListener('input', ()=>{ tx.style.height='auto'; tx.style.height=Math.min(120, tx.scrollHeight)+'px'; });
+})();
+
+/* ----- botão que pode ser arrastado para qualquer ponto da tela -----
+   Toque rápido abre a conversa. Arrastar move; ao soltar ele gruda na
+   borda mais próxima (como os balões de conversa do celular) e a posição
+   fica guardada para a próxima vez. */
+function limitesFab(){
+  const topo = (document.querySelector('.top')?.getBoundingClientRect().bottom || 80) + 8;
+  const nav = document.querySelector('.nav')?.getBoundingClientRect().top || innerHeight;
+  return { min: topo, max: nav - 58 - 10, margem: 12 };
+}
+function lerPosFab(){
+  try{ const v = JSON.parse(localStorage.getItem(FAB_POS)||'null'); if(v && (v.lado==='esq'||v.lado==='dir') && typeof v.y==='number') return v; }catch(e){}
+  return { lado:'dir', y: 1 };   // padrão: canto de baixo à direita, acima da barra
+}
+function posicionarFab(){
+  const f = document.getElementById('fabIA'); if(!f || f.hidden) return;
+  const {min, max, margem} = limitesFab();
+  const pos = lerPosFab();
+  const top = Math.round(min + Math.max(0, Math.min(1, pos.y)) * Math.max(0, max - min));
+  f.style.top = top + 'px';
+  f.style.left = (pos.lado==='esq' ? margem : innerWidth - 58 - margem) + 'px';
+  f.classList.toggle('esq', pos.lado==='esq');
+}
+(function arrastavel(){
+  const f = document.getElementById('fabIA');
+  let ini = null, arrastando = false;
+  f.addEventListener('pointerdown', e=>{
+    if(e.button!==undefined && e.button!==0) return;
+    const r = f.getBoundingClientRect();
+    ini = { x:e.clientX, y:e.clientY, dx:e.clientX - r.left, dy:e.clientY - r.top };
+    arrastando = false;
+    try{ f.setPointerCapture(e.pointerId); }catch(_){}
+  });
+  f.addEventListener('pointermove', e=>{
+    if(!ini) return;
+    if(!arrastando && Math.hypot(e.clientX-ini.x, e.clientY-ini.y) < 7) return;
+    arrastando = true; f.classList.add('arrastando');
+    const x = Math.max(4, Math.min(innerWidth - 62, e.clientX - ini.dx));
+    const y = Math.max(4, Math.min(innerHeight - 62, e.clientY - ini.dy));
+    f.style.left = x + 'px'; f.style.top = y + 'px';
+    e.preventDefault();
+  });
+  const soltar = e=>{
+    if(!ini) return;
+    const foiArrasto = arrastando;
+    ini = null; arrastando = false; f.classList.remove('arrastando');
+    if(!foiArrasto){ abrirChat(); return; }
+    const r = f.getBoundingClientRect();
+    const {min, max} = limitesFab();
+    const lado = (r.left + 29) < innerWidth/2 ? 'esq' : 'dir';
+    const y = max > min ? Math.max(0, Math.min(1, (r.top - min) / (max - min))) : 1;
+    try{ localStorage.setItem(FAB_POS, JSON.stringify({lado, y})); }catch(_){}
+    posicionarFab();
+  };
+  f.addEventListener('pointerup', soltar);
+  f.addEventListener('pointercancel', ()=>{ ini=null; arrastando=false; f.classList.remove('arrastando'); posicionarFab(); });
+  f.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); abrirChat(); } });
+  addEventListener('resize', posicionarFab);
+  addEventListener('orientationchange', ()=>setTimeout(posicionarFab, 200));
+  posicionarFab();
+  // na primeira vez, uma dica curta de que dá para arrastar
+  try{
+    if(!localStorage.getItem('dojang-fab-dica')){
+      const d = document.createElement('span'); d.className='fab-dica'; d.textContent='Tire dúvidas · arraste para mover';
+      f.appendChild(d);
+      setTimeout(()=>{ d.remove(); try{localStorage.setItem('dojang-fab-dica','1');}catch(_){} }, 5000);
+    }
+  }catch(_){}
+})();
 
 /* ---------- AJUSTES ---------- */
 VIEWS.ajustes = ()=>`<div class="stack">
@@ -1989,6 +2249,16 @@ VIEWS.ajustes = ()=>`<div class="stack">
     <button class="btn btn-ghost btn-block" data-go="faixas">Abrir a escada</button>
   </section>
   <section class="card pad stack-sm">
+    <div class="eyebrow">Assistente de IA</div>
+    ${lerChave()
+      ? `<div class="row"><span class="chip chip-pine">Ligado</span><span class="tiny">Chave terminando em …${esc(lerChave().slice(-4))}</span></div>
+         <div class="grid2"><button class="btn" id="iaTestar">Testar</button><button class="btn btn-ghost" id="iaRemover" style="color:var(--red);border-color:var(--red)">Remover chave</button></div>`
+      : `<div class="tiny" style="color:var(--ink-2)"><b>Para um adulto:</b> crie uma chave em console.anthropic.com (API Keys) só para este app, defina um limite de gasto mensal para ela e cole aqui. A chave fica guardada apenas neste celular.</div>
+         <input type="password" id="iaChave" placeholder="sk-ant-…" autocomplete="off" spellcheck="false">
+         <button class="btn btn-primary btn-block" id="iaSalvar">Salvar e testar</button>`}
+    <div class="tiny" id="iaStatus"></div>
+  </section>
+  <section class="card pad stack-sm">
     <div class="eyebrow">Tema</div>
     <div class="seg">
       <button data-tema="" class="${!S.tema?'on':''}">Automático</button>
@@ -1998,12 +2268,45 @@ VIEWS.ajustes = ()=>`<div class="stack">
   </section>
   <section class="card pad stack-sm">
     <div class="eyebrow">Dados</div>
-    <div class="tiny">Tudo fica salvo só neste aparelho — voltas, diário, anotações e recordes. Nada sai daqui.</div>
+    <div class="tiny">Voltas, anotações, vídeos e recordes ficam só neste aparelho. O resumo de cada treino (dia, minutos, o que foi treinado) vai para o painel de casa. As perguntas ao assistente vão para a IA da Anthropic, junto com a faixa e os últimos treinos, para ela responder.</div>
     <button class="btn btn-ghost btn-block" id="apagar" style="color:var(--red);border-color:var(--red)">Apagar tudo e começar de novo</button>
   </section>
   <p class="tiny" style="text-align:center;padding:10px 0">Dojang de Bolso · feito para o ${esc(S.nome)} · ATA Londrina</p>
 </div>`;
+async function testarChave(){
+  const st = document.getElementById('iaStatus');
+  if(st) st.textContent = 'Testando…';
+  try{
+    const client = await clienteIA();
+    await client.messages.create({ model: IA_MODELO, max_tokens: 16, messages:[{role:'user', content:'Responda só: ok'}] });
+    if(st){ st.style.color='var(--pine)'; st.textContent = 'Funcionando. Pode usar o botão azul.'; }
+    return true;
+  }catch(e){
+    if(st){ st.style.color='var(--red)'; st.textContent = ERRO_IA[tipoDoErro(e)] || ERRO_IA.servidor; }
+    return false;
+  }
+}
+
 AFTER.ajustes = ()=>{
+  const sv = document.getElementById('iaSalvar');
+  if(sv) sv.onclick = async ()=>{
+    const v = (document.getElementById('iaChave').value||'').trim();
+    const st = document.getElementById('iaStatus');
+    if(!v){ st.style.color='var(--red)'; st.textContent='Cole a chave antes de salvar.'; return; }
+    try{ localStorage.setItem(IA_CHAVE, v); }catch(e){ st.textContent='Não consegui guardar a chave neste aparelho.'; return; }
+    sv.disabled = true;
+    const ok = await testarChave();
+    if(!ok){ try{ localStorage.removeItem(IA_CHAVE); }catch(e){} sv.disabled = false; return; }
+    const msg = document.getElementById('iaStatus').textContent;
+    render(); const st2 = document.getElementById('iaStatus'); if(st2){ st2.style.color='var(--pine)'; st2.textContent = msg; }
+  };
+  const te = document.getElementById('iaTestar'); if(te) te.onclick = testarChave;
+  const rm = document.getElementById('iaRemover');
+  if(rm) rm.onclick = ()=>{
+    if(!confirm('Remover a chave da IA deste aparelho?')) return;
+    try{ localStorage.removeItem(IA_CHAVE); }catch(e){}
+    iaCliente = null; render();
+  };
   const n=document.getElementById('nomeIn');
   n.oninput=()=>{ S.nome=n.value||'Felipe'; save(); document.getElementById('uname').textContent=S.nome; };
   el.querySelectorAll('[data-tema]').forEach(x=>x.onclick=()=>{
@@ -2011,7 +2314,7 @@ AFTER.ajustes = ()=>{
   });
   document.getElementById('apagar').onclick=()=>{
     if(confirm('Apagar todo o progresso deste aparelho?')){
-      try{ localStorage.removeItem(KEY); }catch(e){}
+      try{ localStorage.removeItem(KEY); localStorage.removeItem(IA_CHAVE); }catch(e){}
       S = JSON.parse(JSON.stringify(DEF)); aplicarTema(); go('hoje');
     }
   };
@@ -2026,6 +2329,8 @@ function aplicarTema(){
 document.addEventListener('click', e=>{
   const nv = e.target.closest('[data-nav]');
   if(nv){ go(nv.dataset.nav); return; }
+  const ac = e.target.closest('[data-acao="ia"]');
+  if(ac){ abrirChat(); return; }
   const pv = e.target.closest('[data-play]');
   if(pv){ tocando = pv.dataset.play; render(); return; }
   const g = e.target.closest('[data-go]');
@@ -2041,12 +2346,4 @@ document.getElementById('streakBox').onclick = ()=> go('diario');
 aplicarTema();
 render();
 
-(async ()=>{
-  try{
-    if(window.claude && window.claude.use){
-      const s = await window.claude.use('sample');
-      if(s){ sampleFn = s; if(R.v==='mais') render(); }
-    }
-  }catch(e){}
-})();
 </script>
