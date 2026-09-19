@@ -1,4 +1,4 @@
-const CACHE = 'dojang-4676b0965d';
+const CACHE = 'dojang-7ce03c5347';
 const ARQUIVOS = ['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
 
 self.addEventListener('install', e=>{

@@ -1984,27 +1984,15 @@ AFTER.diario = ()=>{
 };
 
 /* ---------- DÚVIDAS COM A IA (botão flutuante) ----------
-   Fala direto com a Claude pelo SDK oficial da Anthropic. A chave é colada
-   por um adulto em Ajustes e fica guardada SÓ neste aparelho (localStorage):
-   nunca vai para o código, que é público. */
-const IA_CHAVE = 'dojang-ia-chave';
-/* Dois provedores possíveis. Qual vale é decidido pelo formato da chave que
-   o adulto colar em Ajustes — a mesma chave do Gemini que a casa já usa no
-   Nino serve aqui. Nenhuma chave mora neste arquivo: ele é público. */
-const IA = {
-  gemini:   { nome:'Gemini',  modelo:'gemini-flash-latest',
-              sdk:'https://cdn.jsdelivr.net/npm/@google/genai@2.21.0/+esm' },
-  anthropic:{ nome:'Claude',  modelo:'claude-opus-5',
-              sdk:'https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@0.127.0/+esm' }
-};
-const provedorDaChave = k => !k ? null : (k.indexOf('AIza')===0 ? 'gemini' : (k.indexOf('sk-ant')===0 ? 'anthropic' : null));
+   A pergunta vai para a API do Nino, que é quem guarda a chave da IA. Aqui
+   dentro não existe chave nenhuma: este arquivo é público, e o aparelho é de
+   uma criança. O app manda só a pergunta e o contexto que ele já mostra na
+   tela; quem fala com o provedor é o servidor de casa. */
+const IA_API = 'https://nino-api-production.up.railway.app/api/painel/duvida';
 const FAB_POS = 'dojang-fab-pos';
 let conversa = [];          // {role:'user'|'assistant', content, erro?}
-let esperando = false;      // antes do primeiro trecho da resposta
+let esperando = false;      // aguardando a resposta
 let ocupado = false;        // do envio até a resposta terminar
-let iaCliente = null, iaClienteChave = null, iaSdk = null, iaProvedor = null;
-
-const lerChave = ()=>{ try{ return localStorage.getItem(IA_CHAVE)||''; }catch(e){ return ''; } };
 
 const SUGESTOES = [
   'Meu chute lateral fica torto. O que eu treino?',
@@ -2028,116 +2016,50 @@ function contextoAluno(){
   ].join('\n');
 }
 
-function instrucoes(){
-  return `Você é o assistente de treino do app Dojang de Bolso. Quem conversa com você é um aluno de Taekwondo de cerca de 13 anos, da ATA (sistema Songahm), treinando em casa pelo celular. Responda em português do Brasil, como um bom instrutor falaria com ele: frases curtas, tom encorajador e dicas práticas que dá para fazer em casa com segurança. Prefira respostas curtas — poucas frases ou uma lista pequena — a não ser que ele peça um treino montado.
-
-A sequência oficial das formas da ATA, as regras de pontuação de campeonato e as exigências de exame vêm do instrutor dele: não invente essas coisas; explique o princípio do movimento e diga para confirmar com o instrutor. Se ele falar de dor, lesão, tontura, dieta ou perda de peso, oriente com cuidado a parar e conversar com um adulto de casa e com o instrutor. Fique no assunto treino, esporte e preparação; se ele puxar outro assunto, traga a conversa de volta com gentileza.
-
-Dados do aluno registrados no app:
-${contextoAluno()}`;
-}
-
-async function clienteIA(){
-  const chave = lerChave();
-  if(!chave) throw {tipo:'semChave'};
-  const prov = provedorDaChave(chave);
-  if(!prov) throw {tipo:'formato'};
-  if(iaCliente && iaClienteChave === chave) return iaCliente;
-  try{ iaSdk = await import(IA[prov].sdk); }catch(e){ throw {tipo:'rede'}; }
-  // A chave é do próprio aparelho, colada por um adulto — por isso o SDK roda no navegador.
-  iaCliente = prov==='gemini'
-    ? new iaSdk.GoogleGenAI({ apiKey: chave })
-    : new iaSdk.default({ apiKey: chave, dangerouslyAllowBrowser: true, maxRetries: 1, timeout: 60000 });
-  iaClienteChave = chave;
-  iaProvedor = prov;
-  return iaCliente;
-}
-
-function tipoDoErro(e){
-  if(e && e.tipo) return e.tipo;
-  if(iaProvedor==='gemini'){
-    // O SDK do Gemini traz o código HTTP; chave errada vem como 400/403.
-    const s = e && (e.status || (e.error && e.error.code));
-    if(s===400 || s===401 || s===403) return 'chaveInvalida';
-    if(s===429) return 'limite';
-    if(s>=500) return 'servidor';
-    return s ? 'servidor' : 'rede';
-  }
-  const A = iaSdk && iaSdk.default;
-  if(A){
-    if(e instanceof A.AuthenticationError) return 'chaveInvalida';
-    if(e instanceof A.PermissionDeniedError) return 'chaveInvalida';
-    if(e instanceof A.RateLimitError) return 'limite';
-    if(e instanceof A.BadRequestError) return 'conta';
-    if(e instanceof A.APIConnectionTimeoutError) return 'demora';
-    if(e instanceof A.APIConnectionError) return 'rede';
-    if(e instanceof A.InternalServerError) return 'servidor';
-  }
-  return 'servidor';
-}
-
-/* Pergunta e vai entregando a resposta enquanto ela é escrita. */
-async function perguntarIA(aoEscrever){
+async function perguntarIA(pergunta){
   if(!navigator.onLine) throw {tipo:'offline'};
-  const client = await clienteIA();
-  const historico = conversa.filter(m=>!m.erro).slice(-12);
-  while(historico.length && historico[0].role!=='user') historico.shift();
-
-  if(iaProvedor==='gemini'){
-    const stream = await client.models.generateContentStream({
-      model: IA.gemini.modelo,
-      contents: historico.map(m=>({ role: m.role==='assistant' ? 'model' : 'user', parts:[{text:m.content}] })),
-      config: {
-        systemInstruction: instrucoes(),
-        maxOutputTokens: 1200,
-        // Resposta curta de treino não ganha nada com raciocínio longo, e ele
-        // consumiria o teto de saída.
-        thinkingConfig: { thinkingBudget: 0 }
-      }
+  const ctl = new AbortController();
+  const relogio = setTimeout(()=>ctl.abort(), 60000);
+  let r;
+  try{
+    r = await fetch(IA_API, {
+      method:'POST', signal: ctl.signal,
+      headers:{ 'Content-Type':'application/json', 'x-treino-token': CASA_TOKEN },
+      body: JSON.stringify({
+        pergunta,
+        contexto: contextoAluno(),
+        historico: conversa.filter(m=>!m.erro).slice(-12)
+          .map(m=>({ papel: m.role==='user' ? 'aluno' : 'ia', texto: m.content }))
+      })
     });
-    let t = '';
-    for await (const parte of stream){
-      const bloqueio = parte.promptFeedback && parte.promptFeedback.blockReason;
-      if(bloqueio) throw {tipo:'recusa'};
-      const pedaco = parte.text;
-      if(pedaco){ t += pedaco; aoEscrever(t); }
-    }
-    return t.trim() || 'Não consegui montar uma resposta. Tenta perguntar de outro jeito.';
-  }
+  }catch(e){ throw {tipo: e && e.name==='AbortError' ? 'demora' : 'rede'}; }
+  finally{ clearTimeout(relogio); }
 
-  const mensagens = historico.map(m=>({role:m.role, content:m.content}));
-  const stream = client.beta.messages.stream({
-    model: IA.anthropic.modelo,
-    max_tokens: 4000,
-    output_config: { effort: 'low' },
-    betas: ['server-side-fallback-2026-07-01'],
-    fallbacks: 'default',
-    system: instrucoes(),
-    messages: mensagens
-  });
-  let texto = '';
-  for await (const ev of stream){
-    if(ev.type==='content_block_delta' && ev.delta && ev.delta.type==='text_delta'){
-      texto += ev.delta.text; aoEscrever(texto);
-    }
+  if(!r.ok){
+    // O servidor já devolve recado em português quando a IA falha (sem crédito,
+    // chave recusada). Mostrar o recado dele é melhor do que um erro genérico.
+    let recado = '';
+    try{ const d = await r.json(); recado = typeof d.message==='string' ? d.message : ''; }catch(e){}
+    if(r.status===429) throw {tipo:'limite', texto:recado};
+    if(r.status===404) throw {tipo:'desligado'};
+    if(r.status===401) throw {tipo:'desligado'};
+    throw {tipo:'servidor', texto:recado};
   }
-  const final = await stream.finalMessage();
-  if(final.stop_reason==='refusal') throw {tipo:'recusa'};
-  return texto.trim() || 'Não consegui montar uma resposta. Tenta perguntar de outro jeito.';
+  const d = await r.json().catch(()=>({}));
+  const resposta = d && typeof d.resposta==='string' ? d.resposta.trim() : '';
+  if(!resposta) throw {tipo:'servidor'};
+  return resposta;
 }
 
 const ERRO_IA = {
   offline:'Sem internet agora. A IA precisa de conexão — o resto do app funciona normal.',
-  rede:'Não consegui falar com a IA. Confere a internet e tenta de novo.',
-  demora:'A IA demorou demais para responder. Tenta de novo daqui a pouco.',
+  rede:'Não consegui falar com o servidor de casa. Confere a internet e tenta de novo.',
+  demora:'Demorou demais para responder. Tenta de novo daqui a pouco.',
   limite:'Muitas perguntas seguidas. Espera um minutinho e pergunta de novo.',
-  formato:'Essa chave não parece do Gemini (começa com AIza) nem da Anthropic (sk-ant). Confira em Ajustes.',
-  semChave:'O assistente ainda não foi ligado. Peça para um adulto de casa colar a chave em Mais → Ajustes → Assistente de IA.',
-  chaveInvalida:'A chave da IA não foi aceita. Peça para um adulto conferir em Ajustes.',
-  conta:'A conta da IA recusou o pedido — pode ser falta de crédito. Peça para um adulto conferir no painel do provedor.',
-  recusa:'Essa eu não posso responder. Pergunta outra coisa sobre o seu treino?',
-  servidor:'Deu um problema do lado da IA. Tenta de novo daqui a pouco.'
+  desligado:'O assistente ainda não foi ligado no servidor de casa.',
+  servidor:'Deu um problema do lado do servidor. Tenta de novo daqui a pouco.'
 };
+const textoDoErro = e => (e && e.texto) || ERRO_IA[(e && e.tipo)] || ERRO_IA.servidor;
 
 function desenharConversa(){
   const box = document.getElementById('chatMsgs');
@@ -2158,23 +2080,11 @@ async function enviarPergunta(texto){
   ocupado = true;
   conversa.push({role:'user', content:q});
   esperando = true; desenharConversa();
-  let bolha = null;
-  const aoEscrever = t=>{
-    if(!bolha){
-      esperando = false; conversa.push({role:'assistant', content:''}); desenharConversa();
-      const bs = document.querySelectorAll('#chatMsgs .bolha.ia'); bolha = bs[bs.length-1];
-      document.getElementById('chatEnviar').disabled = true;
-    }
-    conversa[conversa.length-1].content = t;
-    if(bolha){ bolha.textContent = t; const box=document.getElementById('chatMsgs'); box.scrollTop = box.scrollHeight; }
-  };
   try{
-    const resp = await perguntarIA(aoEscrever);
-    if(bolha) conversa[conversa.length-1].content = resp;
-    else conversa.push({role:'assistant', content:resp});
+    const resp = await perguntarIA(q);
+    conversa.push({role:'assistant', content:resp});
   }catch(e){
-    if(bolha) conversa.pop();
-    conversa.push({role:'assistant', content: ERRO_IA[tipoDoErro(e)] || ERRO_IA.servidor, erro:true});
+    conversa.push({role:'assistant', content: textoDoErro(e), erro:true});
   }
   esperando = false; ocupado = false; desenharConversa();
 }
@@ -2291,16 +2201,6 @@ VIEWS.ajustes = ()=>`<div class="stack">
     <button class="btn btn-ghost btn-block" data-go="faixas">Abrir a escada</button>
   </section>
   <section class="card pad stack-sm">
-    <div class="eyebrow">Assistente de IA</div>
-    ${lerChave()
-      ? `<div class="row"><span class="chip chip-pine">${esc((IA[provedorDaChave(lerChave())]||{nome:'Chave'}).nome)}</span><span class="tiny">Chave terminando em …${esc(lerChave().slice(-4))}</span></div>
-         <div class="grid2"><button class="btn" id="iaTestar">Testar</button><button class="btn btn-ghost" id="iaRemover" style="color:var(--red);border-color:var(--red)">Remover chave</button></div>`
-      : `<div class="tiny" style="color:var(--ink-2)"><b>Para um adulto:</b> cole a chave do <b>Gemini</b> (começa com <code>AIza</code>, a mesma que a casa já usa) ou da <b>Anthropic</b> (<code>sk-ant…</code>). Vale criar uma chave só para este app, com limite de uso. Ela fica guardada apenas neste celular, nunca no código.</div>
-         <input type="password" id="iaChave" placeholder="AIza… ou sk-ant-…" autocomplete="off" spellcheck="false">
-         <button class="btn btn-primary btn-block" id="iaSalvar">Salvar e testar</button>`}
-    <div class="tiny" id="iaStatus"></div>
-  </section>
-  <section class="card pad stack-sm">
     <div class="eyebrow">Tema</div>
     <div class="seg">
       <button data-tema="" class="${!S.tema?'on':''}">Automático</button>
@@ -2310,50 +2210,12 @@ VIEWS.ajustes = ()=>`<div class="stack">
   </section>
   <section class="card pad stack-sm">
     <div class="eyebrow">Dados</div>
-    <div class="tiny">Voltas, anotações, vídeos e recordes ficam só neste aparelho. O resumo de cada treino (dia, minutos, o que foi treinado) vai para o painel de casa. As perguntas ao assistente vão para a IA escolhida (Gemini ou Claude, conforme a chave), junto com a faixa e os últimos treinos, para ela responder.</div>
+    <div class="tiny">Voltas, anotações, vídeos e recordes ficam só neste aparelho. O resumo de cada treino (dia, minutos, o que foi treinado) vai para o painel de casa. As perguntas ao assistente passam pelo servidor de casa, junto com a faixa e os últimos treinos, para a IA responder.</div>
     <button class="btn btn-ghost btn-block" id="apagar" style="color:var(--red);border-color:var(--red)">Apagar tudo e começar de novo</button>
   </section>
   <p class="tiny" style="text-align:center;padding:10px 0">Dojang de Bolso · feito para o ${esc(S.nome)} · ATA Londrina</p>
 </div>`;
-async function testarChave(){
-  const st = document.getElementById('iaStatus');
-  if(st) st.textContent = 'Testando…';
-  try{
-    const client = await clienteIA();
-    if(iaProvedor==='gemini'){
-      await client.models.generateContent({ model: IA.gemini.modelo, contents:'Responda só: ok',
-        config:{ maxOutputTokens: 16, thinkingConfig:{ thinkingBudget: 0 } } });
-    } else {
-      await client.messages.create({ model: IA.anthropic.modelo, max_tokens: 16, messages:[{role:'user', content:'Responda só: ok'}] });
-    }
-    if(st){ st.style.color='var(--pine)'; st.textContent = 'Funcionando com o ' + IA[iaProvedor].nome + '. Pode usar o botão azul.'; }
-    return true;
-  }catch(e){
-    if(st){ st.style.color='var(--red)'; st.textContent = ERRO_IA[tipoDoErro(e)] || ERRO_IA.servidor; }
-    return false;
-  }
-}
-
 AFTER.ajustes = ()=>{
-  const sv = document.getElementById('iaSalvar');
-  if(sv) sv.onclick = async ()=>{
-    const v = (document.getElementById('iaChave').value||'').trim();
-    const st = document.getElementById('iaStatus');
-    if(!v){ st.style.color='var(--red)'; st.textContent='Cole a chave antes de salvar.'; return; }
-    try{ localStorage.setItem(IA_CHAVE, v); }catch(e){ st.textContent='Não consegui guardar a chave neste aparelho.'; return; }
-    sv.disabled = true;
-    const ok = await testarChave();
-    if(!ok){ try{ localStorage.removeItem(IA_CHAVE); }catch(e){} sv.disabled = false; return; }
-    const msg = document.getElementById('iaStatus').textContent;
-    render(); const st2 = document.getElementById('iaStatus'); if(st2){ st2.style.color='var(--pine)'; st2.textContent = msg; }
-  };
-  const te = document.getElementById('iaTestar'); if(te) te.onclick = testarChave;
-  const rm = document.getElementById('iaRemover');
-  if(rm) rm.onclick = ()=>{
-    if(!confirm('Remover a chave da IA deste aparelho?')) return;
-    try{ localStorage.removeItem(IA_CHAVE); }catch(e){}
-    iaCliente = null; render();
-  };
   const n=document.getElementById('nomeIn');
   n.oninput=()=>{ S.nome=n.value||'Felipe'; save(); document.getElementById('uname').textContent=S.nome; };
   el.querySelectorAll('[data-tema]').forEach(x=>x.onclick=()=>{
@@ -2361,7 +2223,7 @@ AFTER.ajustes = ()=>{
   });
   document.getElementById('apagar').onclick=()=>{
     if(confirm('Apagar todo o progresso deste aparelho?')){
-      try{ localStorage.removeItem(KEY); localStorage.removeItem(IA_CHAVE); }catch(e){}
+      try{ localStorage.removeItem(KEY); }catch(e){}
       S = JSON.parse(JSON.stringify(DEF)); aplicarTema(); go('hoje');
     }
   };
