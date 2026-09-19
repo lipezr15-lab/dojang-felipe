@@ -2012,13 +2012,21 @@ AFTER.diario = ()=>{
    por um adulto em Ajustes e fica guardada SÓ neste aparelho (localStorage):
    nunca vai para o código, que é público. */
 const IA_CHAVE = 'dojang-ia-chave';
-const IA_MODELO = 'claude-opus-5';
-const IA_SDK = 'https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@0.127.0/+esm';
+/* Dois provedores possíveis. Qual vale é decidido pelo formato da chave que
+   o adulto colar em Ajustes — a mesma chave do Gemini que a casa já usa no
+   Nino serve aqui. Nenhuma chave mora neste arquivo: ele é público. */
+const IA = {
+  gemini:   { nome:'Gemini',  modelo:'gemini-flash-latest',
+              sdk:'https://cdn.jsdelivr.net/npm/@google/genai@2.21.0/+esm' },
+  anthropic:{ nome:'Claude',  modelo:'claude-opus-5',
+              sdk:'https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@0.127.0/+esm' }
+};
+const provedorDaChave = k => !k ? null : (k.indexOf('AIza')===0 ? 'gemini' : (k.indexOf('sk-ant')===0 ? 'anthropic' : null));
 const FAB_POS = 'dojang-fab-pos';
 let conversa = [];          // {role:'user'|'assistant', content, erro?}
 let esperando = false;      // antes do primeiro trecho da resposta
 let ocupado = false;        // do envio até a resposta terminar
-let iaCliente = null, iaClienteChave = null, iaSdk = null;
+let iaCliente = null, iaClienteChave = null, iaSdk = null, iaProvedor = null;
 
 const lerChave = ()=>{ try{ return localStorage.getItem(IA_CHAVE)||''; }catch(e){ return ''; } };
 
@@ -2056,20 +2064,29 @@ ${contextoAluno()}`;
 async function clienteIA(){
   const chave = lerChave();
   if(!chave) throw {tipo:'semChave'};
-  if(!iaSdk){
-    try{ iaSdk = await import(IA_SDK); }catch(e){ throw {tipo:'rede'}; }
-  }
-  if(!iaCliente || iaClienteChave !== chave){
-    const Anthropic = iaSdk.default;
-    // A chave é do próprio aparelho, colada por um adulto — por isso o SDK roda no navegador.
-    iaCliente = new Anthropic({ apiKey: chave, dangerouslyAllowBrowser: true, maxRetries: 1, timeout: 60000 });
-    iaClienteChave = chave;
-  }
+  const prov = provedorDaChave(chave);
+  if(!prov) throw {tipo:'formato'};
+  if(iaCliente && iaClienteChave === chave) return iaCliente;
+  try{ iaSdk = await import(IA[prov].sdk); }catch(e){ throw {tipo:'rede'}; }
+  // A chave é do próprio aparelho, colada por um adulto — por isso o SDK roda no navegador.
+  iaCliente = prov==='gemini'
+    ? new iaSdk.GoogleGenAI({ apiKey: chave })
+    : new iaSdk.default({ apiKey: chave, dangerouslyAllowBrowser: true, maxRetries: 1, timeout: 60000 });
+  iaClienteChave = chave;
+  iaProvedor = prov;
   return iaCliente;
 }
 
 function tipoDoErro(e){
   if(e && e.tipo) return e.tipo;
+  if(iaProvedor==='gemini'){
+    // O SDK do Gemini traz o código HTTP; chave errada vem como 400/403.
+    const s = e && (e.status || (e.error && e.error.code));
+    if(s===400 || s===401 || s===403) return 'chaveInvalida';
+    if(s===429) return 'limite';
+    if(s>=500) return 'servidor';
+    return s ? 'servidor' : 'rede';
+  }
   const A = iaSdk && iaSdk.default;
   if(A){
     if(e instanceof A.AuthenticationError) return 'chaveInvalida';
@@ -2087,10 +2104,34 @@ function tipoDoErro(e){
 async function perguntarIA(aoEscrever){
   if(!navigator.onLine) throw {tipo:'offline'};
   const client = await clienteIA();
-  const mensagens = conversa.filter(m=>!m.erro).slice(-12).map(m=>({role:m.role, content:m.content}));
-  while(mensagens.length && mensagens[0].role!=='user') mensagens.shift();
+  const historico = conversa.filter(m=>!m.erro).slice(-12);
+  while(historico.length && historico[0].role!=='user') historico.shift();
+
+  if(iaProvedor==='gemini'){
+    const stream = await client.models.generateContentStream({
+      model: IA.gemini.modelo,
+      contents: historico.map(m=>({ role: m.role==='assistant' ? 'model' : 'user', parts:[{text:m.content}] })),
+      config: {
+        systemInstruction: instrucoes(),
+        maxOutputTokens: 1200,
+        // Resposta curta de treino não ganha nada com raciocínio longo, e ele
+        // consumiria o teto de saída.
+        thinkingConfig: { thinkingBudget: 0 }
+      }
+    });
+    let t = '';
+    for await (const parte of stream){
+      const bloqueio = parte.promptFeedback && parte.promptFeedback.blockReason;
+      if(bloqueio) throw {tipo:'recusa'};
+      const pedaco = parte.text;
+      if(pedaco){ t += pedaco; aoEscrever(t); }
+    }
+    return t.trim() || 'Não consegui montar uma resposta. Tenta perguntar de outro jeito.';
+  }
+
+  const mensagens = historico.map(m=>({role:m.role, content:m.content}));
   const stream = client.beta.messages.stream({
-    model: IA_MODELO,
+    model: IA.anthropic.modelo,
     max_tokens: 4000,
     output_config: { effort: 'low' },
     betas: ['server-side-fallback-2026-07-01'],
@@ -2114,9 +2155,10 @@ const ERRO_IA = {
   rede:'Não consegui falar com a IA. Confere a internet e tenta de novo.',
   demora:'A IA demorou demais para responder. Tenta de novo daqui a pouco.',
   limite:'Muitas perguntas seguidas. Espera um minutinho e pergunta de novo.',
+  formato:'Essa chave não parece do Gemini (começa com AIza) nem da Anthropic (sk-ant). Confira em Ajustes.',
   semChave:'O assistente ainda não foi ligado. Peça para um adulto de casa colar a chave em Mais → Ajustes → Assistente de IA.',
   chaveInvalida:'A chave da IA não foi aceita. Peça para um adulto conferir em Ajustes.',
-  conta:'A conta da IA recusou o pedido — pode ser falta de crédito. Peça para um adulto conferir no console da Anthropic.',
+  conta:'A conta da IA recusou o pedido — pode ser falta de crédito. Peça para um adulto conferir no painel do provedor.',
   recusa:'Essa eu não posso responder. Pergunta outra coisa sobre o seu treino?',
   servidor:'Deu um problema do lado da IA. Tenta de novo daqui a pouco.'
 };
@@ -2275,10 +2317,10 @@ VIEWS.ajustes = ()=>`<div class="stack">
   <section class="card pad stack-sm">
     <div class="eyebrow">Assistente de IA</div>
     ${lerChave()
-      ? `<div class="row"><span class="chip chip-pine">Ligado</span><span class="tiny">Chave terminando em …${esc(lerChave().slice(-4))}</span></div>
+      ? `<div class="row"><span class="chip chip-pine">${esc((IA[provedorDaChave(lerChave())]||{nome:'Chave'}).nome)}</span><span class="tiny">Chave terminando em …${esc(lerChave().slice(-4))}</span></div>
          <div class="grid2"><button class="btn" id="iaTestar">Testar</button><button class="btn btn-ghost" id="iaRemover" style="color:var(--red);border-color:var(--red)">Remover chave</button></div>`
-      : `<div class="tiny" style="color:var(--ink-2)"><b>Para um adulto:</b> crie uma chave em console.anthropic.com (API Keys) só para este app, defina um limite de gasto mensal para ela e cole aqui. A chave fica guardada apenas neste celular.</div>
-         <input type="password" id="iaChave" placeholder="sk-ant-…" autocomplete="off" spellcheck="false">
+      : `<div class="tiny" style="color:var(--ink-2)"><b>Para um adulto:</b> cole a chave do <b>Gemini</b> (começa com <code>AIza</code>, a mesma que a casa já usa) ou da <b>Anthropic</b> (<code>sk-ant…</code>). Vale criar uma chave só para este app, com limite de uso. Ela fica guardada apenas neste celular, nunca no código.</div>
+         <input type="password" id="iaChave" placeholder="AIza… ou sk-ant-…" autocomplete="off" spellcheck="false">
          <button class="btn btn-primary btn-block" id="iaSalvar">Salvar e testar</button>`}
     <div class="tiny" id="iaStatus"></div>
   </section>
@@ -2292,7 +2334,7 @@ VIEWS.ajustes = ()=>`<div class="stack">
   </section>
   <section class="card pad stack-sm">
     <div class="eyebrow">Dados</div>
-    <div class="tiny">Voltas, anotações, vídeos e recordes ficam só neste aparelho. O resumo de cada treino (dia, minutos, o que foi treinado) vai para o painel de casa. As perguntas ao assistente vão para a IA da Anthropic, junto com a faixa e os últimos treinos, para ela responder.</div>
+    <div class="tiny">Voltas, anotações, vídeos e recordes ficam só neste aparelho. O resumo de cada treino (dia, minutos, o que foi treinado) vai para o painel de casa. As perguntas ao assistente vão para a IA escolhida (Gemini ou Claude, conforme a chave), junto com a faixa e os últimos treinos, para ela responder.</div>
     <button class="btn btn-ghost btn-block" id="apagar" style="color:var(--red);border-color:var(--red)">Apagar tudo e começar de novo</button>
   </section>
   <p class="tiny" style="text-align:center;padding:10px 0">Dojang de Bolso · feito para o ${esc(S.nome)} · ATA Londrina</p>
@@ -2302,8 +2344,13 @@ async function testarChave(){
   if(st) st.textContent = 'Testando…';
   try{
     const client = await clienteIA();
-    await client.messages.create({ model: IA_MODELO, max_tokens: 16, messages:[{role:'user', content:'Responda só: ok'}] });
-    if(st){ st.style.color='var(--pine)'; st.textContent = 'Funcionando. Pode usar o botão azul.'; }
+    if(iaProvedor==='gemini'){
+      await client.models.generateContent({ model: IA.gemini.modelo, contents:'Responda só: ok',
+        config:{ maxOutputTokens: 16, thinkingConfig:{ thinkingBudget: 0 } } });
+    } else {
+      await client.messages.create({ model: IA.anthropic.modelo, max_tokens: 16, messages:[{role:'user', content:'Responda só: ok'}] });
+    }
+    if(st){ st.style.color='var(--pine)'; st.textContent = 'Funcionando com o ' + IA[iaProvedor].nome + '. Pode usar o botão azul.'; }
     return true;
   }catch(e){
     if(st){ st.style.color='var(--red)'; st.textContent = ERRO_IA[tipoDoErro(e)] || ERRO_IA.servidor; }
